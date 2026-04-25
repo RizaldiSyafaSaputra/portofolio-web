@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/utils/constants";
-import { Heart, MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
 
 export default function Footer() {
@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="relative z-10 container mx-auto max-w-6xl px-6 pt-20 pb-12 lg:pt-28 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Column 1: Brand & Bio */}
-          <div className="lg:col-span-1 pt-2">
+          <div className="lg:col-span-1">
             <Link
               href="/login"
               className="text-2xl font-bold tracking-tight text-white mb-4 block inline-flex items-center"
@@ -108,7 +108,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 pt-8 pb-8 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-16 pt-8 pb-8 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-500 text-center md:text-left">
             © {new Date().getFullYear()} {SITE_CONFIG.name}. Portofolio V1.0.
           </p>
