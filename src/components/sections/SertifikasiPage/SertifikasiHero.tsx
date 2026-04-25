@@ -1,16 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Briefcase } from 'lucide-react'
+import { Award } from 'lucide-react'
 import GridBackground from '../../ui/GridBackground'
 
-export function ExperienceHero() {
+export function SertifikasiHero() {
   return (
     <section className="relative overflow-hidden bg-slate-950 pt-32 pb-32 px-4 sm:px-6 lg:px-8">
       <GridBackground />
-      
+
       {/* Background Accent Gradients */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
       
       {/* Bottom Fade Mask */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent z-10 pointer-events-none" />
@@ -28,10 +28,10 @@ export function ExperienceHero() {
             className="relative w-24 h-24 rounded-3xl bg-slate-900 border border-white/10 flex items-center justify-center shadow-2xl group"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Briefcase className="w-10 h-10 text-blue-400 relative z-10" />
+            <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Award className="w-10 h-10 text-cyan-400 relative z-10" />
             <motion.div
-              className="absolute inset-0 rounded-3xl border-2 border-blue-500/30"
+              className="absolute inset-0 rounded-3xl border-2 border-cyan-500/30"
               animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
               transition={{ duration: 3, repeat: Infinity }}
             />
@@ -45,9 +45,9 @@ export function ExperienceHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Professional <br />
-              <span className="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                Experience
+              Licenses & <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                Certifications
               </span>
             </motion.h1>
 
@@ -57,32 +57,9 @@ export function ExperienceHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Explore my professional journey, from startups to enterprise. Each role has shaped my expertise and driven innovation.
+              Professional credentials, achievements, and courses I have completed to continuously improve my skills and stay up-to-date with industry standards.
             </motion.p>
           </div>
-
-          {/* Stats */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-12 pt-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            {[
-              { label: 'Years Experience', value: '5+' },
-              { label: 'Companies', value: '4' },
-              { label: 'Projects', value: '50+' },
-            ].map((stat, idx) => (
-              <div key={idx} className="flex flex-col gap-2 border-l border-white/5 pl-8 text-left">
-                <span className="text-4xl font-black text-white tracking-tight">
-                  {stat.value}
-                </span>
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
     </section>

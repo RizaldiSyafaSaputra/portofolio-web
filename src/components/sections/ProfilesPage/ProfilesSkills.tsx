@@ -86,41 +86,46 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
   }
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-950">
+    <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
         <motion.div
-          className="absolute top-1/2 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1] }}
+          className="absolute top-1/2 -right-24 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px]"
+          animate={{
+            y: [0, 50, -50, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-24"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="inline-block mb-4">
-            <span className="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-semibold flex items-center justify-center gap-2">
-              <Zap className="w-4 h-4" /> Core Competencies
-            </span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-black uppercase tracking-[0.3em] mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+            Skills Repository
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Skills & Expertise
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+            Technical Proficiency
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            A comprehensive overview of my technical capabilities and interpersonal skills.
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+            A comprehensive overview of my technical abilities and soft skills developed through various projects and academic pursuits.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           <SkillGroup title="Hard Skills" icon={Code2} items={hardSkills} index={0} />
           <SkillGroup title="Soft Skills" icon={Brain} items={softSkills} index={1} />
-          <SkillGroup title="Language Skills" icon={Languages} items={languageSkills} index={2} />
+          <SkillGroup title="Languages" icon={Languages} items={languageSkills} index={2} />
         </div>
 
         {skills.length === 0 && (

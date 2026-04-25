@@ -11,10 +11,10 @@
 
 :root {
   /* Background */
-  --background: #f4f4f4;
-  --background-card: #ffffff;
-  --background-dark: #1a1a2e;
-  --background-section-alt: #eaeaea;
+  --background: #020617; /* slate-950 */
+  --background-card: #0f172a; /* slate-900 */
+  --background-dark: #020617; /* slate-950 */
+  --background-section-alt: #0f172a; /* slate-900 */
 
   /* Foreground / Text */
   --foreground: #ffffff;
@@ -69,6 +69,25 @@
   --color-border-light: var(--border-light);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+  }
+
+  --animate-spin-slow: spin-slow 15s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
 }
 
 /* ============================================

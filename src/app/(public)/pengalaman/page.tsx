@@ -112,7 +112,7 @@ const experiences: Experience[] = [
 
 export default function ExperiencePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800" style={{ marginTop: '-72px' }}>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
       <ExperienceHero />
       <ExperienceTimeline experiences={experiences} />
   </div>

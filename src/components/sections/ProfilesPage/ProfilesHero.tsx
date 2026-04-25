@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Download, User, Calendar } from 'lucide-react'
 import type { Profile, Sosmed } from '@/lib/types/database'
 import Image from 'next/image'
+import GridBackground from '../../ui/GridBackground'
 
 interface ProfilesHeroProps {
   profile: Partial<Profile>
@@ -12,42 +13,14 @@ interface ProfilesHeroProps {
 
 export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, -50, 50, 0],
-            y: [0, 50, -50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
-          animate={{
-            x: [0, 50, -50, 0],
-            y: [0, -50, 50, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
+    <section className="relative overflow-hidden bg-slate-950 pt-32 pb-32 px-4 sm:px-6 lg:px-8">
+      <GridBackground />
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(90deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%, transparent), linear-gradient(0deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%, transparent)',
-          backgroundSize: '50px 50px',
-        }} />
-      </div>
+      {/* Background Accent Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+      
+      {/* Bottom Fade Mask */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent z-10 pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">

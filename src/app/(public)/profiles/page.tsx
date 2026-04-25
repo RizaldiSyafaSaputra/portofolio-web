@@ -106,7 +106,7 @@ const skills: Skill[] = [
 
 export default function ProfilesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800" style={{ marginTop: '-72px' }}>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
       <ProfilesHero profile={profile} sosmeds={sosmeds} />
       <ProfilesStudy studies={studies} />
       <ProfilesSkills skills={skills} />

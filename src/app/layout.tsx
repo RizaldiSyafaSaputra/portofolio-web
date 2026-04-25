@@ -30,7 +30,7 @@ export default function RootLayout({
       lang="id"
       className={`${inter.variable} ${geistMono.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="min-h-full flex flex-col antialiased bg-slate-950 text-slate-300">
         {children}
       </body>
     </html>

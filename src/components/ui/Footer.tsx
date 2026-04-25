@@ -12,12 +12,12 @@ export default function Footer() {
         <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto max-w-6xl px-6 py-12 lg:py-16">
+      <div className="relative z-10 container mx-auto max-w-6xl px-6 pt-20 pb-12 lg:pt-28 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Column 1: Brand & Bio */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 pt-2">
             <Link
-              href="/"
+              href="/login"
               className="text-2xl font-bold tracking-tight text-white mb-4 block inline-flex items-center"
             >
               RSP<span className="text-cyan-400">.</span>
@@ -108,13 +108,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-8 pt-8 pb-8 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-500 text-center md:text-left">
-            © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
+            © {new Date().getFullYear()} {SITE_CONFIG.name}. Portofolio V1.0.
           </p>
-          <div className="flex items-center gap-1.5 text-sm text-slate-500 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-800">
-            Made with <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" /> using Next.js
-          </div>
         </div>
       </div>
     </footer>
