@@ -1,3 +1,6 @@
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
+
 export default function PublicLayout({
   children,
 }: {
@@ -5,9 +8,9 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      {/* <Navbar /> */}
-      <main className="flex-1">{children}</main>
-      {/* <Footer /> */}
+      <Navbar />
+      <main className="flex-1 pt-[72px]">{children}</main>
+      <Footer />
     </>
   );
 }
