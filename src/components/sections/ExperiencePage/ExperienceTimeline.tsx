@@ -76,31 +76,41 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
         </motion.div>
 
         {/* Timeline */}
-        <div className="relative space-y-12">
-          {/* Vertical line indicator */}
-          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 h-full w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
-
-          {/* Timeline grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-y-24">
-            {experiences.map((exp, idx) => (
-              <motion.div
-                key={exp.id}
-                className={`${idx % 2 === 0 ? 'lg:pr-12' : 'lg:pl-12 lg:mt-24'}`}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                viewport={{ once: true, margin: "-100px" }}
-              >
-                <ExperienceCard
-                  {...exp}
-                  index={idx}
-                  isActive={activeId === exp.id}
-                  onClick={() => setActiveId(activeId === exp.id ? null : exp.id)}
-                />
-              </motion.div>
-            ))}
+        {experiences.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-white/5 flex items-center justify-center mb-8">
+              <div className="w-8 h-8 rounded-full border-2 border-slate-600" />
+            </div>
+            <h3 className="text-2xl font-black text-white mb-3 tracking-tight">No Experience Yet</h3>
+            <p className="text-slate-500 max-w-md font-medium">Professional experiences will appear here once they are added through the admin dashboard.</p>
           </div>
-        </div>
+        ) : (
+          <div className="relative space-y-12">
+            {/* Vertical line indicator */}
+            <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 h-full w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+            {/* Timeline grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-y-24">
+              {experiences.map((exp, idx) => (
+                <motion.div
+                  key={exp.id}
+                  className={`${idx % 2 === 0 ? 'lg:pr-12' : 'lg:pl-12 lg:mt-24'}`}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: idx * 0.1 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                >
+                  <ExperienceCard
+                    {...exp}
+                    index={idx}
+                    isActive={activeId === exp.id}
+                    onClick={() => setActiveId(activeId === exp.id ? null : exp.id)}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
 

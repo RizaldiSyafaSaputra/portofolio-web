@@ -119,71 +119,95 @@ export default function HeroSection({ profile }: HeroSectionProps) {
             className="lg:col-span-5 flex justify-center order-1 lg:order-2"
             variants={itemVariants}
           >
-            <div className="relative w-72 h-72 md:w-[450px] md:h-[450px]">
-              {/* Spinning Rings */}
+            <div className="relative w-72 h-80 md:w-[500px] md:h-[600px] flex items-center justify-center">
+              {/* Background Decorative Elements (Behind Photo) */}
               <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-[4rem] border-2 border-dashed border-cyan-500/10"
-              />
-              <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-4 rounded-[3.5rem] border border-blue-500/5"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.5, 0.3] 
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute w-[120%] h-[120%] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"
               />
               
-              {/* Main Container */}
-              <div className="absolute inset-8 rounded-[3.5rem] overflow-hidden bg-slate-900/50 border border-white/10 backdrop-blur-sm p-3 group shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-white/5 z-10" />
-                
+              {/* Geometric Rings (Behind Photo) */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 15 + i * 5, repeat: Infinity, ease: "linear" }}
+                    className="absolute rounded-full border border-white/5"
+                    style={{ 
+                      width: `${60 + i * 15}%`, 
+                      height: `${60 + i * 15}%`,
+                      borderStyle: i % 2 === 0 ? 'dashed' : 'solid'
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* The Photo (Borderless with Bottom Fade) */}
+              <div className="relative z-10 w-full h-full group [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
                 {profile?.photo_url ? (
-                  <img
+                  <motion.img
                     src={profile.photo_url}
                     alt={profile.nama || "Profile"}
-                    className="w-full h-full object-cover rounded-[2.8rem] grayscale hover:grayscale-0 transition-all duration-1000 scale-[1.01] hover:scale-105"
+                    className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-105"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-slate-800 rounded-[2.8rem]">
-                    <span className="text-[120px] font-black text-white/5">R</span>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-[180px] font-black text-white/5 select-none">R</span>
                   </div>
                 )}
-
-                {/* Floating Tech Badges */}
-                <motion.div
-                  animate={{ y: [0, -15, 0], x: [0, 5, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute bottom-10 -left-10 z-20 p-4 rounded-3xl bg-slate-950/90 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center justify-center">
-                    <Code2 className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex flex-col pr-4">
-                    <span className="text-xs font-black text-white uppercase tracking-wider">Frontend</span>
-                    <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Expertise Layer</span>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 15, 0], x: [0, -5, 0] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-12 -right-8 z-20 p-4 rounded-3xl bg-slate-950/90 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.4)] flex items-center justify-center">
-                    <Cpu className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex flex-col pr-4">
-                    <span className="text-xs font-black text-white uppercase tracking-wider">Backend</span>
-                    <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Infrastucture</span>
-                  </div>
-                </motion.div>
-
-                {/* Scanning Line Effect */}
-                <motion.div 
-                  animate={{ top: ["0%", "100%", "0%"] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                  className="absolute left-0 right-0 h-px bg-cyan-500/30 z-20 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
-                />
               </div>
+
+              {/* Floating Spheres (Living Elements - Behind Photo) */}
+              <motion.div
+                animate={{ y: [0, -30, 0], x: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-1/4 -left-12 w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full blur-[2px] shadow-[0_0_30px_rgba(34,211,238,0.5)] z-0"
+              />
+              <motion.div
+                animate={{ y: [0, 40, 0], x: [0, -20, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-1/3 -right-8 w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-[3px] shadow-[0_0_40px_rgba(79,70,229,0.4)] z-0"
+              />
+
+              {/* Floating Tech Badges (Now Behind Photo) */}
+              <motion.div
+                animate={{ y: [0, -20, 0], x: [0, 8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-24 -left-10 z-0 p-4 rounded-3xl bg-slate-950/80 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl group/badge"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
+                  <Code2 className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex flex-col pr-4">
+                  <span className="text-xs font-black text-white uppercase tracking-wider">Frontend</span>
+                  <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Expertise Layer</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 25, 0], x: [0, -10, 0] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-24 -right-10 z-0 p-4 rounded-3xl bg-slate-950/80 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl group/badge"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_15px_rgba(79,70,229,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
+                  <Cpu className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex flex-col pr-4">
+                  <span className="text-xs font-black text-white uppercase tracking-wider">Backend</span>
+                  <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Infrastructure</span>
+                </div>
+              </motion.div>
+
+              {/* Ambient Glow */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-32 bg-cyan-500/20 blur-[60px] rounded-full pointer-events-none" />
             </div>
           </motion.div>
         </motion.div>

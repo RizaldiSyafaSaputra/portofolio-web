@@ -54,16 +54,27 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* Grid of Projects */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {paginatedProjects.map((project) => (
-            <ProjectCard 
-              key={project.id_project} 
-              project={project} 
-              onClick={() => setSelectedId(project.id_project)} 
-            />
-          ))}
-        </div>
+        {projects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-white/5 flex items-center justify-center mb-8">
+              <Sparkles className="w-8 h-8 text-slate-600" />
+            </div>
+            <h3 className="text-2xl font-black text-white mb-3 tracking-tight">No Projects Yet</h3>
+            <p className="text-slate-500 max-w-md font-medium">Projects will appear here once they are added through the admin dashboard.</p>
+          </div>
+        ) : (
+          <>
+            {/* Grid of Projects */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              {paginatedProjects.map((project) => (
+                <ProjectCard 
+                  key={project.id_project} 
+                  project={project} 
+                  onClick={() => setSelectedId(project.id_project)} 
+                />
+              ))}
+            </div>
+
 
         {/* Pagination Controls */}
         <div className="flex items-center justify-center gap-4 mt-4">
@@ -172,6 +183,8 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
             </div>
           )}
         </AnimatePresence>
+          </>
+        )}
       </div>
     </section>
   )

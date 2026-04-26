@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, Building, Award, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Certified } from '@/lib/types/database'
 
@@ -11,6 +11,7 @@ interface CertificateGridProps {
 }
 
 export function CertificateGrid({ certifications }: CertificateGridProps) {
+  const [selectedCert, setSelectedCert] = useState<Certified | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
 
@@ -52,16 +53,27 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        {certifications.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-white/5 flex items-center justify-center mb-8">
+              <Award className="w-8 h-8 text-slate-600" />
+            </div>
+            <h3 className="text-2xl font-black text-white mb-3 tracking-tight">No Certifications Yet</h3>
+            <p className="text-slate-500 max-w-md font-medium">Certifications will appear here once they are added through the admin dashboard.</p>
+          </div>
+        ) : (
+          <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {paginatedCertifications.map((cert, idx) => (
             <motion.div
               key={cert.id_certified || idx}
-              className="group relative flex flex-col bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-500"
+              className="group relative flex flex-col bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-500 cursor-pointer"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1, duration: 0.8 }}
               viewport={{ once: true, margin: "-50px" }}
               whileHover={{ y: -5 }}
+              onClick={() => cert.media_url && setSelectedCert(cert)}
             >
               {/* Image Section */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-slate-700">
@@ -84,14 +96,9 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                 {/* Overlay link icon on hover */}
                 {cert.media_url && (
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-900/40 backdrop-blur-[2px]">
-                    <a 
-                      href={cert.media_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg shadow-cyan-500/30"
-                    >
-                      <ExternalLink className="w-5 h-5 ml-0.5" />
-                    </a>
+                    <div className="w-12 h-12 rounded-full bg-cyan-500 text-slate-900 flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg shadow-cyan-500/30">
+                      <Award className="w-5 h-5" />
+                    </div>
                   </div>
                 )}
               </div>
@@ -136,42 +143,136 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
           ))}
         </div>
 
-        {/* Pagination Controls */}
-        <div className="flex items-center justify-center gap-4 mt-12">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-              currentPage === 1 
-                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
-                : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
-            }`}
-          >
-            <ChevronLeft className="w-5 h-5" /> Previous
-          </button>
-          <span className="text-slate-400 font-medium">
-            Page {currentPage} of {safeTotalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === safeTotalPages}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-              currentPage === safeTotalPages 
-                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
-                : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
-            }`}
-          >
-            Next <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        {certifications.length === 0 && (
-          <div className="text-center py-20">
-            <Award className="w-16 h-16 text-slate-700 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-slate-400">No certifications found</h3>
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                currentPage === 1 
+                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
+                  : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
+              }`}
+            >
+              <ChevronLeft className="w-5 h-5" /> Previous
+            </button>
+            <span className="text-slate-400 font-medium">
+              Page {currentPage} of {safeTotalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === safeTotalPages}
+              className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                currentPage === safeTotalPages 
+                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
+                   : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
+              }`}
+            >
+              Next <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
+          </>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+            onClick={() => setSelectedCert(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-5xl w-full max-h-[90vh] bg-slate-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="absolute top-4 right-4 z-10 flex gap-2">
+                <a 
+                  href={selectedCert.media_url!} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-slate-950/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors"
+                  title="Open in new tab"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+                <button
+                  onClick={() => setSelectedCert(null)}
+                  className="w-10 h-10 rounded-full bg-slate-950/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-colors"
+                  title="Close"
+                >
+                  <ChevronLeft className="w-5 h-5 rotate-180" />
+                </button>
+              </div>
+
+              <div className="p-4 md:p-8 flex flex-col md:flex-row gap-8 h-full overflow-y-auto">
+                <div className="flex-1 min-w-0 bg-slate-950/50 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center">
+                  {selectedCert.media_url?.toLowerCase().endsWith('.pdf') ? (
+                    <iframe 
+                      src={selectedCert.media_url} 
+                      className="w-full h-full min-h-[400px] md:min-h-[600px]"
+                      title="Certificate PDF"
+                    />
+                  ) : (
+                    <img 
+                      src={selectedCert.media_url!} 
+                      alt={selectedCert.nama_sertifikasi || 'Certificate'} 
+                      className="max-w-full max-h-[70vh] object-contain"
+                    />
+                  )}
+                </div>
+                
+                <div className="w-full md:w-80 flex flex-col gap-6">
+                  <div>
+                    <h2 className="text-2xl font-black text-white mb-2 leading-tight">
+                      {selectedCert.nama_sertifikasi}
+                    </h2>
+                    <div className="flex items-center gap-2 text-cyan-400 font-bold uppercase tracking-wider text-xs">
+                      <Building className="w-4 h-4" />
+                      {selectedCert.lembaga_penerbit}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 py-6 border-y border-white/5">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500">Issued On</span>
+                      <span className="text-white font-semibold">{selectedCert.tanggal_penerbitan || '-'}</span>
+                    </div>
+                    {selectedCert.tanggal_kadaluarsa && (
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500">Valid Until</span>
+                        <span className="text-white font-semibold">{selectedCert.tanggal_kadaluarsa}</span>
+                      </div>
+                    )}
+                    {selectedCert.skor && (
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] uppercase tracking-[0.2em] font-black text-slate-500">Score / Grade</span>
+                        <span className="text-emerald-400 font-bold">{selectedCert.skor}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-auto">
+                    <button
+                      onClick={() => setSelectedCert(null)}
+                      className="w-full py-4 bg-white text-black font-black uppercase tracking-[0.2em] text-xs rounded-xl hover:bg-cyan-400 transition-colors"
+                    >
+                      Close Viewer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
