@@ -11,14 +11,24 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [isModalActive, setIsModalActive] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    const handleOpen = () => setIsModalActive(true);
+    const handleClose = () => setIsModalActive(false);
+    window.addEventListener('modalOpen', handleOpen);
+    window.addEventListener('modalClose', handleClose);
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('modalOpen', handleOpen);
+      window.removeEventListener('modalClose', handleClose);
+    };
   }, []);
 
   useEffect(() => {
@@ -28,19 +38,31 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pt-4 md:pt-6">
-      <div className="container mx-auto px-4 flex justify-center">
+    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pt-4 md:pt-6 pointer-events-none">
+      <div className="container mx-auto px-4 flex justify-center pointer-events-auto">
         <motion.nav
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className={`relative flex items-center justify-between gap-8 px-6 h-14 md:h-16 rounded-full border transition-all duration-500 ${
+          initial={{ y: -20, opacity: 0, width: "100%", maxWidth: "1152px" }}
+          animate={{ 
+            y: isModalActive ? -120 : 0, 
+            opacity: isModalActive ? 0 : 1,
+            width: "100%",
+            maxWidth: isScrolled ? "896px" : "1152px",
+          }}
+          transition={{ 
+            type: "spring", 
+            stiffness: 300, 
+            damping: 30,
+            width: { duration: 0.5 }, // Smooth width transition
+            maxWidth: { duration: 0.5 }
+          }}
+          className={`relative flex items-center justify-between gap-8 px-6 h-14 md:h-16 rounded-full border transition-colors duration-500 ${
             isScrolled
-              ? "w-full max-w-4xl bg-slate-950/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-              : "w-full max-w-6xl bg-transparent border-transparent"
+              ? "bg-slate-950/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+              : "bg-transparent border-transparent"
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="relative group flex items-center gap-2">
+          <Link href="/" className="relative group flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-sm shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all duration-300">
               R
             </div>
@@ -70,7 +92,6 @@ export default function Navbar() {
                 >
                   <span className="relative z-10">{link.label}</span>
                   
-                  {/* Hover Background Pill */}
                   {hoveredLink === link.href && (
                     <motion.div
                       layoutId="nav-pill"
@@ -79,7 +100,6 @@ export default function Navbar() {
                     />
                   )}
                   
-                  {/* Active Indicator */}
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
@@ -91,9 +111,8 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right Section: CTA + Mobile Toggle */}
+          {/* Right Section: Mobile Toggle */}
           <div className="flex items-center gap-3">
-
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 border border-white/10 text-white"
@@ -104,6 +123,26 @@ export default function Navbar() {
         </motion.nav>
       </div>
 
+      {/* Detached Logo for Focus Mode */}
+      <AnimatePresence>
+        {isModalActive && (
+          <motion.div
+            initial={{ x: -100, opacity: 0, scale: 0.5, rotate: -45 }}
+            animate={{ x: 0, opacity: 1, scale: 1, rotate: 0 }}
+            exit={{ x: -100, opacity: 0, scale: 0.5, rotate: -45 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
+            className="fixed top-8 left-8 z-[101] pointer-events-auto"
+          >
+            <Link href="/" className="relative group block">
+              <div className="w-12 h-12 rounded-2xl bg-slate-950/80 backdrop-blur-xl border border-cyan-500/30 flex items-center justify-center font-black text-cyan-400 text-xl shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-500 group-hover:scale-110">
+                R
+              </div>
+              <div className="absolute -inset-2 bg-cyan-500/5 blur-xl rounded-full -z-10 group-hover:bg-cyan-500/10 transition-all duration-500" />
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileOpen && (
@@ -111,7 +150,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-full left-4 right-4 mt-4 p-6 rounded-[2rem] bg-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl z-50"
+            className="md:hidden absolute top-full left-4 right-4 mt-4 p-6 rounded-[2rem] bg-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl z-50 pointer-events-auto"
           >
             <div className="flex flex-col gap-4">
               {NAV_LINKS.map((link) => {

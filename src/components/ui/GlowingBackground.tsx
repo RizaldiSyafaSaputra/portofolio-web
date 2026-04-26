@@ -2,7 +2,19 @@
 
 import { motion } from "framer-motion";
 
-export function GlowingBackground() {
+interface GlowingBackgroundProps {
+  variant?: "cyan" | "indigo" | "sunset";
+}
+
+export function GlowingBackground({ variant = "cyan" }: GlowingBackgroundProps) {
+  const colors = {
+    cyan: ["bg-cyan-500/20", "bg-purple-500/20", "bg-blue-500/10"],
+    indigo: ["bg-indigo-500/20", "bg-blue-600/20", "bg-slate-500/10"],
+    sunset: ["bg-orange-500/20", "bg-pink-500/20", "bg-red-500/10"],
+  };
+
+  const currentColors = colors[variant];
+
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
       {/* Dark Base */}
@@ -20,7 +32,7 @@ export function GlowingBackground() {
           repeat: Infinity,
           ease: "easeInOut"
         }}
-        className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-cyan-500/20 blur-[120px]"
+        className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full ${currentColors[0]} blur-[120px]`}
       />
       
       <motion.div
@@ -35,7 +47,7 @@ export function GlowingBackground() {
           ease: "easeInOut",
           delay: 1
         }}
-        className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/20 blur-[120px]"
+        className={`absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full ${currentColors[1]} blur-[120px]`}
       />
 
       <motion.div
@@ -50,7 +62,7 @@ export function GlowingBackground() {
           ease: "easeInOut",
           delay: 2
         }}
-        className="absolute top-[40%] left-[30%] w-[30%] h-[30%] rounded-full bg-blue-500/10 blur-[100px]"
+        className={`absolute top-[40%] left-[30%] w-[30%] h-[30%] rounded-full ${currentColors[2]} blur-[100px]`}
       />
 
       {/* Grid overlay for texture */}

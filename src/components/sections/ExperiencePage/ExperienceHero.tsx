@@ -61,28 +61,7 @@ export function ExperienceHero() {
             </motion.p>
           </div>
 
-          {/* Stats */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-12 pt-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            {[
-              { label: 'Years Experience', value: '5+' },
-              { label: 'Companies', value: '4' },
-              { label: 'Projects', value: '50+' },
-            ].map((stat, idx) => (
-              <div key={idx} className="flex flex-col gap-2 border-l border-white/5 pl-8 text-left">
-                <span className="text-4xl font-black text-white tracking-tight">
-                  {stat.value}
-                </span>
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
+
         </motion.div>
       </div>
     </section>

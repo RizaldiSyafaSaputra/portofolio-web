@@ -1,16 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, User, Terminal, Globe, Palette, Box } from "lucide-react";
+import { ArrowUpRight, User, Terminal, Globe, Palette, Box, Sparkles } from "lucide-react";
 import type { Profile, Skill } from "@/lib/types/database";
 
 interface AboutPreviewProps {
   profile: Profile | null;
   skills: Skill[];
+  highestStudy?: any;
 }
 
-export default function AboutPreview({ profile, skills }: AboutPreviewProps) {
+export default function AboutPreview({ profile, skills, highestStudy }: AboutPreviewProps) {
+  const [isEvolutionFlipped, setIsEvolutionFlipped] = useState(false);
+
   return (
     <section className="py-24 bg-slate-950 relative overflow-hidden">
       <div className="container mx-auto max-w-6xl px-6">
@@ -76,17 +80,48 @@ export default function AboutPreview({ profile, skills }: AboutPreviewProps) {
             </div>
           </motion.div>
 
-          {/* Stats Card */}
+          {/* Stats Card / Cycle of Evolution */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="md:col-span-4 bg-gradient-to-br from-cyan-600/20 to-blue-800/20 border border-cyan-500/20 rounded-[3rem] p-10 flex flex-col items-center justify-center text-center backdrop-blur-md relative overflow-hidden"
+            onClick={() => setIsEvolutionFlipped(!isEvolutionFlipped)}
+            className="md:col-span-4 bg-gradient-to-br from-cyan-600/20 to-blue-800/20 border border-cyan-500/20 rounded-[3rem] p-10 flex flex-col items-center justify-center text-center backdrop-blur-md relative overflow-hidden cursor-pointer group"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.1),transparent_70%)]" />
-            <h3 className="text-7xl font-black text-white mb-3 tracking-tighter">1+</h3>
-            <p className="text-xs font-black text-white/60 uppercase tracking-[0.3em]">Cycle of Evolution</p>
-            <div className="mt-8 w-16 h-1 bg-cyan-500 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+            
+            <AnimatePresence mode="wait">
+              {!isEvolutionFlipped ? (
+                <motion.div
+                  key="front"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="relative z-10"
+                >
+                  <h3 className="text-7xl font-black text-white mb-3 tracking-tighter">1+</h3>
+                  <p className="text-xs font-black text-white/60 uppercase tracking-[0.3em]">Cycle of Evolution</p>
+                  <div className="mt-8 w-16 h-1 bg-cyan-500 rounded-full mx-auto shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="back"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="relative z-10 text-left w-full"
+                >
+                  <p className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em] mb-4">Latest Achievement</p>
+                  <h4 className="text-xl font-black text-white leading-tight mb-2 uppercase">{highestStudy?.jurusan || "Technical Education"}</h4>
+                  <p className="text-sm font-bold text-slate-400 mb-1">{highestStudy?.nama_sekolah || "Modern Engineering Inst."}</p>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{highestStudy?.tanggal_selesai || "2024"}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-40 transition-opacity">
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+            </div>
           </motion.div>
 
           {/* Tech Stack Card */}
@@ -129,7 +164,7 @@ export default function AboutPreview({ profile, skills }: AboutPreviewProps) {
               </div>
               <div>
                 <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Global Base</h3>
-                <p className="text-2xl font-black text-white tracking-tight">Jakarta, IDN</p>
+                <p className="text-2xl font-black text-white tracking-tight">{profile?.alamat || "Bandung, IDN"}</p>
                 <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                   <span className="text-[9px] font-bold text-green-500 uppercase tracking-widest">Available Remotely</span>

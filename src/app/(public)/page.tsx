@@ -9,6 +9,7 @@ import { getSkills } from "@/lib/actions/skills";
 import { getProjects } from "@/lib/actions/project";
 import { getExperiences } from "@/lib/actions/experience";
 import { getCertifications } from "@/lib/actions/certified";
+import { getGlobalStats, getProfileForHome } from "@/lib/actions/home";
 import type { Skill, Project, Experience, Certified } from "@/lib/types/database";
 
 export default async function HomePage() {
@@ -18,24 +19,43 @@ export default async function HomePage() {
   let projects: Project[] = [];
   let experiences: Experience[] = [];
   let certifications: Certified[] = [];
+  let stats = { projects: 0, experience: 0, certificates: 0 };
+  let highestStudy = null;
 
   try {
-    [profile, skills, projects, experiences, certifications] =
-      await Promise.all([
-        getProfile().catch(() => null),
-        getSkills().catch(() => []),
-        getProjects().catch(() => []),
-        getExperiences().catch(() => []),
-        getCertifications().catch(() => []),
-      ]);
-  } catch {
-    // Silently handle errors — sections will show empty state
+    const [
+      profileRes, 
+      skillsRes, 
+      projectsRes, 
+      experiencesRes, 
+      certificationsRes,
+      statsRes,
+      homeProfileRes
+    ] = await Promise.all([
+      getProfile().catch(() => null),
+      getSkills().catch(() => []),
+      getProjects().catch(() => []),
+      getExperiences().catch(() => []),
+      getCertifications().catch(() => []),
+      getGlobalStats().catch(() => ({ projects: 0, experience: 0, certificates: 0 })),
+      getProfileForHome().catch(() => ({ profile: null, highestStudy: null }))
+    ]);
+
+    profile = profileRes;
+    skills = skillsRes;
+    projects = projectsRes;
+    experiences = experiencesRes;
+    certifications = certificationsRes;
+    stats = statsRes;
+    highestStudy = homeProfileRes.highestStudy;
+  } catch (error) {
+    console.error("Home Page Data Fetch Error:", error);
   }
 
   return (
     <>
-      <HeroSection profile={profile} />
-      <AboutPreview profile={profile} skills={skills} />
+      <HeroSection profile={profile} stats={stats} />
+      <AboutPreview profile={profile} skills={skills} highestStudy={highestStudy} />
       <ProjectsPreview projects={projects} />
       <ExperiencePreview experiences={experiences} />
       <CertificatesPreview certifications={certifications} />

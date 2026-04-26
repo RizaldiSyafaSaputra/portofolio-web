@@ -6,11 +6,18 @@ import { ArrowRight, Download, Code2, Cpu, Zap } from "lucide-react";
 import type { Profile } from "@/lib/types/database";
 import GridBackground from "../ui/GridBackground";
 
+import { Counter } from "../ui/Counter";
+
 interface HeroSectionProps {
   profile: Profile | null;
+  stats: {
+    projects: number;
+    experience: number;
+    certificates: number;
+  };
 }
 
-export default function HeroSection({ profile }: HeroSectionProps) {
+export default function HeroSection({ profile, stats }: HeroSectionProps) {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -101,16 +108,9 @@ export default function HeroSection({ profile }: HeroSectionProps) {
 
             {/* Quick Metrics */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-12">
-              {[
-                { label: "Completed", val: "24+", sub: "Projects" },
-                { label: "Uptime", val: "99.9%", sub: "Availability" },
-                { label: "Experience", val: "Fresh", sub: "Perspective" },
-              ].map((m, i) => (
-                <div key={i} className="flex flex-col gap-1.5 text-left border-l border-white/5 pl-5">
-                  <span className="text-2xl font-black text-white tracking-tight">{m.val}</span>
-                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.3em]">{m.sub}</span>
-                </div>
-              ))}
+              <Counter value={stats.projects} suffix="+" label="Projects Built" delay={0.5} />
+              <Counter value={stats.certificates} suffix="+" label="Certifications" delay={0.7} />
+              <Counter value={stats.experience} suffix="+" label="Experiences" delay={0.9} />
             </motion.div>
           </motion.div>
 

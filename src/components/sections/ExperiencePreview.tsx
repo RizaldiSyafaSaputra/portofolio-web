@@ -37,20 +37,13 @@ export default function ExperiencePreview({ experiences }: ExperiencePreviewProp
               <span className="text-indigo-500">Expeditions.</span>
             </motion.h2>
           </div>
-          <Link
-            href="/pengalaman"
-            className="group flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
-          >
-            Full Resume <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </Link>
         </div>
-
         {/* Timeline Container */}
         <div className="relative max-w-4xl mx-auto">
           {/* Main vertical line */}
           <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-800 to-transparent -translate-x-1/2" />
 
-          <div className="space-y-16">
+          <div className="space-y-16 pb-32">
             {displayExperiences.map((exp, i) => (
               <motion.div
                 key={exp.id_experience}
@@ -106,6 +99,28 @@ export default function ExperiencePreview({ experiences }: ExperiencePreviewProp
                 <div className="hidden md:block w-[45%]" />
               </motion.div>
             ))}
+          </div>
+
+          {/* Centralized CTA Button */}
+          <div className="absolute bottom-0 left-0 md:left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-indigo-500/30 blur-2xl rounded-full animate-pulse" />
+              <Link
+                href="/pengalaman"
+                className="relative group flex items-center gap-4 px-10 py-5 rounded-full bg-slate-900 border-2 border-indigo-500/50 text-white transition-all duration-500 hover:border-indigo-400 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(99,102,241,0.2)] overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <span className="text-xs font-black uppercase tracking-[0.4em] relative z-10">Go to Experience</span>
+                <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center group-hover:rotate-45 transition-transform duration-500 relative z-10 shadow-lg">
+                  <ArrowUpRight className="w-4 h-4 text-white" />
+                </div>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
