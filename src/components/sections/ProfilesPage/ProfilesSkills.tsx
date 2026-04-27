@@ -1,9 +1,13 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Code2, Brain, Languages, Star, Zap } from 'lucide-react'
+import { Code2, Brain, Languages, Star, Zap, Terminal, Sparkles } from 'lucide-react'
 import type { Skill } from '@/lib/types/database'
 import { JenisKeahlian, LevelKeahlian } from '@/lib/types/database'
+import { usePremiumSound } from '@/hooks/usePremiumSound'
+import CyberRadarChart from '@/components/ui/CyberRadarChart'
+import AnimatedDescription from '@/components/ui/AnimatedDescription'
 
 interface ProfilesSkillsProps {
   skills: Skill[]
@@ -20,18 +24,38 @@ const levelToPercent = (level: LevelKeahlian) => {
 
 const levelToColor = (level: LevelKeahlian) => {
   switch (level) {
-    case LevelKeahlian.BEGINNER: return 'bg-blue-400';
-    case LevelKeahlian.INTERMEDIATE: return 'bg-cyan-400';
-    case LevelKeahlian.ADVANCED: return 'bg-purple-400';
-    default: return 'bg-slate-400';
+    case LevelKeahlian.BEGINNER: return 'from-blue-500 to-cyan-500';
+    case LevelKeahlian.INTERMEDIATE: return 'from-cyan-400 to-blue-600';
+    case LevelKeahlian.ADVANCED: return 'from-purple-500 to-cyan-400';
+    default: return 'from-slate-500 to-slate-400';
   }
 }
 
+
 export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
+  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
 
   const hardSkills = skills.filter((s) => s.jenis_keahlian === JenisKeahlian.HARD_SKILLS)
   const softSkills = skills.filter((s) => s.jenis_keahlian === JenisKeahlian.SOFT_SKILLS)
   const languageSkills = skills.filter((s) => s.jenis_keahlian === JenisKeahlian.LANGUAGE_SKILLS)
+
+  const [chartSize, setChartSize] = useState(500)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const handleResize = () => {
+      setChartSize(window.innerWidth < 768 ? 300 : 500)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const radarData = hardSkills.slice(0, 8).map(s => ({
+    name: s.nama_keahlian || 'Unknown Skill',
+    value: levelToPercent(s.level_keahlian)
+  }))
 
   const SkillGroup = ({ title, icon: Icon, items, index }: { title: string, icon: any, items: Skill[], index: number }) => {
     if (items.length === 0) return null;
@@ -39,44 +63,73 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
     return (
       <motion.div
         className="relative group h-full"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1, duration: 0.5 }}
+        transition={{ delay: index * 0.1, duration: 0.8 }}
         viewport={{ once: true }}
+        onMouseEnter={playHover}
+        data-cursor="mastery"
       >
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-cyan-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
-        <div className="relative h-full bg-slate-900/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700/50">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 shadow-inner">
-              <Icon className="w-6 h-6 text-cyan-400" />
+        <div className="relative h-full bg-slate-900/40 backdrop-blur-2xl rounded-3xl p-8 border border-white/5 group-hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
+          {/* Cyber Decorative Lines */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-3xl -mr-12 -mt-12 group-hover:bg-cyan-500/10 transition-colors" />
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-1000" />
+
+          <div className="flex items-center gap-4 mb-10">
+            <div className="w-12 h-12 rounded-2xl bg-slate-950 border border-white/5 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-inner">
+              <Icon className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-white">{title}</h3>
+            <div>
+              <h3 className="text-xl font-black text-white tracking-tight uppercase italic">{title}</h3>
+              <div className="flex items-center gap-1 mt-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Active Core</span>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-8">
             {items.map((skill, idx) => (
               <div 
                 key={skill.id_skills || idx}
-                className="relative"
+                className="relative group/skill"
               >
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-medium text-slate-300">{skill.nama_keahlian}</span>
-                  <span className="text-xs text-slate-500 font-medium px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700">
+                <div className="flex justify-between items-end mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-1 h-1 bg-cyan-500 group-hover/skill:h-4 transition-all" />
+                    <span className="text-sm font-black text-white uppercase tracking-wider">{skill.nama_keahlian || 'Unnamed Skill'}</span>
+                  </div>
+                  <span className="text-[10px] text-cyan-400 font-black tracking-widest uppercase opacity-70">
                     {skill.level_keahlian}
                   </span>
                 </div>
                 
-                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
+                <div className="h-[6px] w-full bg-slate-800/50 rounded-full overflow-hidden relative border border-white/5">
+                  {/* Glowing Track */}
                   <motion.div 
-                    className={`h-full ${levelToColor(skill.level_keahlian)} shadow-[0_0_10px_rgba(34,211,238,0.5)]`}
+                    className={`absolute inset-y-0 left-0 bg-gradient-to-r ${levelToColor(skill.level_keahlian)} rounded-full z-10`}
                     initial={{ width: 0 }}
                     whileInView={{ width: `${levelToPercent(skill.level_keahlian)}%` }}
-                    transition={{ duration: 1, delay: 0.2 + (idx * 0.1) }}
+                    transition={{ duration: 1.5, delay: 0.3 + (idx * 0.1), ease: "circOut" }}
                     viewport={{ once: true }}
-                  />
+                  >
+                    {/* Flowing Pulse Effect */}
+                    <motion.div
+                      animate={{ x: ['-100%', '200%'] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent w-1/2 z-20"
+                    />
+                  </motion.div>
+                  
+                  {/* Subtle Background Markings */}
+                  <div className="absolute inset-0 flex justify-between px-1 opacity-20 pointer-events-none">
+                    {[...Array(10)].map((_, i) => (
+                      <div key={i} className="w-px h-full bg-slate-600" />
+                    ))}
+                  </div>
                 </div>
-
               </div>
             ))}
           </div>
@@ -86,52 +139,57 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
   }
 
   return (
-    <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
-      {/* Background decoration */}
+    <section className="relative py-40 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
+      {/* Cinematic Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        
-        <motion.div
-          className="absolute top-1/2 -right-24 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px]"
-          animate={{
-            y: [0, 50, -50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-blue-500/5 blur-[150px] rounded-full" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div
-          className="text-center mb-24"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-32"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-black uppercase tracking-[0.3em] mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-            Skills Repository
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-slate-900 border border-white/5 text-cyan-400 text-[10px] font-black uppercase tracking-[0.5em] mb-8 shadow-2xl">
+            <Terminal className="w-3 h-3 animate-pulse" />
+            Technical Architecture
           </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
-            Technical Proficiency
+          <h2 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter uppercase italic animate-gradient-text">
+            Capability Matrix
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-            A comprehensive overview of my technical abilities and soft skills developed through various projects and academic pursuits.
-          </p>
+          <AnimatedDescription 
+            text="Menyelami repositori keahlian teknis dan kemampuan interpersonal yang dikalibrasi untuk solusi digital modern."
+            className="text-slate-500 text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed mb-20"
+          />
+
+          {/* Radar Chart Visualization */}
+          {mounted && radarData.length >= 3 && (
+            <div className="flex justify-center mb-32">
+              <div className="relative p-12 bg-slate-900/20 backdrop-blur-3xl rounded-[3rem] border border-white/5 shadow-2xl">
+                <div className="absolute inset-0 bg-cyan-500/5 rounded-[3rem] blur-3xl" />
+                <CyberRadarChart data={radarData} size={chartSize} />
+              </div>
+            </div>
+          )}
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          <SkillGroup title="Hard Skills" icon={Code2} items={hardSkills} index={0} />
-          <SkillGroup title="Soft Skills" icon={Brain} items={softSkills} index={1} />
-          <SkillGroup title="Languages" icon={Languages} items={languageSkills} index={2} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
+          <SkillGroup title="Core Hard Skills" icon={Code2} items={hardSkills} index={0} />
+          <SkillGroup title="Cognitive Soft Skills" icon={Brain} items={softSkills} index={1} />
+          <SkillGroup title="Linguistic Mastery" icon={Languages} items={languageSkills} index={2} />
         </div>
 
         {skills.length === 0 && (
-          <div className="text-center py-12">
-            <Code2 className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-400">No skills data available.</p>
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-24 h-24 rounded-3xl bg-slate-900 border border-white/5 flex items-center justify-center mb-8 animate-pulse">
+              <Zap className="w-10 h-10 text-slate-700" />
+            </div>
+            <h3 className="text-2xl font-black text-white uppercase italic tracking-widest">No Data Detected</h3>
+            <p className="text-slate-600 mt-4 max-w-xs mx-auto font-bold uppercase text-[10px] tracking-widest">Awaiting skill ingestion via secure terminal...</p>
           </div>
         )}
       </div>

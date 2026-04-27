@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { GraduationCap, MapPin, Calendar, Award, ChevronRight } from 'lucide-react'
 import type { Study } from '@/lib/types/database'
 import { useState } from 'react'
+import AnimatedDescription from '@/components/ui/AnimatedDescription'
 
 interface ProfilesStudyProps {
   studies: Study[]
@@ -43,12 +44,13 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
             Academic Background
           </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter animate-gradient-text">
             Educational History
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-            My formal academic journey, degrees, and institutions that have shaped my foundational knowledge.
-          </p>
+          <AnimatedDescription 
+            text="My formal academic journey, degrees, and institutions that have shaped my foundational knowledge."
+            className="text-slate-400 text-lg max-w-2xl mx-auto font-medium"
+          />
         </motion.div>
 
         {/* Study Grid */}
@@ -160,9 +162,10 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <p className="text-sm text-slate-300 leading-relaxed mt-4 whitespace-pre-line">
-                        {study.deskripsi}
-                      </p>
+                      <AnimatedDescription 
+                        text={study.deskripsi}
+                        className="text-sm text-slate-300 leading-relaxed mt-4 whitespace-pre-line"
+                      />
                     </motion.div>
                   )}
 

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Briefcase } from 'lucide-react'
 import GridBackground from '../../ui/GridBackground'
+import AnimatedDescription from '@/components/ui/AnimatedDescription'
 
 export function ExperienceHero() {
   return (
@@ -46,19 +47,15 @@ export function ExperienceHero() {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               Professional <br />
-              <span className="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="animate-gradient-text">
                 Experience
               </span>
             </motion.h1>
 
-            <motion.p
+            <AnimatedDescription 
+              text="Explore my professional journey, from startups to enterprise. Each role has shaped my expertise and driven innovation."
               className="text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed mx-auto font-medium"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              Explore my professional journey, from startups to enterprise. Each role has shaped my expertise and driven innovation.
-            </motion.p>
+            />
           </div>
 
 

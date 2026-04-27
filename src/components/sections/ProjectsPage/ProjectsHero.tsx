@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Rocket, Code2, Sparkles } from 'lucide-react'
 import GridBackground from '../../ui/GridBackground'
+import AnimatedDescription from '@/components/ui/AnimatedDescription'
 
 export function ProjectsHero() {
   return (
@@ -38,20 +39,15 @@ export function ProjectsHero() {
               className="text-6xl md:text-8xl font-black text-white leading-none tracking-tighter"
             >
               Featured <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="animate-gradient-text">
                 Creative Projects
               </span>
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
+            <AnimatedDescription 
+              text="A curated showcase of my engineering journey. From complex web architectures to interactive user experiences, exploring the boundaries of modern technology."
               className="text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed mx-auto font-medium"
-            >
-              A curated showcase of my engineering journey. From complex web architectures to 
-              interactive user experiences, exploring the boundaries of modern technology.
-            </motion.p>
+            />
           </div>
 
           {/* Badges */}

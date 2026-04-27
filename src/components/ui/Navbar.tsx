@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/utils/constants";
+import { usePremiumSound } from "@/hooks/usePremiumSound";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,6 +14,9 @@ export default function Navbar() {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const [isModalActive, setIsModalActive] = useState(false);
   const pathname = usePathname();
+
+  const playHover = usePremiumSound('/sounds/hover.mp3', 0.05);
+  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   useEffect(() => {
     const handleOpen = () => setIsModalActive(true);
@@ -62,7 +66,12 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="relative group flex items-center gap-2 shrink-0">
+          <Link 
+            href="/" 
+            onMouseEnter={playHover}
+            onClick={playClick}
+            className="relative group flex items-center gap-2 shrink-0"
+          >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-sm shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all duration-300">
               R
             </div>
@@ -84,7 +93,11 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onMouseEnter={() => setHoveredLink(link.href)}
+                  onMouseEnter={() => {
+                    setHoveredLink(link.href);
+                    playHover();
+                  }}
+                  onClick={playClick}
                   onMouseLeave={() => setHoveredLink(null)}
                   className={`relative px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
                     isActive ? "text-cyan-400" : "text-slate-400 hover:text-white"
@@ -114,7 +127,11 @@ export default function Navbar() {
           {/* Right Section: Mobile Toggle */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
+              onMouseEnter={playHover}
+              onClick={() => {
+                setIsMobileOpen(!isMobileOpen);
+                playClick();
+              }}
               className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 border border-white/10 text-white"
             >
               {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -159,6 +176,8 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onMouseEnter={playHover}
+                    onClick={playClick}
                     className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
                       isActive
                         ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"

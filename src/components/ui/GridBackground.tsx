@@ -1,42 +1,71 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function GridBackground() {
   const [mounted, setMounted] = useState(false);
   const [particles, setParticles] = useState<any[]>([]);
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth out mouse movement
+  const springConfig = { damping: 30, stiffness: 200 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const background = useTransform(
+    [smoothX, smoothY],
+    ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(34, 211, 238, 0.15), transparent 80%)`
+  );
 
   useEffect(() => {
     setMounted(true);
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    
     // Generate particles only on the client
-    const newParticles = [...Array(20)].map((_, i) => ({
+    const newParticles = [...Array(15)].map((_, i) => ({
       id: i,
-      initialOpacity: Math.random() * 0.5,
+      initialOpacity: Math.random() * 0.3,
       x: Math.random() * 100 + "%",
       y: Math.random() * 100 + "%",
-      duration: Math.random() * 5 + 5,
+      duration: Math.random() * 8 + 8,
     }));
     setParticles(newParticles);
-  }, []);
+
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
 
   if (!mounted) return null;
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      {/* Interactive Mouse Glow */}
+      <motion.div
+        className="absolute inset-0 z-10"
+        style={{ background }}
+      />
+
       {/* Base Grid */}
       <div 
-        className="absolute inset-0 opacity-[0.03]" 
+        className="absolute inset-0 opacity-[0.04]" 
         style={{ 
           backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
+          backgroundSize: '48px 48px'
         }}
       />
       
-      {/* Radial Glows */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.05),transparent_70%)]" />
+      {/* Static Radial Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.08),transparent_50%)]" />
       
-      {/* Moving Particles (Simulated) */}
+      {/* Moving Particles */}
       <div className="absolute inset-0">
         {particles.map((p) => (
           <motion.div
@@ -47,19 +76,19 @@ export default function GridBackground() {
               y: p.y 
             }}
             animate={{
-              opacity: [0.1, 0.5, 0.1],
-              scale: [1, 1.5, 1],
+              opacity: [p.initialOpacity, p.initialOpacity + 0.2, p.initialOpacity],
+              y: ["-2%", "102%"],
             }}
             transition={{
               duration: p.duration,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
+              delay: Math.random() * 5
             }}
-            className="absolute w-1 h-1 bg-cyan-500 rounded-full blur-[1px]"
+            className="absolute w-[1px] h-20 bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"
           />
         ))}
       </div>
     </div>
   );
 }
-

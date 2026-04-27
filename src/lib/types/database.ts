@@ -34,6 +34,7 @@ export interface Profile {
   title: string | null;
   bio: string | null;
   photo_url: string | null;
+  photos: any[] | null;
   resume_url: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -51,6 +52,7 @@ export interface ProfileInsert {
   title?: string | null;
   bio?: string | null;
   photo_url?: string | null;
+  photos?: any[] | null;
   resume_url?: string | null;
 }
 
@@ -65,6 +67,7 @@ export interface ProfileUpdate {
   title?: string | null;
   bio?: string | null;
   photo_url?: string | null;
+  photos?: any[] | null;
   resume_url?: string | null;
   updated_at?: string | null;
 }

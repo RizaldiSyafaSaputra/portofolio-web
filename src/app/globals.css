@@ -98,7 +98,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior removed for Lenis compatibility */
 }
 
 body {
@@ -442,4 +442,51 @@ a:hover {
   color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 183, 181, 0.3);
+}
+/* Animated Gradient Text */
+.animate-gradient-text {
+  background: linear-gradient(
+    to right,
+    #00b7b5,
+    #9333ea,
+    #3b82f6,
+    #00b7b5
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-flow 5s ease infinite;
+}
+
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Neon Hover Effect for Social Icons */
+.neon-hover {
+  transition: all 0.3s ease;
+}
+
+.neon-hover:hover {
+  color: #00b7b5 !important;
+  text-shadow: 0 0 10px rgba(0, 183, 181, 0.8),
+               0 0 20px rgba(0, 183, 181, 0.4);
+  filter: drop-shadow(0 0 8px rgba(0, 183, 181, 0.6));
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* Interactive Description Styles */
+.hover-reveal-text {
+  transition: color 0.5s ease, filter 0.5s ease;
+}
+
+.hover-reveal-text:hover {
+  background: linear-gradient(to right, #00b7b5, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 5px rgba(0, 183, 181, 0.3));
 }

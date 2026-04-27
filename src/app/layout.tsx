@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   keywords: ["portfolio", "developer", "web developer", "rizaldi"],
 };
 
+import { ClientProviders } from "@/components/providers/ClientProviders";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,10 +30,13 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${inter.variable} ${geistMono.variable} h-full`}
+      className={`${inter.variable} ${geistMono.variable}`}
+      data-scroll-behavior="smooth"
     >
-      <body className="min-h-full flex flex-col antialiased bg-slate-950 text-slate-300">
-        {children}
+      <body className="min-h-screen flex flex-col antialiased bg-slate-950 text-slate-300 overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

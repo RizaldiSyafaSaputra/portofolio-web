@@ -32,6 +32,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
     setStatus({ type: null, message: "" });
     
     const formData = formDataRef.current;
+    
     const updates = {
       nama: formData.get("nama") as string,
       title: formData.get("title") as string,
@@ -145,7 +146,8 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 name="photo_url" 
                 defaultValue={initialData?.photo_url} 
                 icon={ImageIcon} 
-                accept="image/png, image/jpeg, image/jpg"
+                multiple={false}
+                accept="image/*"
               />
               <MediaUpload 
                 label="Resume/CV (PDF)" 
