@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { useAnimation } from "@/context/AnimationContext";
 
 interface SkillData {
   name: string;
@@ -14,6 +15,7 @@ interface CyberRadarChartProps {
 }
 
 export default function CyberRadarChart({ data, size = 400 }: CyberRadarChartProps) {
+  const { isPowerMode } = useAnimation();
   const center = size / 2;
   const radius = (size / 2) * 0.8;
   const angleStep = (Math.PI * 2) / data.length;
@@ -85,12 +87,12 @@ export default function CyberRadarChart({ data, size = 400 }: CyberRadarChartPro
         {/* Data Area */}
         <motion.polygon
           points={polygonPath}
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={isPowerMode ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={isPowerMode ? { duration: 1.5, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
           fill="url(#radarGradient)"
           className="stroke-cyan-400 stroke-2"
-          filter="url(#radarGlow)"
+          filter={isPowerMode ? "url(#radarGlow)" : ""}
           style={{ transformOrigin: `${center}px ${center}px` }}
         />
 
@@ -101,9 +103,9 @@ export default function CyberRadarChart({ data, size = 400 }: CyberRadarChartPro
             cx={p.x}
             cy={p.y}
             r="3"
-            initial={{ opacity: 0 }}
+            initial={isPowerMode ? { opacity: 0 } : { opacity: 1 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 + i * 0.1 }}
+            transition={isPowerMode ? { delay: 0.5 + i * 0.1 } : { duration: 0 }}
             className="fill-cyan-400 shadow-[0_0_10px_#22d3ee]"
           />
         ))}

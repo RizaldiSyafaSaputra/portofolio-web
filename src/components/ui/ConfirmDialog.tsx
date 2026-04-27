@@ -44,13 +44,13 @@ export function ConfirmDialog({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onCancel}
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[110]"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110]"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-sm bg-slate-900 border border-white/10 rounded-3xl shadow-2xl z-[110] overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-sm bg-neutral-950 border border-white/10 rounded-3xl shadow-2xl z-[110] overflow-hidden"
           >
             <div className={`absolute top-0 right-0 w-48 h-48 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none ${variant === 'danger' ? 'bg-red-500/20' : 'bg-cyan-500/20'}`} />
             

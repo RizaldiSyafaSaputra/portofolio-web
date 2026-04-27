@@ -9,6 +9,8 @@ import { usePremiumSound } from '@/hooks/usePremiumSound'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AnimatedDescription from "@/components/ui/AnimatedDescription"
+import { useAnimation } from '@/context/AnimationContext'
+import { ToolOrbit } from "../../ui/ToolOrbit"
 
 interface ProfilesHeroProps {
   profile: Partial<Profile>
@@ -16,6 +18,7 @@ interface ProfilesHeroProps {
 }
 
 export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
+  const { isPowerMode } = useAnimation()
   const [isDossierOpen, setIsDossierOpen] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
   const [isScanned, setIsScanned] = useState(false)
@@ -66,14 +69,14 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-slate-950 pt-32 pb-32 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden pt-32 pb-32 px-4 sm:px-6 lg:px-8">
         <GridBackground />
 
         {/* Background Accent Gradients */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
         
         {/* Bottom Fade Mask */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
           <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
@@ -134,25 +137,25 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                 transition={{ delay: 0.4, duration: 0.8 }}
               >
                 {(profile.tempat_lahir || profile.tanggal_lahir) && (
-                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
+                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-neutral-900/50 p-3 rounded-xl border border-slate-700/50">
                     <Calendar className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                     <span>{profile.tempat_lahir}, {profile.tanggal_lahir}</span>
                   </div>
                 )}
                 {profile.alamat && (
-                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
+                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-neutral-900/50 p-3 rounded-xl border border-slate-700/50">
                     <MapPin className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                     <span className="truncate">{profile.alamat}</span>
                   </div>
                 )}
                 {profile.email && (
-                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
+                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-neutral-900/50 p-3 rounded-xl border border-slate-700/50">
                     <Mail className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                     <span className="truncate">{profile.email}</span>
                   </div>
                 )}
                 {profile.no_handphone && (
-                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
+                  <div className="flex items-center justify-center lg:justify-start gap-3 bg-neutral-900/50 p-3 rounded-xl border border-slate-700/50">
                     <Phone className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                     <span>{profile.no_handphone}</span>
                   </div>
@@ -197,7 +200,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                         data-cursor="click"
                         onMouseEnter={playHover}
                         onClick={playClick}
-                        className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-cyan-400 border border-slate-700 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
+                        className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-slate-300 hover:text-cyan-400 border border-slate-700 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         whileTap={{ scale: 0.95 }}
                         title={sosmed.nama_sosmed || 'Social Media'}
@@ -239,6 +242,9 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                   transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute w-[120%] h-[120%] bg-blue-500/10 blur-[100px] rounded-full pointer-events-none"
                 />
+
+                {/* Tech Orbit System */}
+                <ToolOrbit isPowerMode={isPowerMode} />
                 
                 {/* The Photo (Borderless with Bottom Fade) */}
                 <div className="relative z-10 w-full h-full group [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
@@ -270,35 +276,6 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                   className="absolute bottom-1/3 -left-8 w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full blur-[3px] shadow-[0_0_40px_rgba(79,70,229,0.4)] z-0"
                 />
 
-                {/* Tech Badges */}
-                <motion.div
-                  animate={{ y: [0, -20, 0], x: [0, 8, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute bottom-24 -left-10 z-0 p-4 rounded-3xl bg-slate-950/80 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl group/badge"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
-                    <span className="text-white font-bold text-xs">FE</span>
-                  </div>
-                  <div className="flex flex-col pr-4">
-                    <span className="text-xs font-black text-white uppercase tracking-wider">Frontend</span>
-                    <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Expertise Layer</span>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 25, 0], x: [0, -10, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-24 -right-10 z-0 p-4 rounded-3xl bg-slate-950/80 backdrop-blur-xl border border-white/10 flex items-center gap-4 shadow-2xl group/badge"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_15px_rgba(79,70,229,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
-                    <span className="text-white font-bold text-xs">BE</span>
-                  </div>
-                  <div className="flex flex-col pr-4">
-                    <span className="text-xs font-black text-white uppercase tracking-wider">Backend</span>
-                    <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Infrastructure</span>
-                  </div>
-                </motion.div>
-
                 {/* Ambient Glow */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-32 bg-blue-500/20 blur-[60px] rounded-full pointer-events-none" />
               </div>
@@ -317,17 +294,17 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsDossierOpen(false)}
-              className="absolute inset-0 bg-slate-950/90 backdrop-blur-2xl"
+              className="absolute inset-0/90 backdrop-blur-2xl"
             />
             
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-4xl bg-slate-900 border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl"
+              className="relative w-full max-w-4xl bg-neutral-950 border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl"
             >
               {/* Header */}
-              <div className="p-8 border-b border-white/5 flex items-center justify-between bg-slate-950/50">
+              <div className="p-8 border-b border-white/5 flex items-center justify-between/50">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
                     <ShieldCheck className="w-6 h-6" />
@@ -341,7 +318,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                   onClick={() => { setIsDossierOpen(false); playClick(); }}
                   onMouseEnter={playHover}
                   data-cursor="close"
-                  className="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all flex items-center justify-center"
+                  className="w-12 h-12 rounded-2xl bg-neutral-900 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all flex items-center justify-center"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -361,7 +338,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                       </p>
                     </section>
                     
-                    <div className="p-6 rounded-3xl bg-slate-950/50 border border-white/5 space-y-4">
+                    <div className="p-6 rounded-3xl/50 border border-white/5 space-y-4">
                       <div className="flex items-center gap-3 text-cyan-400">
                         <Terminal className="w-4 h-4" />
                         <span className="text-[10px] font-black uppercase tracking-widest">Core Mission</span>
@@ -396,7 +373,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
 
                     <div className="pt-8">
                        <div 
-                         className="aspect-square rounded-3xl bg-slate-950 border border-white/5 flex items-center justify-center relative overflow-hidden group cursor-pointer select-none"
+                         className="aspect-square rounded-3xl border border-white/5 flex items-center justify-center relative overflow-hidden group cursor-pointer select-none"
                          onMouseDown={startScan}
                          onMouseUp={stopScan}
                          onMouseLeave={stopScan}
@@ -427,7 +404,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1">
                                    {scanProgress > 0 ? `Scanning: ${scanProgress}%` : 'Hold to Authenticate'}
                                  </span>
-                                 <div className="w-24 h-1 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                                 <div className="w-24 h-1 bg-neutral-950 rounded-full overflow-hidden border border-white/5">
                                    <motion.div 
                                      className="h-full bg-cyan-500" 
                                      style={{ width: `${scanProgress}%` }}
@@ -449,7 +426,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                                      alt="Authenticated" 
                                      className="w-full h-full object-contain object-top rounded-2xl"
                                    />
-                                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+                                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                                    <div className="absolute top-4 right-4 bg-green-500 rounded-full p-1.5 shadow-lg shadow-green-500/50 z-20">
                                      <CheckCircle2 className="w-4 h-4 text-white" />
                                    </div>

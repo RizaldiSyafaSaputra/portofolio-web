@@ -2,7 +2,7 @@ import CyberSkeleton from "@/components/ui/CyberSkeleton";
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-slate-950 p-8 md:p-24 space-y-12">
+    <div className="min-h-screen bg-black p-8 md:p-24 space-y-12">
       {/* Hero Skeleton */}
       <div className="space-y-6">
         <CyberSkeleton className="h-12 w-1/3" />

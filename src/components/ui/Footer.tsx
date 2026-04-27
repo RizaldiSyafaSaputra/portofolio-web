@@ -12,7 +12,7 @@ export default function Footer() {
   const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   return (
-    <footer className="relative border-t border-white/5 bg-slate-950 text-slate-400 overflow-hidden">
+    <footer className="relative border-t border-white/5 bg-black text-slate-400 overflow-hidden">
       {/* Cinematic Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -bottom-48 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-cyan-500/10 blur-[150px] rounded-full" />
@@ -53,7 +53,7 @@ export default function Footer() {
                   onClick={playClick}
                   whileHover={{ y: -5, scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-12 h-12 rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-white/5 flex items-center justify-center neon-hover"
+                  className="w-12 h-12 rounded-2xl bg-neutral-950/50 backdrop-blur-xl border border-white/5 flex items-center justify-center neon-hover"
                   title={social.name}
                 >
                   <Image 
@@ -131,7 +131,7 @@ export default function Footer() {
             <p className="text-xs font-bold text-slate-500 tracking-widest uppercase">
               © {new Date().getFullYear()} {SITE_CONFIG.name}
             </p>
-            <div className="w-1 h-1 bg-slate-800 rounded-full" />
+            <div className="w-1 h-1 bg-neutral-900 rounded-full" />
             <p className="text-[10px] font-black text-cyan-500/50 uppercase tracking-[0.3em]">
               Precision Engineered Portfolio
             </p>

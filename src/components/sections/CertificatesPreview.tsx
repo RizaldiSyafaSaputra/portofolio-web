@@ -13,17 +13,14 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
   const displayCerts = certifications.slice(0, 4);
 
   return (
-    <section className="py-24 bg-slate-950 relative overflow-hidden">
-      {/* Background Decorative Element */}
-      <div className="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-indigo-500/5 to-transparent pointer-events-none" />
-
+    <section className="py-24 relative overflow-hidden bg-transparent">
       <div className="container mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
           <div className="max-w-2xl">
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6"
             >
@@ -34,18 +31,26 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
               className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none"
             >
               Honors & <br />
               <span className="text-cyan-500">Credentials.</span>
             </motion.h2>
           </div>
-          <Link
-            href="/sertifikasi"
-            className="group flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
           >
-            Archive Registry <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </Link>
+            <Link
+              href="/sertifikasi"
+              className="group flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/5 transition-all"
+            >
+              Archive Registry <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </Link>
+          </motion.div>
         </div>
 
         {/* Certificates Grid */}
@@ -53,12 +58,11 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
           {displayCerts.map((cert, i) => (
             <motion.div
               key={cert.id_certified}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="group relative p-8 rounded-[2.5rem] bg-slate-900/40 border border-white/10 backdrop-blur-sm overflow-hidden flex flex-col"
+              className="group relative p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all duration-500 backdrop-blur-sm overflow-hidden flex flex-col"
             >
               {/* Verified Badge */}
               <div className="absolute top-6 right-6">
@@ -92,11 +96,9 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
                     <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Grade</span>
                     <span className="text-xs font-black text-cyan-400">{cert.skor}</span>
                   </div>
-                  <div className="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "85%" }}
-                      className="h-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)]"
+                  <div className="mt-2 h-1 w-full bg-neutral-900 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)] w-[85%]"
                     />
                   </div>
                 </div>

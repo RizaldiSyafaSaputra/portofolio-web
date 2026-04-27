@@ -18,7 +18,7 @@ export function GlowingBackground({ variant = "cyan" }: GlowingBackgroundProps) 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
       {/* Dark Base */}
-      <div className="absolute inset-0 bg-slate-950" />
+      <div className="absolute inset-0 bg-black" />
       
       {/* Animated Orbs */}
       <motion.div

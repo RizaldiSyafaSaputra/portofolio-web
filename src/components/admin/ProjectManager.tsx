@@ -190,7 +190,7 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-900/30 border border-dashed border-white/10 rounded-3xl p-12 text-center"
+              className="bg-neutral-950/30 border border-dashed border-white/10 rounded-3xl p-12 text-center"
             >
               <FolderRoot className="w-12 h-12 text-slate-700 mx-auto mb-4" />
               <h3 className="text-white font-medium text-lg">No projects found</h3>
@@ -208,11 +208,11 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="group relative bg-slate-900/50 border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-xl"
+                  className="group relative bg-neutral-950/50 border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-xl"
                 >
                   <div className="flex flex-col lg:flex-row">
                     {/* Media Gallery Slider */}
-                    <div className="lg:w-96 h-64 lg:h-auto relative bg-slate-950 overflow-hidden shrink-0 group/slider">
+                    <div className="lg:w-96 h-64 lg:h-auto relative bg-black overflow-hidden shrink-0 group/slider">
                       {media.length > 0 ? (
                         <div className="relative w-full h-full">
                           <AnimatePresence mode="wait">

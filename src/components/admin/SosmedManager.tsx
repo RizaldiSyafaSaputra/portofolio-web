@@ -81,7 +81,7 @@ export function SosmedManager({ initialSosmed }: { initialSosmed: Sosmed[] }) {
   };
 
   return (
-    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/5 group/manager">
+    <div className="relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/5 group/manager">
       <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover/manager:bg-blue-500/10 pointer-events-none" />
       
       <div className="relative z-10 flex items-center justify-between mb-8">
@@ -101,7 +101,7 @@ export function SosmedManager({ initialSosmed }: { initialSosmed: Sosmed[] }) {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="flex items-center justify-between bg-slate-950/50 border border-white/5 p-5 rounded-xl group"
+              className="flex items-center justify-between bg-black/50 border border-white/5 p-5 rounded-xl group"
             >
               <div className="overflow-hidden mr-4">
                 <h4 className="text-white font-bold text-sm mb-1">{sosmed.nama_sosmed}</h4>
@@ -110,10 +110,10 @@ export function SosmedManager({ initialSosmed }: { initialSosmed: Sosmed[] }) {
                 </a>
               </div>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                <button onClick={() => openEditModal(sosmed)} disabled={isPending} className="p-2 text-slate-400 hover:text-blue-400 bg-slate-800/50 hover:bg-blue-500/10 rounded-lg transition-all">
+                <button onClick={() => openEditModal(sosmed)} disabled={isPending} className="p-2 text-slate-400 hover:text-blue-400 bg-neutral-900/50 hover:bg-blue-500/10 rounded-lg transition-all">
                   <Edit2 className="w-4 h-4" />
                 </button>
-                <button onClick={() => requestDelete(sosmed.id_sosmed)} disabled={isPending} className="p-2 text-slate-400 hover:text-red-400 bg-slate-800/50 hover:bg-red-500/10 rounded-lg transition-all">
+                <button onClick={() => requestDelete(sosmed.id_sosmed)} disabled={isPending} className="p-2 text-slate-400 hover:text-red-400 bg-neutral-900/50 hover:bg-red-500/10 rounded-lg transition-all">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

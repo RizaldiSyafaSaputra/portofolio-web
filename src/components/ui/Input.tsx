@@ -20,7 +20,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative group">
           <input
             ref={ref}
-            className={`w-full bg-slate-900/50 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all hover:bg-slate-900/80 ${className}`}
+            className={`w-full bg-neutral-950/50 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all hover:bg-neutral-950/80 ${className}`}
             {...props}
           />
         </div>

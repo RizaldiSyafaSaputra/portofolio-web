@@ -21,7 +21,7 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-white/5 p-8 md:p-10">
+      <div className="relative overflow-hidden rounded-3xl bg-neutral-950 border border-white/5 p-8 md:p-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3" />
         
@@ -71,31 +71,31 @@ export default async function AdminDashboard() {
       
       {/* Quick Actions / Recent Activity placeholder */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
-        <div className="lg:col-span-2 bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8">
+        <div className="lg:col-span-2 bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8">
           <h3 className="text-lg font-bold text-white mb-6">Recent Activity</h3>
           <div className="flex flex-col items-center justify-center py-12 text-slate-500">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-neutral-900 flex items-center justify-center mb-4">
               <span className="text-2xl">📊</span>
             </div>
             <p>Activity logs will appear here</p>
           </div>
         </div>
-        <div className="bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8">
+        <div className="bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8">
           <h3 className="text-lg font-bold text-white mb-6">System Status</h3>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950 border border-white/5">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-black border border-white/5">
               <span className="text-sm font-semibold text-slate-400">Database</span>
               <span className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
               </span>
             </div>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950 border border-white/5">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-black border border-white/5">
               <span className="text-sm font-semibold text-slate-400">Storage</span>
               <span className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Online
               </span>
             </div>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950 border border-white/5">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-black border border-white/5">
               <span className="text-sm font-semibold text-slate-400">API</span>
               <span className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Healthy

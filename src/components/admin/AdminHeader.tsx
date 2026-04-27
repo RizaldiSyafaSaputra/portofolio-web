@@ -24,13 +24,13 @@ export function AdminHeader() {
   return (
     <header className={`sticky top-0 z-40 w-full transition-all duration-300 ${
       scrolled 
-        ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-4" 
+        ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-4" 
         : "bg-transparent py-6"
     }`}>
       <div className="flex items-center justify-between px-8">
         {/* Page Title & Breadcrumbs */}
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-slate-900 border border-white/5">
+          <div className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-neutral-950 border border-white/5">
             <LayoutDashboard className="w-5 h-5 text-cyan-400" />
           </div>
           <div>
@@ -53,7 +53,7 @@ export function AdminHeader() {
             <input 
               type="text" 
               placeholder="Quick search..." 
-              className="bg-slate-900/50 border border-white/5 rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all w-64"
+              className="bg-neutral-950/50 border border-white/5 rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all w-64"
             />
           </div>
 
@@ -72,8 +72,8 @@ export function AdminHeader() {
               <p className="text-[10px] uppercase tracking-widest font-bold text-cyan-500">Super Admin</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-500 flex items-center justify-center p-[2px]">
-              <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full bg-slate-800 flex items-center justify-center text-sm font-bold text-white">
+              <div className="w-full h-full bg-black rounded-full flex items-center justify-center overflow-hidden">
+                <div className="w-full h-full bg-neutral-900 flex items-center justify-center text-sm font-bold text-white">
                   AD
                 </div>
               </div>

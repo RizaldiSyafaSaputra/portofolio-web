@@ -8,6 +8,9 @@ import { useState, useEffect } from 'react'
 import { TiltCard } from "@/components/ui/TiltCard";
 import { usePremiumSound } from '@/hooks/usePremiumSound'
 import { createPortal } from 'react-dom'
+import dynamic from 'next/dynamic'
+
+const LightRays = dynamic(() => import('@/components/ui/LightRays'), { ssr: false });
 
 interface CertificateGridProps {
   certifications: Certified[]
@@ -89,7 +92,17 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
   }
 
   return (
-    <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
+    <section className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[800px]">
+      {/* Background Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <LightRays 
+          raysOrigin="top-left" 
+          raysColor="#1e1b4b" 
+          raysSpeed={0.5} 
+          lightSpread={0.8}
+          rayLength={2.5}
+        />
+      </div>
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -108,7 +121,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
       <div className="relative z-10 max-w-7xl mx-auto">
         {certifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="w-20 h-20 rounded-3xl bg-slate-900 border border-white/5 flex items-center justify-center mb-8">
+            <div className="w-20 h-20 rounded-3xl bg-neutral-950 border border-white/5 flex items-center justify-center mb-8">
               <Award className="w-8 h-8 text-slate-600" />
             </div>
             <h3 className="text-2xl font-black text-white mb-3 tracking-tight">No Certifications Yet</h3>
@@ -131,7 +144,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
               return (
                 <TiltCard key={cert.id_certified || idx} className="h-full">
                   <motion.div
-                    className="group relative h-[550px] flex flex-col bg-slate-900/40 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-500 cursor-pointer"
+                    className="group relative h-[550px] flex flex-col bg-neutral-950/40 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-500 cursor-pointer"
                     data-cursor="view"
                     onMouseEnter={playHover}
                     initial={{ opacity: 0, y: 30 }}
@@ -142,11 +155,11 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                     onClick={handleSelectCert}
                   >
                 {/* Image Section */}
-                <div className="relative h-[240px] w-full overflow-hidden bg-slate-900 border-b border-slate-700">
+                <div className="relative h-[240px] w-full overflow-hidden bg-neutral-950 border-b border-slate-700">
                   {mainThumbnail ? (
                     <>
                       {isVideo(media[0]) ? (
-                        <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                        <div className="w-full h-full bg-neutral-950 flex items-center justify-center">
                           <Award className="w-16 h-16 text-cyan-500/20" />
                           <div className="absolute inset-0 flex items-center justify-center">
                              <Film className="w-8 h-8 text-cyan-400 opacity-50" />
@@ -159,10 +172,10 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-80" />
                     </>
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-slate-600">
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-neutral-950 text-slate-600">
                       <Award className="w-16 h-16 mb-2 opacity-50" />
                       <span className="text-sm font-medium">No Image Available</span>
                     </div>
@@ -196,7 +209,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                     </div>
                     
                     {cert.skor && (
-                      <div className="inline-block mt-2 px-3 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-semibold text-cyan-400">
+                      <div className="inline-block mt-2 px-3 py-0.5 rounded-full bg-neutral-950 border border-slate-700 text-[10px] font-semibold text-cyan-400">
                         Score / Grade: {cert.skor}
                       </div>
                     )}
@@ -218,8 +231,8 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
               disabled={currentPage === 1}
               className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm transition-all duration-300 ${
                 currentPage === 1 
-                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
-                  : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
+                  ? 'bg-neutral-900 text-slate-500 cursor-not-allowed border border-slate-700' 
+                  : 'bg-neutral-900 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
               }`}
             >
               <ChevronLeft className="w-4 h-4" /> Previous
@@ -232,8 +245,8 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
               disabled={currentPage === safeTotalPages}
               className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm transition-all duration-300 ${
                 currentPage === safeTotalPages 
-                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' 
-                   : 'bg-slate-800 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
+                  ? 'bg-neutral-900 text-slate-500 cursor-not-allowed border border-slate-700' 
+                   : 'bg-neutral-900 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500/10 hover:shadow-lg hover:shadow-cyan-500/20'
               }`}
             >
               Next <ChevronRight className="w-4 h-4" />
@@ -251,7 +264,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4/90 backdrop-blur-md"
               onClick={() => setSelectedCert(null)}
             >
               <motion.div
@@ -259,7 +272,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="relative max-w-5xl w-full max-h-[90vh] bg-slate-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl z-50 flex flex-col md:flex-row"
+                className="relative max-w-5xl w-full max-h-[90vh] bg-neutral-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl z-50 flex flex-col md:flex-row"
                 onClick={(e) => e.stopPropagation()}
               >
                 {(() => {
@@ -275,7 +288,7 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                             href={currentMedia.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="w-12 h-12 rounded-full bg-slate-950/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors shadow-2xl"
+                            className="w-12 h-12 rounded-full/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors shadow-2xl"
                             title="Open in new tab"
                           >
                             <ExternalLink className="w-5 h-5" />
@@ -284,14 +297,14 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                         <button
                           onClick={() => setSelectedCert(null)}
                           data-cursor="close"
-                          className="w-12 h-12 rounded-full bg-slate-950/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-2xl"
+                          className="w-12 h-12 rounded-full/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-2xl"
                           title="Close"
                         >
                           <X className="w-5 h-5" />
                         </button>
                       </div>
 
-                      <div className="flex-1 min-w-0 bg-slate-950/50 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative group/slider">
+                      <div className="flex-1 min-w-0/50 rounded-2xl border border-white/5 overflow-hidden flex items-center justify-center relative group/slider">
                         <AnimatePresence mode="wait">
                           <motion.div 
                             key={currentMedia?.url}
@@ -327,24 +340,24 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                           <>
                             <button 
                               onClick={() => prevMedia(selectedCert.id_certified, media.length)}
-                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-black/60 hover:bg-cyan-500 rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10 shadow-2xl"
+                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4/60 hover:bg-cyan-500 rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10 shadow-2xl"
                             >
                               <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
                               onClick={() => nextMedia(selectedCert.id_certified, media.length)}
-                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-black/60 hover:bg-cyan-500 rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10 shadow-2xl"
+                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4/60 hover:bg-cyan-500 rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-all z-10 shadow-2xl"
                             >
                               <ChevronRight className="w-6 h-6" />
                             </button>
-                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 bg-black/80 backdrop-blur-md rounded-full text-[10px] font-black text-cyan-400 z-10 shadow-xl tracking-widest">
+                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2/80 backdrop-blur-md rounded-full text-[10px] font-black text-cyan-400 z-10 shadow-xl tracking-widest">
                               {currentIndex + 1} / {media.length}
                             </div>
                           </>
                         )}
                       </div>
                       
-                      <div className="w-full md:w-[400px] p-10 flex flex-col gap-8 bg-slate-900/50 backdrop-blur-xl">
+                      <div className="w-full md:w-[400px] p-10 flex flex-col gap-8 bg-neutral-950/50 backdrop-blur-xl">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
                             <Award className="w-4 h-4 text-cyan-400" />

@@ -25,6 +25,9 @@ interface ProjectGridProps {
 import { createPortal } from 'react-dom'
 import { memo } from 'react'
 import { usePremiumSound } from '@/hooks/usePremiumSound'
+import dynamic from 'next/dynamic'
+
+const LightRays = dynamic(() => import('@/components/ui/LightRays'), { ssr: false });
 
 // Memoize ProjectCard to prevent re-renders when modal opens
 const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project: Project; onClick: () => void; getMediaUrls: (url: string | null) => any[]; isVideo: (item: any) => boolean }) => {
@@ -69,7 +72,7 @@ const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project
           return (
             <motion.div
               key={`${project.id_project}-media-${index}`}
-              className={`absolute w-full h-full rounded-3xl border border-white/10 shadow-2xl overflow-hidden bg-slate-900 transition-all duration-500 ${
+              className={`absolute w-full h-full rounded-3xl border border-white/5 shadow-2xl overflow-hidden bg-white/[0.02] transition-all duration-500 group-hover:border-cyan-500/50 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] group-hover:bg-white/[0.05] ${
                 isMain ? 'z-20' : 'z-10'
               }`}
               animate={{
@@ -86,7 +89,7 @@ const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project
                   {isVideo(currentMedia) ? (
                     <div className="w-full h-full relative">
                       <video src={currentMedia.url} className="w-full h-full object-cover" muted playsInline />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <div className="absolute inset-0/40 flex items-center justify-center">
                         <Film className="w-6 h-6 text-white/50" />
                       </div>
                     </div>
@@ -101,17 +104,17 @@ const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project
                   )}
                 </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-slate-900">
+                <div className="w-full h-full flex items-center justify-center bg-neutral-950">
                    <ImageIcon className="w-6 h-6 text-slate-800" />
                 </div>
               )}
-              {!isMain && <div className="absolute inset-0 bg-black/40" />}
+              {!isMain && <div className="absolute inset-0/40" />}
             </motion.div>
           )
         })}
 
         <motion.div 
-          className="absolute z-30 pointer-events-none px-6 py-4 border border-white/20 bg-slate-950/60 backdrop-blur-xl rounded-2xl max-w-[90%] shadow-2xl overflow-hidden"
+          className="absolute z-30 pointer-events-none px-6 py-4 border border-white/20/60 backdrop-blur-xl rounded-2xl max-w-[90%] shadow-2xl overflow-hidden"
           animate={{
             y: isHovered ? 110 : 0, 
             scale: isHovered ? 0.9 : 1,
@@ -254,7 +257,18 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
   };
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
+    <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[800px]">
+      {/* Background Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <LightRays 
+          raysOrigin="top-right" 
+          raysColor="#083344" 
+          raysSpeed={0.5} 
+          lightSpread={0.8}
+          rayLength={2.5}
+        />
+      </div>
+
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {paginatedProjects.map((project) => (
@@ -280,8 +294,8 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                 disabled={currentPage === 1}
                 className={`group flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                   currentPage === 1 
-                    ? 'bg-slate-900/50 text-slate-700 border border-white/5 cursor-not-allowed' 
-                    : 'bg-slate-900 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10'
+                    ? 'bg-neutral-950/50 text-slate-700 border border-white/5 cursor-not-allowed' 
+                    : 'bg-neutral-950 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10'
                 }`}
               >
                 <ChevronLeft className={`w-4 h-4 transition-transform ${currentPage !== 1 ? 'group-hover:-translate-x-1' : ''}`} /> Previous
@@ -292,7 +306,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                   <div 
                     key={i}
                     className={`h-1.5 rounded-full transition-all duration-500 ${
-                      currentPage === i + 1 ? 'w-8 bg-cyan-500' : 'w-2 bg-slate-800'
+                      currentPage === i + 1 ? 'w-8 bg-cyan-500' : 'w-2 bg-neutral-900'
                     }`}
                   />
                 ))}
@@ -304,8 +318,8 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                 disabled={currentPage === safeTotalPages}
                 className={`group flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                   currentPage === safeTotalPages 
-                    ? 'bg-slate-900/50 text-slate-700 border border-white/5 cursor-not-allowed' 
-                    : 'bg-slate-900 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10'
+                    ? 'bg-neutral-950/50 text-slate-700 border border-white/5 cursor-not-allowed' 
+                    : 'bg-neutral-950 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10'
                 }`}
               >
                 Next <ChevronRight className={`w-4 h-4 transition-transform ${currentPage !== safeTotalPages ? 'group-hover:translate-x-1' : ''}`} />
@@ -324,7 +338,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4 md:p-12 overflow-hidden bg-slate-950/90 backdrop-blur-md"
+              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4 md:p-12 overflow-hidden/90 backdrop-blur-md"
               style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
             >
               <div 
@@ -337,19 +351,19 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                className="relative w-full max-w-6xl h-full max-h-[85vh] bg-slate-900/60 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] flex flex-col lg:flex-row z-50"
+                className="relative w-full max-w-6xl h-full max-h-[85vh] bg-neutral-950/60 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] flex flex-col lg:flex-row z-50"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button 
                   onClick={() => { playClick(); setSelectedId(null); }}
                   onMouseEnter={playHover}
                   data-cursor="close"
-                  className="absolute top-6 right-6 z-[70] p-4 bg-slate-800/90 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all shadow-2xl group"
+                  className="absolute top-6 right-6 z-[70] p-4 bg-neutral-900/90 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all shadow-2xl group"
                 >
                   <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
                 </button>
 
-                <div className="w-full lg:w-[55%] relative bg-black flex items-center justify-center group/slider overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5">
+                <div className="w-full lg:w-[55%] relative flex items-center justify-center group/slider overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5">
                   {(() => {
                     const media = getMediaUrls(selectedProject.media_url);
                     const currentIndex = activeMediaIndex[selectedProject.id_project] || 0;
@@ -365,7 +379,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                             exit={{ opacity: 0 }}
                             className="w-full h-full flex items-center justify-center p-6 md:p-10"
                           >
-                            <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900/20 border border-white/5 flex items-center justify-center relative">
+                            <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-neutral-950/20 border border-white/5 flex items-center justify-center relative">
                               {currentMedia?.url ? (
                                 isVideo(currentMedia) ? (
                                   <div className="w-full aspect-video rounded-2xl overflow-hidden">
@@ -412,14 +426,14 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                             <button 
                               onClick={(e) => { e.stopPropagation(); playClick(); prevMedia(selectedProject.id_project, media.length); }}
                               onMouseEnter={playHover}
-                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-slate-900/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
+                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
                               onClick={(e) => { e.stopPropagation(); playClick(); nextMedia(selectedProject.id_project, media.length); }}
                               onMouseEnter={playHover}
-                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-slate-900/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
+                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronRight className="w-6 h-6" />
                             </button>
@@ -431,7 +445,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                 </div>
 
                 <div 
-                  className="w-full lg:w-[45%] p-10 lg:p-16 overflow-y-auto overscroll-contain custom-scrollbar flex flex-col bg-slate-900/20 transform-gpu"
+                  className="w-full lg:w-[45%] p-10 lg:p-16 overflow-y-auto overscroll-contain custom-scrollbar flex flex-col bg-neutral-950/20 transform-gpu"
                   data-lenis-prevent="true"
                 >
                   <div className="flex items-center gap-3 mb-10">
@@ -469,7 +483,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                       <h4 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-8">System Architecture</h4>
                       <div className="flex flex-wrap gap-3">
                         {selectedProject.keahlian && selectedProject.keahlian.split(',').map((skill, i) => (
-                          <div key={i} className="px-5 py-3 rounded-2xl bg-slate-800/50 border border-white/5 text-xs text-white font-bold flex items-center gap-3 hover:border-cyan-500/30 transition-colors">
+                          <div key={i} className="px-5 py-3 rounded-2xl bg-neutral-900/50 border border-white/5 text-xs text-white font-bold flex items-center gap-3 hover:border-cyan-500/30 transition-colors">
                             <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
                             {skill.trim()}
                           </div>

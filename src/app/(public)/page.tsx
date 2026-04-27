@@ -53,12 +53,12 @@ export default async function HomePage() {
   }
 
   return (
-    <>
+    <main className="min-h-screen bg-transparent overflow-x-hidden">
       <HeroSection profile={profile} stats={stats} />
       <AboutPreview profile={profile} skills={skills} highestStudy={highestStudy} />
       <ProjectsPreview projects={projects} />
       <ExperiencePreview experiences={experiences} />
       <CertificatesPreview certifications={certifications} />
-    </>
+    </main>
   );
 }

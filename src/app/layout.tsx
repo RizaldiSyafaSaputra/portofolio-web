@@ -33,7 +33,7 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable}`}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-screen flex flex-col antialiased bg-slate-950 text-slate-300 overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+      <body className="min-h-screen flex flex-col antialiased bg-black text-slate-300 overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
         <ClientProviders>
           {children}
         </ClientProviders>

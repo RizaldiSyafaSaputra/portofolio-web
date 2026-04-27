@@ -25,7 +25,7 @@ export default function CyberTransition({ isExiting, onComplete }: { isExiting: 
                   delay: i * 0.03,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="flex-grow bg-slate-950 border-y border-cyan-500/10 relative"
+                className="flex-grow bg-black border-y border-cyan-500/10 relative"
               >
                 {/* Tech Line */}
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
@@ -51,7 +51,7 @@ export default function CyberTransition({ isExiting, onComplete }: { isExiting: 
                 onAnimationComplete={() => {
                   if (i === shutterCount - 1) setIsDone(true);
                 }}
-                className="flex-grow bg-slate-950 border-y border-cyan-500/10 relative"
+                className="flex-grow bg-black border-y border-cyan-500/10 relative"
               >
                 {/* Tech Line */}
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />

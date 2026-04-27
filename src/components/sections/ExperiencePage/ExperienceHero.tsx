@@ -7,14 +7,14 @@ import AnimatedDescription from '@/components/ui/AnimatedDescription'
 
 export function ExperienceHero() {
   return (
-    <section className="relative overflow-hidden bg-slate-950 pt-32 pb-32 px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden pt-32 pb-32 px-4 sm:px-6 lg:px-8">
       <GridBackground />
       
       {/* Background Accent Gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
       
       {/* Bottom Fade Mask */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-20 max-w-6xl mx-auto">
@@ -26,7 +26,7 @@ export function ExperienceHero() {
         >
           {/* Icon container */}
           <motion.div
-            className="relative w-24 h-24 rounded-3xl bg-slate-900 border border-white/10 flex items-center justify-center shadow-2xl group"
+            className="relative w-24 h-24 rounded-3xl bg-neutral-950 border border-white/10 flex items-center justify-center shadow-2xl group"
             whileHover={{ scale: 1.05 }}
           >
             <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />

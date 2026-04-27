@@ -14,7 +14,7 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
   const [activeId, setActiveId] = useState<string | null>(studies[0]?.id_study || null)
 
   return (
-    <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
+    <section className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -73,9 +73,9 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
 
                 {/* Card content */}
                 <motion.div
-                  className={`relative h-full bg-slate-900/80 backdrop-blur-xl rounded-2xl p-6 border transition-all duration-300 ${
+                  className={`relative h-full bg-neutral-950/80 backdrop-blur-xl rounded-2xl p-6 border transition-all duration-300 ${
                     isActive
-                      ? 'border-cyan-500/50 bg-slate-900/95 shadow-2xl shadow-cyan-500/20'
+                      ? 'border-cyan-500/50 bg-neutral-950/95 shadow-2xl shadow-cyan-500/20'
                       : 'border-slate-700/50 hover:border-slate-600/70'
                   }`}
                   whileHover={{ y: -4 }}

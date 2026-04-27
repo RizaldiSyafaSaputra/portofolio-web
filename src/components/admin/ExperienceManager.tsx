@@ -202,7 +202,7 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-900/30 border border-dashed border-white/10 rounded-3xl p-12 text-center"
+              className="bg-neutral-950/30 border border-dashed border-white/10 rounded-3xl p-12 text-center"
             >
               <Briefcase className="w-12 h-12 text-slate-700 mx-auto mb-4" />
               <h3 className="text-white font-medium text-lg">No experience found</h3>
@@ -220,13 +220,13 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="group relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 transition-all duration-500 hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/5"
+                  className="group relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 transition-all duration-500 hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/5"
                 >
                   <div className="flex flex-col lg:flex-row gap-6">
                     {/* Media Slider */}
                     {media.length > 0 && (
                       <div className="lg:w-64 flex flex-col gap-3 shrink-0">
-                        <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-950 border border-white/5 group/slider">
+                        <div className="relative aspect-square rounded-2xl overflow-hidden bg-black border border-white/5 group/slider">
                           <AnimatePresence mode="wait">
                             <motion.div
                               key={media[currentIndex].url}
@@ -291,7 +291,7 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
                             <span className="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-md border border-indigo-500/20">
                               {exp.jenis_pekerjaan}
                             </span>
-                            <span className="px-2 py-0.5 bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-md border border-white/5">
+                            <span className="px-2 py-0.5 bg-neutral-900 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-md border border-white/5">
                               {exp.jenis_program}
                             </span>
                           </div>
@@ -306,13 +306,13 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
                         <div className="flex items-center gap-2 shrink-0">
                           <button 
                             onClick={() => openEditModal(exp)}
-                            className="p-2 text-slate-400 hover:text-indigo-400 bg-slate-800/50 hover:bg-indigo-500/10 rounded-xl transition-all"
+                            className="p-2 text-slate-400 hover:text-indigo-400 bg-neutral-900/50 hover:bg-indigo-500/10 rounded-xl transition-all"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => requestDelete(exp.id_experience)}
-                            className="p-2 text-slate-400 hover:text-red-400 bg-slate-800/50 hover:bg-red-500/10 rounded-xl transition-all"
+                            className="p-2 text-slate-400 hover:text-red-400 bg-neutral-900/50 hover:bg-red-500/10 rounded-xl transition-all"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -423,7 +423,7 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
               <select 
                 name="jenis_pekerjaan" 
                 defaultValue={editingExp?.jenis_pekerjaan || "Full-time"} 
-                className="w-full bg-slate-900/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+                className="w-full bg-neutral-950/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
               >
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
@@ -437,7 +437,7 @@ export function ExperienceManager({ initialExperiences }: { initialExperiences: 
               <select 
                 name="jenis_program" 
                 defaultValue={editingExp?.jenis_program || "Employee"} 
-                className="w-full bg-slate-900/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+                className="w-full bg-neutral-950/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
               >
                 <option value="Employee">Employee</option>
                 <option value="Mentorship">Mentorship</option>

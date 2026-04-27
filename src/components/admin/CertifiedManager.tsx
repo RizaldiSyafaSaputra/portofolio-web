@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Edit2, Award, Calendar, Building, ExternalLink, Loader2, Star } from "lucide-react";
+import { Plus, Trash2, Edit2, Award, Calendar, Building, ExternalLink, Loader2, Star, Film } from "lucide-react";
 import { createCertification, deleteCertification, updateCertification } from "@/lib/actions/certified";
 import type { Certified } from "@/lib/types/database";
 import { Button } from "@/components/ui/Button";
@@ -86,23 +86,6 @@ export function CertifiedManager({ initialCertifications }: { initialCertificati
     });
   };
 
-  return (
-    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/5 group/manager">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover/manager:bg-emerald-500/10 pointer-events-none" />
-      
-      <div className="relative z-10 flex items-center justify-between mb-8">
-        <div>
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <Award className="w-5 h-5 text-emerald-400" /> Certifications & Awards
-          </h3>
-          <p className="text-slate-400 text-xs mt-1">Manage your professional certificates and achievements.</p>
-        </div>
-        <Button onClick={openAddModal} variant="primary" size="sm" className="!bg-emerald-500/20 !text-emerald-400 !border-emerald-500/50 hover:!bg-emerald-500/30 hover:!shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-          <Plus className="w-4 h-4 mr-2" /> Add Certificate
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
   const isVideo = (item: any) => {
     if (!item) return false;
     const url = typeof item === 'string' ? item : item.url;
@@ -137,7 +120,7 @@ export function CertifiedManager({ initialCertifications }: { initialCertificati
   };
 
   return (
-    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/5 group/manager">
+    <div className="relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-emerald-500/20 hover:shadow-2xl hover:shadow-emerald-500/5 group/manager">
       <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover/manager:bg-emerald-500/10 pointer-events-none" />
       
       <div className="relative z-10 flex items-center justify-between mb-8">
@@ -165,13 +148,13 @@ export function CertifiedManager({ initialCertifications }: { initialCertificati
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="relative overflow-hidden bg-slate-950/50 border border-white/5 p-6 rounded-2xl group transition-all duration-300 hover:border-emerald-500/30 hover:bg-slate-900/50"
+                className="relative overflow-hidden bg-black/50 border border-white/5 p-6 rounded-2xl group transition-all duration-300 hover:border-emerald-500/30 hover:bg-neutral-950/50"
               >
                 <div className="flex gap-4">
                   {mainThumbnail ? (
                     <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-white/10">
                       {isVideo(media[0]) ? (
-                        <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                        <div className="w-full h-full bg-neutral-950 flex items-center justify-center">
                           <Film className="w-8 h-8 text-emerald-500/50" />
                         </div>
                       ) : (
@@ -188,10 +171,10 @@ export function CertifiedManager({ initialCertifications }: { initialCertificati
                     <div className="flex items-start justify-between gap-2">
                       <h4 className="text-white font-bold text-lg leading-tight truncate">{cert.nama_sertifikasi}</h4>
                       <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => openEditModal(cert)} className="p-1.5 text-slate-400 hover:text-emerald-400 bg-slate-800/50 hover:bg-emerald-500/10 rounded-lg transition-all">
+                        <button onClick={() => openEditModal(cert)} className="p-1.5 text-slate-400 hover:text-emerald-400 bg-neutral-900/50 hover:bg-emerald-500/10 rounded-lg transition-all">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => requestDelete(cert.id_certified)} className="p-1.5 text-slate-400 hover:text-red-400 bg-slate-800/50 hover:bg-red-500/10 rounded-lg transition-all">
+                        <button onClick={() => requestDelete(cert.id_certified)} className="p-1.5 text-slate-400 hover:text-red-400 bg-neutral-900/50 hover:bg-red-500/10 rounded-lg transition-all">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>

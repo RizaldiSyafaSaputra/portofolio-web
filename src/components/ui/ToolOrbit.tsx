@@ -128,7 +128,7 @@ function OrbitIcon({
         animate={isPowerMode ? { rotate: reverse ? -360 : 360 } : {}}
         transition={{ duration, repeat: Infinity, ease: "linear" }}
       >
-        <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center p-2.5 md:p-3 bg-slate-900/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden hover:border-white/30 transition-all duration-300 pointer-events-auto">
+        <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center p-2.5 md:p-3 bg-neutral-950/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden hover:border-white/30 transition-all duration-300 pointer-events-auto">
           {/* Intense Neon Glow Effect */}
           <div 
             className="absolute inset-0 rounded-2xl blur-xl opacity-30 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" 
@@ -148,7 +148,7 @@ function OrbitIcon({
           />
 
           {/* Label Tooltip */}
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-950 border border-white/20 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest text-white whitespace-nowrap z-30 shadow-[0_0_20px_rgba(0,0,0,0.8)] backdrop-blur-xl pointer-events-none">
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black border border-white/20 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest text-white whitespace-nowrap z-30 shadow-[0_0_20px_rgba(0,0,0,0.8)] backdrop-blur-xl pointer-events-none">
             {icon.label}
           </div>
         </div>

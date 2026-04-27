@@ -47,32 +47,35 @@ const VerticalTimeline = ({
 }: { 
   experiences: Experience[], 
   onViewDetails: (exp: Experience) => void 
-}) => (
-  <div className="relative max-w-5xl mx-auto px-4 py-20">
-    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent hidden md:block" />
-    <div className="space-y-24">
-      {experiences.map((exp, index) => {
-        const isEven = index % 2 === 0
-        return (
-          <div key={exp.id} className="relative">
-            <div className="absolute left-1/2 top-10 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-950 border-2 border-cyan-500 z-10 hidden md:block shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
-            <div className={`flex flex-col md:flex-row items-center gap-12 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-              <div className={`w-full md:w-1/2 ${isEven ? 'md:text-right' : 'md:text-left'}`}>
-                <ExperienceCard
-                  {...exp}
-                  media={exp.media.map(m => m.url)}
-                  index={index}
-                  onViewDetails={() => onViewDetails(exp)}
-                />
+}) => {
+  const { isPowerMode } = useAnimation();
+  return (
+    <div className="relative max-w-5xl mx-auto px-4 py-20">
+      <div className={`absolute left-1/2 top-0 bottom-0 w-px ${isPowerMode ? 'bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent' : 'bg-white/10'} hidden md:block`} />
+      <div className="space-y-24">
+        {experiences.map((exp, index) => {
+          const isEven = index % 2 === 0
+          return (
+            <div key={exp.id} className="relative">
+              <div className={`absolute left-1/2 top-10 -translate-x-1/2 w-4 h-4 rounded-full border-2 ${isPowerMode ? 'border-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)]' : 'border-slate-500'} z-10 hidden md:block`} />
+              <div className={`flex flex-col md:flex-row items-center gap-12 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                <div className={`w-full md:w-1/2 ${isEven ? 'md:text-right' : 'md:text-left'}`}>
+                  <ExperienceCard
+                    {...exp}
+                    media={exp.media.map(m => m.url)}
+                    index={index}
+                    onViewDetails={() => onViewDetails(exp)}
+                  />
+                </div>
+                <div className="hidden md:block md:w-1/2" />
               </div>
-              <div className="hidden md:block md:w-1/2" />
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const HorizontalTimeline = ({ 
   experiences, 
@@ -85,11 +88,14 @@ const HorizontalTimeline = ({
   triggerRef: React.RefObject<HTMLDivElement | null>,
   containerRef: React.RefObject<HTMLDivElement | null>
 }) => {
+  const { isPowerMode } = useAnimation();
   const progressLineRef = useRef<HTMLDivElement>(null);
   const beamHeadRef = useRef<HTMLDivElement>(null);
+  const bgAura1Ref = useRef<HTMLDivElement>(null);
+  const bgAura2Ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!triggerRef.current || !containerRef.current) return;
+    if (!triggerRef.current || !containerRef.current || !isPowerMode) return;
 
     const ctx = gsap.context(() => {
       gsap.to([progressLineRef.current, beamHeadRef.current], {
@@ -108,56 +114,86 @@ const HorizontalTimeline = ({
                 opacity: self.progress > 0.01 ? 1 : 0
               });
             }
+            
+            if (bgAura1Ref.current) {
+              gsap.set(bgAura1Ref.current, { 
+                x: self.progress * 200,
+                y: Math.sin(self.progress * Math.PI) * 100,
+                rotate: self.progress * 360
+              });
+            }
+            if (bgAura2Ref.current) {
+              gsap.set(bgAura2Ref.current, { 
+                x: -self.progress * 300,
+                y: Math.cos(self.progress * Math.PI) * 150,
+                rotate: -self.progress * 180
+              });
+            }
           }
         }
       });
     });
 
     return () => ctx.revert();
-  }, [triggerRef, containerRef]);
+  }, [triggerRef, containerRef, isPowerMode]);
 
   return (
-    <div ref={triggerRef} className="bg-slate-950 relative z-10">
+    <div ref={triggerRef} className="relative z-10 overflow-hidden">
+      {isPowerMode && (
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <div 
+            ref={bgAura1Ref}
+            className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px]" 
+          />
+          <div 
+            ref={bgAura2Ref}
+            className="absolute bottom-1/4 right-1/4 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px]" 
+          />
+        </div>
+      )}
+
       <div className="h-screen flex items-center relative">
         <div 
           ref={containerRef} 
           className="flex items-center gap-24 px-[20vw] whitespace-nowrap"
         >
-          {/* Base Beam Line */}
           <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/5 -translate-y-1/2 z-0" />
           
-          {/* Progress Beam Line */}
-          <div 
-            ref={progressLineRef}
-            className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-500/50 to-blue-500 -translate-y-1/2 z-0 origin-left scale-x-0" 
-          />
+          {isPowerMode && (
+            <div 
+              ref={progressLineRef}
+              className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-500/50 to-blue-500 -translate-y-1/2 z-0 origin-left scale-x-0" 
+            />
+          )}
 
-          {/* Glowing Beam Head */}
-          <div 
-            ref={beamHeadRef}
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 z-10 pointer-events-none opacity-0"
-          >
-            <div className="absolute inset-0 bg-cyan-400 rounded-full blur-[2px]" />
-            <div className="absolute inset-0 bg-cyan-400 rounded-full blur-[10px] animate-pulse" />
-            <div className="absolute -inset-4 bg-cyan-400/20 rounded-full blur-xl" />
-          </div>
+          {isPowerMode && (
+            <div 
+              ref={beamHeadRef}
+              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 z-10 pointer-events-none opacity-0"
+            >
+              <div className="absolute inset-0 bg-cyan-400 rounded-full blur-[2px]" />
+              <div className="absolute inset-0 bg-cyan-400 rounded-full blur-[10px] animate-pulse" />
+              <div className="absolute -inset-4 bg-cyan-400/20 rounded-full blur-xl" />
+            </div>
+          )}
           
           {experiences.map((exp, index) => (
             <div key={exp.id} className="relative inline-block w-[400px] md:w-[500px] shrink-0">
-              <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,1)] z-10" />
+              <div className={`absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full ${isPowerMode ? 'bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,1)]' : 'bg-slate-500'} z-10`} />
               <div className="pt-20">
                 <ExperienceCard
                   {...exp}
                   media={exp.media.map(m => m.url)}
                   index={index}
-                  onViewDetails={() => onViewDetails(exp)} noAnimation={true}
+                  onViewDetails={() => onViewDetails(exp)}
                 />
               </div>
             </div>
           ))}
 
-          <div className="w-[400px] flex items-center justify-center">
-            <div className="p-8 rounded-full border border-dashed border-cyan-500/30 text-cyan-500/50 uppercase text-[10px] font-black tracking-widest animate-pulse">
+          <div className="w-[400px] flex items-center justify-center relative">
+            {isPowerMode && <div className="absolute w-40 h-40 bg-cyan-500/30 blur-[50px] rounded-full animate-pulse" />}
+            <div className={`p-8 rounded-[3rem] border ${isPowerMode ? 'border-cyan-400 bg-cyan-950/40 text-cyan-300 shadow-[0_0_40px_rgba(34,211,238,0.5)] animate-pulse' : 'border-white/10 bg-neutral-900 text-slate-500'} uppercase text-xs font-black tracking-widest relative z-10 backdrop-blur-md`}>
               End of Journey
             </div>
           </div>
@@ -292,7 +328,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4 md:p-12 overflow-hidden bg-slate-950/98 backdrop-blur-3xl"
+              className="fixed inset-0 z-[99999999] flex items-center justify-center p-4 md:p-12 overflow-hidden/98 backdrop-blur-3xl"
               style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
             >
               <div 
@@ -305,18 +341,18 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                className="relative w-full max-w-6xl h-full max-h-[85vh] bg-slate-900/60 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] z-50 flex flex-col lg:flex-row"
+                className="relative w-full max-w-6xl h-full max-h-[85vh] bg-neutral-950/60 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] z-50 flex flex-col lg:flex-row"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button 
                   onClick={() => setSelectedExp(null)}
                   data-cursor="close"
-                  className="absolute top-6 right-6 z-[70] p-4 bg-slate-800/90 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all shadow-2xl group"
+                  className="absolute top-6 right-6 z-[70] p-4 bg-neutral-900/90 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all shadow-2xl group"
                 >
                   <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
                 </button>
 
-                <div className="w-full lg:w-[55%] relative bg-black flex items-center justify-center group/slider overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5">
+                <div className="w-full lg:w-[55%] relative flex items-center justify-center group/slider overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`exp-media-${activeMediaIndex}`}
@@ -326,7 +362,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                       className="w-full h-full flex items-center justify-center p-6 md:p-10"
                     >
                       {selectedExp.media && selectedExp.media.length > 0 ? (
-                        <div className="w-full h-full relative rounded-3xl overflow-hidden flex items-center justify-center bg-slate-900/20 border border-white/5">
+                        <div className="w-full h-full relative rounded-3xl overflow-hidden flex items-center justify-center bg-neutral-950/20 border border-white/5">
                           {(() => {
                             const item = selectedExp.media[activeMediaIndex];
                             return isVideo(item) ? (
@@ -376,17 +412,17 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                     <>
                       <button 
                         onClick={(e) => { e.stopPropagation(); handlePrevMedia(); }}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 p-4 rounded-full bg-slate-900/80 border border-white/10 text-white opacity-0 group-hover/slider:opacity-100 transition-all z-[65] shadow-2xl hover:bg-cyan-500"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/[0.02] border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-500 text-white opacity-0 group-hover/slider:opacity-100 transition-all z-[65] shadow-2xl hover:bg-cyan-500"
                       >
                         <ChevronLeft size={24} />
                       </button>
                       <button 
                         onClick={(e) => { e.stopPropagation(); handleNextMedia(); }}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 p-4 rounded-full bg-slate-900/80 border border-white/10 text-white opacity-0 group-hover/slider:opacity-100 transition-all z-[65] shadow-2xl hover:bg-cyan-500"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 p-4 rounded-full bg-white/[0.02] border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-500 text-white opacity-0 group-hover/slider:opacity-100 transition-all z-[65] shadow-2xl hover:bg-cyan-500"
                       >
                         <ChevronRight size={24} />
                       </button>
-                      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-5 py-2 bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black text-cyan-400 tracking-[0.2em] z-[65] shadow-xl">
+                      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-5 py-2 bg-neutral-950/90 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black text-cyan-400 tracking-[0.2em] z-[65] shadow-xl">
                         {activeMediaIndex + 1} <span className="text-slate-600 mx-2">/</span> {selectedExp.media.length}
                       </div>
                     </>
@@ -394,7 +430,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                 </div>
 
                 <div 
-                  className="w-full lg:w-[45%] h-full min-h-0 overflow-y-auto custom-scrollbar flex flex-col bg-slate-900/20 p-8 lg:p-16"
+                  className="w-full lg:w-[45%] h-full min-h-0 overflow-y-auto custom-scrollbar flex flex-col bg-neutral-950/20 p-8 lg:p-16"
                   data-lenis-prevent
                 >
                   <div className="flex items-center gap-3 mb-10">
@@ -414,7 +450,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
 
                     <div className="grid grid-cols-1 gap-8">
                       <div className="flex items-center gap-5 group/info">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-800 border border-white/5 flex items-center justify-center text-cyan-500 group-hover/info:bg-cyan-500 group-hover/info:text-slate-950 transition-all shadow-inner">
+                        <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-white/5 flex items-center justify-center text-cyan-500 group-hover/info:bg-cyan-500 group-hover/info:text-slate-950 transition-all shadow-inner">
                           <Calendar size={20} />
                         </div>
                         <div>
@@ -424,7 +460,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                       </div>
 
                       <div className="flex items-center gap-5 group/info">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-800 border border-white/5 flex items-center justify-center text-cyan-500 group-hover/info:bg-cyan-500 group-hover/info:text-slate-950 transition-all shadow-inner">
+                        <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-white/5 flex items-center justify-center text-cyan-500 group-hover/info:bg-cyan-500 group-hover/info:text-slate-950 transition-all shadow-inner">
                           <MapPin size={20} />
                         </div>
                         <div>
@@ -448,7 +484,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                       <h4 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-8">Technical Proficiency</h4>
                       <div className="flex flex-wrap gap-3">
                         {selectedExp.skills.map((skill: string, i: number) => (
-                          <div key={i} className="px-5 py-3 rounded-2xl bg-slate-800/50 border border-white/5 text-xs text-white font-bold flex items-center gap-3 hover:border-cyan-500/30 transition-colors">
+                          <div key={i} className="px-5 py-3 rounded-2xl bg-neutral-900/50 border border-white/5 text-xs text-white font-bold flex items-center gap-3 hover:border-cyan-500/30 transition-colors">
                             <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
                             {skill}
                           </div>

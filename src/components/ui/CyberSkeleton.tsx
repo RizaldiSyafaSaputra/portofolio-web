@@ -9,7 +9,7 @@ interface SkeletonProps {
 
 export default function CyberSkeleton({ className = "", variant = "rect" }: SkeletonProps) {
   return (
-    <div className={`relative overflow-hidden bg-slate-900/50 backdrop-blur-sm border border-white/5 ${
+    <div className={`relative overflow-hidden bg-neutral-950/50 backdrop-blur-sm border border-white/5 ${
       variant === "circle" ? "rounded-full" : "rounded-2xl"
     } ${className}`}>
       {/* Shimmer Effect */}

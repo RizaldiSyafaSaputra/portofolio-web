@@ -18,7 +18,7 @@ export default async function SertifikasiPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-black">
       <SertifikasiHero />
       <CertificateGrid certifications={certifications} />
     </div>

@@ -32,7 +32,7 @@ export default async function ProfilesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-black">
       <ProfilesHero profile={profile} sosmeds={sosmeds} />
       <ProfilesStudy studies={studies} />
       <ProfilesSkills skills={skills} />

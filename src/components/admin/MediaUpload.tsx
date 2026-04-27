@@ -108,7 +108,7 @@ export function MediaUpload({
             </span>
           </div>
         ) : (
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-video bg-slate-900 group/asset">
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-video bg-neutral-950 group/asset">
             {isVideo ? (
               <video src={asset} className="w-full h-full object-cover" controls />
             ) : (

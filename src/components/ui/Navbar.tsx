@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Zap, ZapOff } from "lucide-react";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/utils/constants";
 import { usePremiumSound } from "@/hooks/usePremiumSound";
+import { useAnimation } from "@/context/AnimationContext";
 
 export default function Navbar() {
+  const { isPowerMode, togglePowerMode } = useAnimation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -61,7 +63,7 @@ export default function Navbar() {
           }}
           className={`relative flex items-center justify-between gap-8 px-6 h-14 md:h-16 rounded-full border transition-colors duration-500 ${
             isScrolled
-              ? "bg-slate-950/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+              ? "bg-black/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
               : "bg-transparent border-transparent"
           }`}
         >
@@ -72,7 +74,7 @@ export default function Navbar() {
             onClick={playClick}
             className="relative group flex items-center gap-2 shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-sm shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all duration-300">
+            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${isPowerMode ? 'from-cyan-500 to-blue-600 shadow-cyan-500/20 group-hover:shadow-cyan-500/40' : 'from-slate-700 to-slate-900 border border-white/10'} flex items-center justify-center font-black text-white text-sm transition-all duration-300 shadow-lg`}>
               R
             </div>
             <div className="hidden sm:flex flex-col">
@@ -116,7 +118,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
-                      className="absolute -bottom-1 left-4 right-4 h-0.5 bg-cyan-500 rounded-full z-0 shadow-[0_0_8px_rgba(6,182,212,0.6)]"
+                      className={`absolute -bottom-1 left-4 right-4 h-0.5 ${isPowerMode ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.6)]' : 'bg-slate-500'} rounded-full z-0`}
                     />
                   )}
                 </Link>
@@ -124,15 +126,39 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right Section: Mobile Toggle */}
+          {/* Right Section: Power Toggle & Mobile Toggle */}
           <div className="flex items-center gap-3">
+            {/* Power Mode Toggle */}
+            <button
+              onClick={() => {
+                togglePowerMode();
+                playClick();
+              }}
+              onMouseEnter={playHover}
+              className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 ${
+                isPowerMode 
+                  ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" 
+                  : "bg-neutral-900 border-white/10 text-slate-500"
+              }`}
+              title={isPowerMode ? "Switch to Low Power Mode" : "Switch to High Power Mode"}
+            >
+              {isPowerMode ? (
+                <Zap className="w-3.5 h-3.5 fill-cyan-400 animate-pulse" />
+              ) : (
+                <ZapOff className="w-3.5 h-3.5" />
+              )}
+              <span className="hidden lg:inline text-[9px] font-black uppercase tracking-[0.2em]">
+                {isPowerMode ? "High" : "Low"}
+              </span>
+            </button>
+
             <button
               onMouseEnter={playHover}
               onClick={() => {
                 setIsMobileOpen(!isMobileOpen);
                 playClick();
               }}
-              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 border border-white/10 text-white"
+              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-neutral-950 border border-white/10 text-white"
             >
               {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -151,7 +177,7 @@ export default function Navbar() {
             className="fixed top-8 left-8 z-[101] pointer-events-auto"
           >
             <Link href="/" className="relative group block">
-              <div className="w-12 h-12 rounded-2xl bg-slate-950/80 backdrop-blur-xl border border-cyan-500/30 flex items-center justify-center font-black text-cyan-400 text-xl shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-500 group-hover:scale-110">
+              <div className="w-12 h-12 rounded-2xl bg-black/80 backdrop-blur-xl border border-cyan-500/30 flex items-center justify-center font-black text-cyan-400 text-xl shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-500 group-hover:scale-110">
                 R
               </div>
               <div className="absolute -inset-2 bg-cyan-500/5 blur-xl rounded-full -z-10 group-hover:bg-cyan-500/10 transition-all duration-500" />
@@ -167,7 +193,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-full left-4 right-4 mt-4 p-6 rounded-[2rem] bg-slate-950 border border-white/10 backdrop-blur-2xl shadow-2xl z-50 pointer-events-auto"
+            className="md:hidden absolute top-full left-4 right-4 mt-4 p-6 rounded-[2rem] bg-black border border-white/10 backdrop-blur-2xl shadow-2xl z-50 pointer-events-auto"
           >
             <div className="flex flex-col gap-4">
               {NAV_LINKS.map((link) => {
@@ -181,7 +207,7 @@ export default function Navbar() {
                     className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
                       isActive
                         ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
-                        : "bg-slate-900/50 border-white/5 text-slate-400 hover:text-white"
+                        : "bg-neutral-950/50 border-white/5 text-slate-400 hover:text-white"
                     }`}
                   >
                     <span className="text-sm font-bold uppercase tracking-[0.2em]">

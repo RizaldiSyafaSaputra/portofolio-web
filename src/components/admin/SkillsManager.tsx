@@ -82,7 +82,7 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
   };
 
   return (
-    <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 group/manager">
+    <div className="relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 group/manager">
       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover/manager:bg-cyan-500/10 pointer-events-none" />
       
       <div className="relative z-10 flex items-center justify-between mb-8">
@@ -102,7 +102,7 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="flex items-center justify-between bg-slate-950/50 border border-white/5 p-4 rounded-xl group"
+              className="flex items-center justify-between bg-black/50 border border-white/5 p-4 rounded-xl group"
             >
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
@@ -112,10 +112,10 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
                 <span className="text-xs text-cyan-500 font-semibold">{skill.level_keahlian}</span>
               </div>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => openEditModal(skill)} disabled={isPending} className="p-2 text-slate-400 hover:text-cyan-400 bg-slate-800/50 hover:bg-cyan-500/10 rounded-lg transition-all">
+                <button onClick={() => openEditModal(skill)} disabled={isPending} className="p-2 text-slate-400 hover:text-cyan-400 bg-neutral-900/50 hover:bg-cyan-500/10 rounded-lg transition-all">
                   <Edit2 className="w-4 h-4" />
                 </button>
-                <button onClick={() => requestDelete(skill.id_skills)} disabled={isPending} className="p-2 text-slate-400 hover:text-red-400 bg-slate-800/50 hover:bg-red-500/10 rounded-lg transition-all">
+                <button onClick={() => requestDelete(skill.id_skills)} disabled={isPending} className="p-2 text-slate-400 hover:text-red-400 bg-neutral-900/50 hover:bg-red-500/10 rounded-lg transition-all">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -128,7 +128,7 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
         <form onSubmit={requestSave} className="space-y-6">
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Skill Category</label>
-            <select name="jenis_keahlian" defaultValue={editingSkill?.jenis_keahlian || "Hard Skills"} required className="w-full bg-slate-900/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all">
+            <select name="jenis_keahlian" defaultValue={editingSkill?.jenis_keahlian || "Hard Skills"} required className="w-full bg-neutral-950/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all">
               <option value="Hard Skills">Hard Skills</option>
               <option value="Soft Skills">Soft Skills</option>
               <option value="Langguange Skills">Language Skills</option>
@@ -139,7 +139,7 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
           
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Proficiency Level</label>
-            <select name="level_keahlian" defaultValue={editingSkill?.level_keahlian || "Begginer"} required className="w-full bg-slate-900/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all">
+            <select name="level_keahlian" defaultValue={editingSkill?.level_keahlian || "Begginer"} required className="w-full bg-neutral-950/50 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all">
               <option value="Begginer">Beginner</option>
               <option value="Intermediate">Intermediate</option>
               <option value="Advanced">Advanced</option>

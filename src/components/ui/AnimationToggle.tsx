@@ -37,7 +37,7 @@ export default function AnimationToggle() {
         className={`relative group flex items-center gap-3 px-6 py-3 rounded-2xl border overflow-hidden shadow-2xl ${
           isPowerMode 
             ? "bg-cyan-500/10 border-cyan-500/50 text-cyan-400" 
-            : "bg-slate-900/80 border-white/10 text-slate-500"
+            : "bg-neutral-950/80 border-white/10 text-slate-500"
         }`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

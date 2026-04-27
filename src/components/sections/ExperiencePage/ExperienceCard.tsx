@@ -72,7 +72,7 @@ export function ExperienceCard({
 
         <div
           onClick={handleAction}
-          className={`relative bg-slate-900/40 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/5 hover:border-cyan-500/30 transition-all duration-500 cursor-pointer shadow-2xl flex flex-col h-full min-h-[520px]`}
+          className={`relative bg-neutral-950/40 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/5 hover:border-cyan-500/30 transition-all duration-500 cursor-pointer shadow-2xl flex flex-col h-full min-h-[520px]`}
         >
           {/* Header Section */}
           <div className="p-8 md:p-10 flex-grow">
@@ -85,7 +85,7 @@ export function ExperienceCard({
                   {companyName}
                 </p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-slate-800/50 border border-white/5 flex items-center justify-center shrink-0 shadow-xl group-hover:scale-110 transition-transform duration-500">
+              <div className="w-14 h-14 rounded-2xl bg-neutral-900/50 border border-white/5 flex items-center justify-center shrink-0 shadow-xl group-hover:scale-110 transition-transform duration-500">
                 <Briefcase className="w-7 h-7 text-cyan-400" />
               </div>
             </div>
@@ -102,10 +102,10 @@ export function ExperienceCard({
             </div>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              <Badge className="bg-slate-950/50 text-cyan-400 border-cyan-500/20 px-4 py-1.5 text-[9px] uppercase tracking-widest font-black rounded-full">
+              <Badge className="bg-black/50 text-cyan-400 border-cyan-500/20 px-4 py-1.5 text-[9px] uppercase tracking-widest font-black rounded-full">
                 {jobType}
               </Badge>
-              <Badge className="bg-slate-950/50 text-purple-400 border-purple-500/20 px-4 py-1.5 text-[9px] uppercase tracking-widest font-black rounded-full">
+              <Badge className="bg-black/50 text-purple-400 border-purple-500/20 px-4 py-1.5 text-[9px] uppercase tracking-widest font-black rounded-full">
                 {programType}
               </Badge>
             </div>
@@ -130,7 +130,7 @@ export function ExperienceCard({
               Access Dossier
             </span>
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-950 border border-white/10 text-cyan-400 text-[10px] font-black uppercase tracking-widest group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all shadow-lg">
+              <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 text-cyan-400 text-[10px] font-black uppercase tracking-widest group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all shadow-lg">
                 <Sparkles size={12} className="animate-pulse" /> View Details
               </div>
               <ChevronRight className="w-5 h-5 text-cyan-500 group-hover:translate-x-1 transition-transform" />

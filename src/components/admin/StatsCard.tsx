@@ -21,9 +21,9 @@ export function StatsCard({ title, value, icon, trend, trendUp, delay = 0 }: Sta
       className="relative group"
     >
       <div className="absolute -inset-0.5 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
-      <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-slate-900/80 transition-colors">
+      <div className="relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 hover:bg-neutral-950/80 transition-colors">
         <div className="flex items-center justify-between mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-slate-950 flex items-center justify-center border border-white/5 shadow-inner">
+          <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center border border-white/5 shadow-inner">
             {icon}
           </div>
           {trend && (

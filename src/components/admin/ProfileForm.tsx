@@ -69,7 +69,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
           defaultValue={defaultValue || ""}
           required={required}
           placeholder={placeholder}
-          className="w-full bg-slate-900/50 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all hover:bg-slate-900/80"
+          className="w-full bg-neutral-950/50 border border-white/10 text-white placeholder-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all hover:bg-neutral-950/80"
         />
       </div>
     </div>
@@ -92,7 +92,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         )}
 
         {/* Top Full Width - Main Info */}
-        <div className="bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 relative overflow-hidden group transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
+        <div className="bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 relative overflow-hidden group transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
           <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover:bg-cyan-500/10 pointer-events-none" />
           
           <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -118,7 +118,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
 
         {/* Bottom Split - Contact & Media */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
+          <div className="bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
             <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
               <Mail className="w-5 h-5 text-cyan-400" /> Contact Info
             </h3>
@@ -136,7 +136,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             </div>
           </div>
 
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
+          <div className="bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5">
             <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
               <ImageIcon className="w-5 h-5 text-cyan-400" /> Media Links
             </h3>

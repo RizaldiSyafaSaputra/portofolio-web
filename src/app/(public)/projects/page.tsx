@@ -18,7 +18,7 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-black">
       <ProjectsHero />
       <ProjectGrid projects={projects} />
     </div>

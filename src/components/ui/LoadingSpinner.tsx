@@ -9,7 +9,7 @@ interface LoadingSpinnerProps {
 
 export default function LoadingSpinner({ fullScreen = true, label = "INITIALIZING SYSTEM" }: LoadingSpinnerProps) {
   const containerClasses = fullScreen 
-    ? "fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-950"
+    ? "fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
     : "relative w-full h-full min-h-[200px] flex flex-col items-center justify-center bg-transparent";
 
   return (

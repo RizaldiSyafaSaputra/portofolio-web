@@ -24,7 +24,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden px-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden px-4">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
@@ -57,7 +57,7 @@ export default function LoginPage() {
       >
         <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-3xl blur opacity-30 animate-pulse" />
         
-        <div className="relative bg-slate-900/80 backdrop-blur-xl ring-1 ring-white/10 rounded-3xl p-8 shadow-2xl">
+        <div className="relative bg-neutral-950/80 backdrop-blur-xl ring-1 ring-white/10 rounded-3xl p-8 shadow-2xl">
           <div className="text-center mb-10">
             <motion.div 
               className="mx-auto w-16 h-16 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,211,238,0.4)]"
@@ -92,7 +92,7 @@ export default function LoginPage() {
                   name="email"
                   required
                   placeholder="Email Address"
-                  className="w-full bg-slate-950/50 border border-slate-800 text-white placeholder-slate-500 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                  className="w-full bg-black/50 border border-slate-800 text-white placeholder-slate-500 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
                 />
               </div>
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
                   name="password"
                   required
                   placeholder="Password"
-                  className="w-full bg-slate-950/50 border border-slate-800 text-white placeholder-slate-500 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                  className="w-full bg-black/50 border border-slate-800 text-white placeholder-slate-500 rounded-xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
                 />
               </div>
             </div>

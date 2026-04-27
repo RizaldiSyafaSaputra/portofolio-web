@@ -35,7 +35,7 @@ export function AdminSidebar() {
 
   return (
     <>
-      <aside className="fixed left-0 top-0 w-72 h-screen bg-slate-950/80 backdrop-blur-2xl border-r border-white/5 flex flex-col z-50">
+      <aside className="fixed left-0 top-0 w-72 h-screen bg-black/80 backdrop-blur-2xl border-r border-white/5 flex flex-col z-50">
         {/* Logo Area */}
         <div className="p-8 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.3)]">
