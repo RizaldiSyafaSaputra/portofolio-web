@@ -49,8 +49,14 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
 
 export function useAnimation() {
   const context = useContext(AnimationContext);
+  
+  // Fallback for SSR or when used outside Provider during initialization
   if (context === undefined) {
-    throw new Error("useAnimation must be used within an AnimationProvider");
+    return { 
+      isPowerMode: false, 
+      togglePowerMode: () => {} 
+    };
   }
+  
   return context;
 }

@@ -1,4 +1,4 @@
-import CyberSkeleton from "@/components/ui/CyberSkeleton";
+import { CyberSkeleton } from "@/components/ui/CyberSkeleton";
 
 export default function Loading() {
   return (

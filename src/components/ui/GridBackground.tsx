@@ -2,22 +2,26 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useAnimation } from "@/context/AnimationContext";
 
 export default function GridBackground() {
   const [mounted, setMounted] = useState(false);
   const [particles, setParticles] = useState<any[]>([]);
+  const { isPowerMode } = useAnimation();
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   // Smooth out mouse movement
-  const springConfig = { damping: 30, stiffness: 200 };
+  const springConfig = { damping: 40, stiffness: 150 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
   const background = useTransform(
     [smoothX, smoothY],
-    ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(34, 211, 238, 0.15), transparent 80%)`
+    ([x, y]) => isPowerMode 
+      ? `radial-gradient(400px circle at ${x}px ${y}px, rgba(34, 211, 238, 0.12), transparent 80%)`
+      : 'none'
   );
 
   useEffect(() => {
@@ -66,29 +70,31 @@ export default function GridBackground() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.08),transparent_50%)]" />
       
       {/* Moving Particles */}
-      <div className="absolute inset-0">
-        {particles.map((p) => (
-          <motion.div
-            key={p.id}
-            initial={{ 
-              opacity: p.initialOpacity,
-              x: p.x, 
-              y: p.y 
-            }}
-            animate={{
-              opacity: [p.initialOpacity, p.initialOpacity + 0.2, p.initialOpacity],
-              y: ["-2%", "102%"],
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 5
-            }}
-            className="absolute w-[1px] h-20 bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"
-          />
-        ))}
-      </div>
+      {isPowerMode && (
+        <div className="absolute inset-0">
+          {particles.map((p) => (
+            <motion.div
+              key={p.id}
+              initial={{ 
+                opacity: p.initialOpacity,
+                x: p.x, 
+                y: p.y 
+              }}
+              animate={{
+                opacity: [p.initialOpacity, p.initialOpacity + 0.2, p.initialOpacity],
+                y: ["-2%", "102%"],
+              }}
+              transition={{
+                duration: p.duration,
+                repeat: Infinity,
+                ease: "linear",
+                delay: Math.random() * 5
+              }}
+              className="absolute w-[1px] h-20 bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { MediaUpload } from "@/components/admin/MediaUpload";
-import { Textarea } from "@/components/ui/Textarea";
 
 export function CertifiedManager({ initialCertifications }: { initialCertifications: Certified[] }) {
   const [certs, setCerts] = useState<Certified[]>(initialCertifications);

@@ -5,11 +5,7 @@ import { NAV_LINKS, SITE_CONFIG } from "@/lib/utils/constants";
 import { MapPin, Mail, Phone, ExternalLink, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { usePremiumSound } from "@/hooks/usePremiumSound";
-
 export default function Footer() {
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   return (
     <footer className="relative border-t border-white/5 bg-black text-slate-400 overflow-hidden">
@@ -27,8 +23,6 @@ export default function Footer() {
             <div>
               <Link
                 href="/login"
-                onMouseEnter={playHover}
-                onClick={playClick}
                 className="text-3xl font-black tracking-tighter text-white block mb-2 group"
               >
                 RSP<span className="text-cyan-400 group-hover:animate-pulse">.</span>
@@ -49,8 +43,6 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="click"
-                  onMouseEnter={playHover}
-                  onClick={playClick}
                   whileHover={{ y: -5, scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   className="w-12 h-12 rounded-2xl bg-neutral-950/50 backdrop-blur-xl border border-white/5 flex items-center justify-center neon-hover"
@@ -79,8 +71,6 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    onMouseEnter={playHover}
-                    onClick={playClick}
                     className="text-sm font-semibold hover:text-cyan-400 transition-all flex items-center gap-3 group"
                   >
                     <ArrowRight className="w-3 h-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all text-cyan-500" />
@@ -100,7 +90,6 @@ export default function Footer() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
               <motion.div 
                 whileHover={{ x: 5 }}
-                onMouseEnter={playHover}
                 className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-md group hover:border-cyan-500/30 transition-all cursor-default"
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
@@ -112,7 +101,6 @@ export default function Footer() {
 
               <motion.div 
                 whileHover={{ x: 5 }}
-                onMouseEnter={playHover}
                 className="p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-md group hover:border-cyan-500/30 transition-all cursor-default"
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">

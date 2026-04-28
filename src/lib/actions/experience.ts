@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 import type {
   ExperienceInsert,
   ExperienceUpdate,
@@ -53,6 +54,7 @@ export async function createExperience(exp: ExperienceInsert) {
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -72,6 +74,7 @@ export async function updateExperience(
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -86,4 +89,5 @@ export async function deleteExperience(id_experience: string) {
     .eq("id_experience", id_experience);
 
   if (error) throw error;
+  revalidatePath("/");
 }

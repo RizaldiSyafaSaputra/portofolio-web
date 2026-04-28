@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Zap, ZapOff } from "lucide-react";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/utils/constants";
-import { usePremiumSound } from "@/hooks/usePremiumSound";
 import { useAnimation } from "@/context/AnimationContext";
 
 export default function Navbar() {
@@ -15,10 +14,8 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const [isModalActive, setIsModalActive] = useState(false);
+  const [showPowerHint, setShowPowerHint] = useState(true);
   const pathname = usePathname();
-
-  const playHover = usePremiumSound('/sounds/hover.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   useEffect(() => {
     const handleOpen = () => setIsModalActive(true);
@@ -41,6 +38,8 @@ export default function Navbar() {
     if (isMobileOpen) {
       setIsMobileOpen(false);
     }
+    // Safety: Reset modal state on navigation
+    setIsModalActive(false);
   }, [pathname]);
 
   return (
@@ -70,8 +69,6 @@ export default function Navbar() {
           {/* Logo */}
           <Link 
             href="/" 
-            onMouseEnter={playHover}
-            onClick={playClick}
             className="relative group flex items-center gap-2 shrink-0"
           >
             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${isPowerMode ? 'from-cyan-500 to-blue-600 shadow-cyan-500/20 group-hover:shadow-cyan-500/40' : 'from-slate-700 to-slate-900 border border-white/10'} flex items-center justify-center font-black text-white text-sm transition-all duration-300 shadow-lg`}>
@@ -97,9 +94,7 @@ export default function Navbar() {
                   href={link.href}
                   onMouseEnter={() => {
                     setHoveredLink(link.href);
-                    playHover();
                   }}
-                  onClick={playClick}
                   onMouseLeave={() => setHoveredLink(null)}
                   className={`relative px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
                     isActive ? "text-cyan-400" : "text-slate-400 hover:text-white"
@@ -133,9 +128,7 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   togglePowerMode();
-                  playClick();
                 }}
-                onMouseEnter={playHover}
                 className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 ${
                   isPowerMode 
                     ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" 
@@ -153,35 +146,53 @@ export default function Navbar() {
                 </span>
               </button>
 
-              {/* Power Mode Hint / Alert */}
+              {/* Power Mode Hint / Alert - Permanently Visible with Dismiss */}
               <AnimatePresence>
-                {!isPowerMode && (
+                {showPowerHint && (
                   <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="absolute top-full mt-4 right-0 w-64 p-4 rounded-2xl bg-cyan-500 text-slate-950 shadow-[0_10px_40px_rgba(6,182,212,0.4)] z-[110] pointer-events-none"
+                    exit={{ opacity: 0, scale: 0.9, y: 5 }}
+                    className={`absolute top-full mt-4 right-0 w-64 p-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.4)] z-[110] pointer-events-auto border group/hint ${
+                      isPowerMode 
+                        ? "bg-neutral-900/95 backdrop-blur-xl border-cyan-500/30 text-white" 
+                        : "bg-cyan-500 text-slate-950 border-cyan-400"
+                    }`}
                   >
                     {/* Arrow pointing up */}
-                    <div className="absolute -top-1.5 right-6 w-3 h-3 bg-cyan-500 rotate-45" />
+                    <div className={`absolute -top-1.5 right-6 w-3 h-3 rotate-45 border-l border-t ${
+                      isPowerMode ? "bg-neutral-900 border-cyan-500/30" : "bg-cyan-500 border-cyan-400"
+                    }`} />
                     
+                    {/* Dismiss Button */}
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setShowPowerHint(false); }}
+                      className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                        isPowerMode ? "hover:bg-white/10 text-slate-500 hover:text-white" : "hover:bg-black/10 text-black/40 hover:text-black"
+                      }`}
+                    >
+                      <X size={10} strokeWidth={3} />
+                    </button>
+
                     <div className="flex items-start gap-3">
-                      <Zap className="w-5 h-5 fill-slate-950 shrink-0 mt-0.5" />
-                      <div>
+                      <Zap className={`w-5 h-5 shrink-0 mt-0.5 ${isPowerMode ? "text-cyan-400 fill-cyan-400" : "fill-slate-950"}`} />
+                      <div className="pr-4">
                         <p className="text-[10px] font-black uppercase tracking-wider leading-tight">
-                          Upgrade Your Experience?
+                          {isPowerMode ? "Performance Mode Active" : "Upgrade Your Experience?"}
                         </p>
-                        <p className="text-[9px] font-bold mt-1 opacity-80 leading-relaxed">
-                          Tekan button ini untuk merasakan sensasi animasi premium & efek imersif!
+                        <p className={`text-[9px] font-bold mt-1 leading-relaxed ${isPowerMode ? "text-slate-400" : "opacity-80"}`}>
+                          {isPowerMode 
+                            ? "Tekan button ini jika website terasa berat atau lemot di perangkat Anda." 
+                            : "Tekan button ini untuk merasakan sensasi animasi premium & efek imersif!"}
                         </p>
                       </div>
                     </div>
 
                     {/* Floating Pulse Effect */}
                     <motion.div 
-                      animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
+                      animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.3, 0.1] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute inset-0 rounded-2xl border-2 border-white/30"
+                      className={`absolute inset-0 rounded-2xl border-2 pointer-events-none ${isPowerMode ? 'border-cyan-500/20' : 'border-white/30'}`}
                     />
                   </motion.div>
                 )}
@@ -189,10 +200,8 @@ export default function Navbar() {
             </div>
 
             <button
-              onMouseEnter={playHover}
               onClick={() => {
                 setIsMobileOpen(!isMobileOpen);
-                playClick();
               }}
               className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-neutral-950 border border-white/10 text-white"
             >
@@ -238,8 +247,6 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onMouseEnter={playHover}
-                    onClick={playClick}
                     className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
                       isActive
                         ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"

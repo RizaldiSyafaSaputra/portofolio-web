@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 import type { CertifiedInsert, CertifiedUpdate } from "@/lib/types/database";
 
 /**
@@ -50,6 +51,7 @@ export async function createCertification(cert: CertifiedInsert) {
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -69,6 +71,7 @@ export async function updateCertification(
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -83,4 +86,5 @@ export async function deleteCertification(id_certified: string) {
     .eq("id_certified", id_certified);
 
   if (error) throw error;
+  revalidatePath("/");
 }

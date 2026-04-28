@@ -24,7 +24,6 @@ interface ProjectGridProps {
 
 import { createPortal } from 'react-dom'
 import { memo } from 'react'
-import { usePremiumSound } from '@/hooks/usePremiumSound'
 import dynamic from 'next/dynamic'
 
 const LightRays = dynamic(() => import('@/components/ui/LightRays'), { ssr: false });
@@ -32,11 +31,8 @@ const LightRays = dynamic(() => import('@/components/ui/LightRays'), { ssr: fals
 // Memoize ProjectCard to prevent re-renders when modal opens
 const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project: Project; onClick: () => void; getMediaUrls: (url: string | null) => any[]; isVideo: (item: any) => boolean }) => {
   const [isHovered, setIsHovered] = useState(false)
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   const handleClick = () => {
-    playClick();
     onClick();
   };
   const media = getMediaUrls(project.media_url)
@@ -51,7 +47,6 @@ const ProjectCard = memo(({ project, onClick, getMediaUrls, isVideo }: { project
         data-cursor="view"
         onMouseEnter={() => {
           setIsHovered(true);
-          playHover();
         }}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleClick}
@@ -167,13 +162,10 @@ ProjectCard.displayName = 'ProjectCard'
 
 export function ProjectGrid({ projects }: ProjectGridProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [activeMediaIndex, setActiveMediaIndex] = useState<Record<string, number>>({})
   const [currentPage, setCurrentPage] = useState(1)
-  const [activeMediaIndex, setActiveMediaIndex] = useState<{ [key: string]: number }>({})
   const [mounted, setMounted] = useState(false)
   const itemsPerPage = 6
-
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   useEffect(() => {
     setMounted(true)
@@ -189,7 +181,6 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
   const handleNextPage = () => {
     if (currentPage < safeTotalPages) {
-      playClick();
       setCurrentPage(prev => prev + 1)
       window.scrollTo({ top: 400, behavior: 'smooth' })
     }
@@ -197,7 +188,6 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      playClick();
       setCurrentPage(prev => prev - 1)
       window.scrollTo({ top: 400, behavior: 'smooth' })
     }
@@ -290,7 +280,6 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
             <div className="flex items-center gap-6">
               <button
                 onClick={handlePrevPage}
-                onMouseEnter={playHover}
                 disabled={currentPage === 1}
                 className={`group flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                   currentPage === 1 
@@ -314,7 +303,6 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
               <button
                 onClick={handleNextPage}
-                onMouseEnter={playHover}
                 disabled={currentPage === safeTotalPages}
                 className={`group flex items-center gap-2 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${
                   currentPage === safeTotalPages 
@@ -354,14 +342,32 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                 className="relative w-full max-w-6xl h-full max-h-[85vh] bg-neutral-950/60 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] flex flex-col lg:flex-row z-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button 
-                  onClick={() => { playClick(); setSelectedId(null); }}
-                  onMouseEnter={playHover}
-                  data-cursor="close"
-                  className="absolute top-6 right-6 z-[70] p-4 bg-neutral-900/90 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all shadow-2xl group"
-                >
-                  <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                </button>
+                  <div className="absolute top-6 right-6 z-[120] flex gap-3">
+                    {(() => {
+                      const media = getMediaUrls(selectedProject.media_url);
+                      const currentIndex = activeMediaIndex[selectedProject.id_project] || 0;
+                      const currentMedia = media[currentIndex];
+                      return currentMedia?.url && (
+                        <a 
+                          href={currentMedia.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="w-12 h-12 rounded-full bg-neutral-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors shadow-2xl"
+                          title="Open in new tab"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                        </a>
+                      );
+                    })()}
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setSelectedId(null); }}
+                      data-cursor="close"
+                      className="w-12 h-12 rounded-full bg-neutral-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-all shadow-2xl group"
+                    >
+                      <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                    </button>
+                  </div>
 
                 <div className="w-full lg:w-[55%] relative flex items-center justify-center group/slider overflow-hidden border-b lg:border-b-0 lg:border-r border-white/5">
                   {(() => {
@@ -424,15 +430,13 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                         {media.length > 1 && (
                           <>
                             <button 
-                              onClick={(e) => { e.stopPropagation(); playClick(); prevMedia(selectedProject.id_project, media.length); }}
-                              onMouseEnter={playHover}
+                              onClick={(e) => { e.stopPropagation(); prevMedia(selectedProject.id_project, media.length); }}
                               className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
-                              onClick={(e) => { e.stopPropagation(); playClick(); nextMedia(selectedProject.id_project, media.length); }}
-                              onMouseEnter={playHover}
+                              onClick={(e) => { e.stopPropagation(); nextMedia(selectedProject.id_project, media.length); }}
                               className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronRight className="w-6 h-6" />
@@ -494,8 +498,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
                     <div className="mt-auto pt-16">
                       <button 
-                        onClick={() => { playClick(); setSelectedId(null); }}
-                        onMouseEnter={playHover}
+                        onClick={() => { setSelectedId(null); }}
                         className="w-full py-5 rounded-2xl bg-white text-slate-950 font-black uppercase tracking-widest text-xs hover:bg-cyan-400 transition-all shadow-2xl"
                       >
                         Close Analysis

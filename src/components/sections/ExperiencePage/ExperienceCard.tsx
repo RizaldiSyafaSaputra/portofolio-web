@@ -10,7 +10,6 @@ import {
 } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { TiltCard } from '@/components/ui/TiltCard'
-import { usePremiumSound } from '@/hooks/usePremiumSound'
 
 interface ExperienceCardProps {
   id: string
@@ -48,11 +47,8 @@ export function ExperienceCard({
   onViewDetails,
   noAnimation = false
 }: ExperienceCardProps & { noAnimation?: boolean }) {
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   const handleAction = () => {
-    playClick();
     onViewDetails({ companyName, position, skills, startDate, endDate, location, description, media });
   };
 
@@ -60,7 +56,6 @@ export function ExperienceCard({
     <motion.div
       className="relative group w-full whitespace-normal h-full will-change-transform"
       data-cursor="view"
-      onMouseEnter={playHover}
       initial={noAnimation ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
       whileInView={noAnimation ? undefined : { opacity: 1, scale: 1 }}
       animate={noAnimation ? { opacity: 1, scale: 1 } : undefined}

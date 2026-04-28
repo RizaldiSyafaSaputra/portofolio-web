@@ -5,7 +5,6 @@ import { Mail, Phone, MapPin, Download, User, Calendar, X, ShieldCheck, Terminal
 import type { Profile, Sosmed } from '@/lib/types/database'
 import Image from 'next/image'
 import GridBackground from '../../ui/GridBackground'
-import { usePremiumSound } from '@/hooks/usePremiumSound'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import AnimatedDescription from "@/components/ui/AnimatedDescription"
@@ -24,34 +23,31 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
   const [isScanned, setIsScanned] = useState(false)
   const scanInterval = useRef<NodeJS.Timeout | null>(null)
 
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.4);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.6);
-  const playScan = usePremiumSound('/sounds/blip.mp3', 0.3);
-
   // Scroll Lock Logic
   useEffect(() => {
     if (isDossierOpen) {
       document.body.style.overflow = 'hidden';
+      window.dispatchEvent(new CustomEvent('modalOpen'));
     } else {
       document.body.style.overflow = 'unset';
+      window.dispatchEvent(new CustomEvent('modalClose'));
       setScanProgress(0);
       setIsScanned(false);
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => { 
+      document.body.style.overflow = 'unset';
+      window.dispatchEvent(new CustomEvent('modalClose'));
+    };
   }, [isDossierOpen]);
 
   // Fingerprint Scan Logic
   const startScan = () => {
     if (isScanned) return;
     scanInterval.current = setInterval(() => {
-      // Play subtle pulse sound every few ticks
-      if (Math.random() > 0.8) playScan();
-      
       setScanProgress(prev => {
         if (prev >= 100) {
           if (scanInterval.current) clearInterval(scanInterval.current);
           setIsScanned(true);
-          playClick();
           return 100;
         }
         return prev + 2;
@@ -118,8 +114,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                   className="text-slate-300 text-lg mb-4 leading-relaxed"
                 />
                 <button
-                  onClick={() => { setIsDossierOpen(true); playClick(); }}
-                  onMouseEnter={playHover}
+                  onClick={() => { setIsDossierOpen(true); }}
                   data-cursor="view"
                   className="text-cyan-400 text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2 group mx-auto lg:mx-0"
                 >
@@ -175,8 +170,6 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     data-cursor="click"
-                    onMouseEnter={playHover}
-                    onClick={playClick}
                     className="relative px-6 py-3 font-semibold text-white rounded-lg overflow-hidden group w-full sm:w-auto text-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -198,8 +191,6 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor="click"
-                        onMouseEnter={playHover}
-                        onClick={playClick}
                         className="w-12 h-12 rounded-full bg-neutral-900 flex items-center justify-center text-slate-300 hover:text-cyan-400 border border-slate-700 hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         whileTap={{ scale: 0.95 }}
@@ -294,33 +285,33 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsDossierOpen(false)}
-              className="absolute inset-0/90 backdrop-blur-2xl"
+              className="absolute inset-0 bg-black/60 backdrop-blur-xl"
             />
             
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-4xl bg-neutral-950 border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl"
+              className="relative w-full max-w-4xl bg-neutral-950 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl"
             >
               {/* Header */}
-              <div className="p-8 border-b border-white/5 flex items-center justify-between/50">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                    <ShieldCheck className="w-6 h-6" />
+              <div className="p-8 border-b border-white/5 flex items-center justify-between">
+                <div className="flex items-center gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
+                    <ShieldCheck className="w-7 h-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white uppercase italic tracking-tighter">Personnel Dossier</h3>
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Clearance Level: Admin</p>
+                    <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Personnel Dossier</h3>
+                    <p className="text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mt-0.5">Access Level: High-Clearance Admin</p>
                   </div>
                 </div>
+                
+                {/* Redesigned Close Button */}
                 <button
-                  onClick={() => { setIsDossierOpen(false); playClick(); }}
-                  onMouseEnter={playHover}
-                  data-cursor="close"
-                  className="w-12 h-12 rounded-2xl bg-neutral-900 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all flex items-center justify-center"
+                  onClick={(e) => { e.stopPropagation(); setIsDossierOpen(false); }}
+                  className="w-10 h-10 rounded-full bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all flex items-center justify-center border border-white/10 hover:border-red-500/30 group"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                 </button>
               </div>
 

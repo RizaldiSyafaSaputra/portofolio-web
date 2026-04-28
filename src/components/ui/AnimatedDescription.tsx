@@ -15,13 +15,13 @@ export default function AnimatedDescription({
   mode = "random" 
 }: AnimatedDescriptionProps) {
   
-  // Decide the mode randomly if set to random
+  // Stable mode selection to avoid hydration mismatch
   const activeMode = useMemo(() => {
     if (mode === "random") {
-      return Math.random() > 0.5 ? "word" : "paragraph";
+      return "word"; // Stable default
     }
     return mode;
-  }, [mode, text]);
+  }, [mode]);
 
   if (activeMode === "paragraph") {
     // Split by new lines or sentences to create small paragraphs/blocks

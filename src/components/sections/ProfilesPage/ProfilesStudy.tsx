@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, MapPin, Calendar, Award, ChevronRight } from 'lucide-react'
 import type { Study } from '@/lib/types/database'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ interface ProfilesStudyProps {
 }
 
 export function ProfilesStudy({ studies }: ProfilesStudyProps) {
-  const [activeId, setActiveId] = useState<string | null>(studies[0]?.id_study || null)
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   return (
     <section className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -81,7 +81,7 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
                   whileHover={{ y: -4 }}
                 >
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between">
                     <div className="flex-1 pr-4">
                       <motion.h3
                         className="text-xl font-bold text-white mb-1"
@@ -109,80 +109,68 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
                     </motion.div>
                   </div>
 
-                  {/* Meta information */}
-                  <div className="space-y-3 mb-4">
-                    {/* Date */}
-                    {(study.tanggal_masuk || study.tanggal_selesai) && (
+                  {/* Expandable Details Area */}
+                  <AnimatePresence initial={false}>
+                    {isActive && (
                       <motion.div
-                        className="flex items-center gap-2 text-sm text-slate-300"
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 + 0.2 }}
+                        initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                        animate={{ height: "auto", opacity: 1, marginTop: 16 }}
+                        exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
                       >
-                        <Calendar className="w-4 h-4 text-cyan-400" />
-                        <span>
-                          {study.tanggal_masuk} {' - '} 
-                          {study.tanggal_selesai ? study.tanggal_selesai : <span className="text-cyan-400 font-semibold">Present</span>}
-                        </span>
+                        {/* Meta information */}
+                        <div className="space-y-3 mb-6 pt-4 border-t border-white/5">
+                          {/* Date */}
+                          {(study.tanggal_masuk || study.tanggal_selesai) && (
+                            <div className="flex items-center gap-2 text-sm text-slate-300">
+                              <Calendar className="w-4 h-4 text-cyan-400" />
+                              <span>
+                                {study.tanggal_masuk} {' - '} 
+                                {study.tanggal_selesai ? study.tanggal_selesai : <span className="text-cyan-400 font-semibold">Present</span>}
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Location */}
+                          {study.lokasi_sekolah && (
+                            <div className="flex items-center gap-2 text-sm text-slate-300">
+                              <MapPin className="w-4 h-4 text-cyan-400" />
+                              <span>{study.lokasi_sekolah}</span>
+                            </div>
+                          )}
+
+                          {/* Grade/GPA */}
+                          {study.nilai && (
+                            <div className="flex items-center gap-2 text-sm text-slate-300">
+                              <Award className="w-4 h-4 text-purple-400" />
+                              <span>Grade / GPA: <span className="text-purple-300 font-bold">{study.nilai}</span></span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Description */}
+                        {study.deskripsi && (
+                          <div className="mb-4">
+                            <AnimatedDescription 
+                              text={study.deskripsi}
+                              className="text-sm text-slate-400 leading-relaxed italic border-l-2 border-cyan-500/30 pl-4"
+                            />
+                          </div>
+                        )}
                       </motion.div>
                     )}
-
-                    {/* Location */}
-                    {study.lokasi_sekolah && (
-                      <motion.div
-                        className="flex items-center gap-2 text-sm text-slate-300"
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 + 0.25 }}
-                      >
-                        <MapPin className="w-4 h-4 text-cyan-400" />
-                        <span>{study.lokasi_sekolah}</span>
-                      </motion.div>
-                    )}
-
-                    {/* Grade/GPA */}
-                    {study.nilai && (
-                      <motion.div
-                        className="flex items-center gap-2 text-sm text-slate-300"
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 + 0.3 }}
-                      >
-                        <Award className="w-4 h-4 text-purple-400" />
-                        <span>Grade / GPA: <span className="text-purple-300 font-bold">{study.nilai}</span></span>
-                      </motion.div>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  {isActive && study.deskripsi && (
-                    <motion.div
-                      className="mb-4 pb-4 border-t border-slate-700/50"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <AnimatedDescription 
-                        text={study.deskripsi}
-                        className="text-sm text-slate-300 leading-relaxed mt-4 whitespace-pre-line"
-                      />
-                    </motion.div>
-                  )}
+                  </AnimatePresence>
 
                   {/* Action indicator */}
-                  <motion.div
-                    className="flex items-center justify-between pt-4 border-t border-slate-700/50 mt-auto"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: idx * 0.1 + 0.4 }}
-                  >
-                    <span className="text-xs text-slate-400">
-                      {isActive ? 'Viewing Details' : 'Click to expand details'}
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-700/50 mt-4">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover:text-cyan-400 transition-colors">
+                      {isActive ? 'Hide Details' : 'View Details'}
                     </span>
                     <motion.div animate={{ rotate: isActive ? 90 : 0 }}>
                       <ChevronRight className="w-4 h-4 text-cyan-400" />
                     </motion.div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               </motion.div>
             )

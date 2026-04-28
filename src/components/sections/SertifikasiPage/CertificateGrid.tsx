@@ -6,7 +6,6 @@ import type { Certified } from '@/lib/types/database'
 
 import { useState, useEffect } from 'react'
 import { TiltCard } from "@/components/ui/TiltCard";
-import { usePremiumSound } from '@/hooks/usePremiumSound'
 import { createPortal } from 'react-dom'
 import dynamic from 'next/dynamic'
 
@@ -21,9 +20,6 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [activeMediaIndex, setActiveMediaIndex] = useState<{ [key: string]: number }>({})
   const [mounted, setMounted] = useState(false)
-
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
 
   useEffect(() => {
     setMounted(true)
@@ -42,6 +38,19 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
       window.scrollTo({ top: 400, behavior: 'smooth' })
     }
   }
+
+  useEffect(() => {
+    if (selectedCert) {
+      document.body.style.overflow = 'hidden';
+      window.dispatchEvent(new Event('modalOpen'));
+    } else {
+      document.body.style.overflow = 'unset';
+      window.dispatchEvent(new Event('modalClose'));
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedCert]);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -136,7 +145,6 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
 
               const handleSelectCert = () => {
                 if (mainThumbnail) {
-                  playClick();
                   setSelectedCert(cert);
                 }
               };
@@ -146,7 +154,6 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
                   <motion.div
                     className="group relative h-[550px] flex flex-col bg-neutral-950/40 backdrop-blur-xl rounded-3xl border border-white/5 overflow-hidden hover:border-cyan-500/30 transition-all duration-500 cursor-pointer"
                     data-cursor="view"
-                    onMouseEnter={playHover}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1, duration: 0.8 }}
@@ -282,22 +289,23 @@ export function CertificateGrid({ certifications }: CertificateGridProps) {
 
                   return (
                     <>
-                      <div className="absolute top-6 right-6 z-[110] flex gap-3">
+                      <div className="absolute top-6 right-6 z-[120] flex gap-3">
                         {currentMedia?.url && (
                           <a 
                             href={currentMedia.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="w-12 h-12 rounded-full/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors shadow-2xl"
+                            className="w-12 h-12 rounded-full bg-neutral-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-cyan-500 transition-colors shadow-2xl"
                             title="Open in new tab"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             <ExternalLink className="w-5 h-5" />
                           </a>
                         )}
                         <button
-                          onClick={() => setSelectedCert(null)}
+                          onClick={(e) => { e.stopPropagation(); setSelectedCert(null); }}
                           data-cursor="close"
-                          className="w-12 h-12 rounded-full/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-2xl"
+                          className="w-12 h-12 rounded-full bg-neutral-900/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-2xl"
                           title="Close"
                         >
                           <X className="w-5 h-5" />

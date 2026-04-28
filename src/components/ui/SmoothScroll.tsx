@@ -26,7 +26,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     gsap.ticker.lagSmoothing(0);
 
+    const handleOpen = () => lenis.stop();
+    const handleClose = () => lenis.start();
+
+    window.addEventListener('modalOpen', handleOpen);
+    window.addEventListener('modalClose', handleClose);
+
     return () => {
+      window.removeEventListener('modalOpen', handleOpen);
+      window.removeEventListener('modalClose', handleClose);
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
     };

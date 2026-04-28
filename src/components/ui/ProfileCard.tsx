@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import Image from 'next/image';
 import GradientText from './GradientText';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
@@ -515,22 +516,21 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 backfaceVisibility: 'hidden'
               }}
             >
-              <img
-                className="w-full absolute left-1/2 bottom-[-220px] will-change-transform transition-transform duration-[120ms] ease-out"
-                src={avatarUrl}
+              <Image
+                src={avatarUrl || "/assets/placeholder.png"}
                 alt={`${name || 'User'} avatar`}
-                loading="lazy"
+                width={500}
+                height={700}
+                className="w-full absolute left-1/2 bottom-[-220px] will-change-transform transition-transform duration-[120ms] ease-out"
                 style={{
                   transformOrigin: '50% 100%',
                   transform:
                     'translateX(calc(-50% + (var(--pointer-from-left) - 0.5) * 6px)) translateZ(0) scaleY(calc(1 + (var(--pointer-from-top) - 0.5) * 0.02)) scaleX(calc(1 + (var(--pointer-from-left) - 0.5) * 0.01))',
                   borderRadius: cardRadius,
-                  backfaceVisibility: 'hidden'
+                  backfaceVisibility: 'hidden',
+                  objectFit: 'contain'
                 }}
-                onError={e => {
-                  const t = e.target as HTMLImageElement;
-                  t.style.display = 'none';
-                }}
+                priority
               />
               {showUserInfo && (
                 <div
@@ -553,17 +553,13 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                       className="rounded-full overflow-hidden border border-white/10 flex-shrink-0"
                       style={{ width: '48px', height: '48px' }}
                     >
-                      <img
-                        className="w-full h-full object-cover rounded-full"
-                        src={miniAvatarUrl || avatarUrl}
+                      <Image
+                        src={miniAvatarUrl || avatarUrl || "/assets/placeholder.png"}
                         alt={`${name || 'User'} mini avatar`}
-                        loading="lazy"
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover rounded-full"
                         style={{ display: 'block', gridArea: 'auto', borderRadius: '50%', pointerEvents: 'auto' }}
-                        onError={e => {
-                          const t = e.target as HTMLImageElement;
-                          t.style.opacity = '0.5';
-                          t.src = avatarUrl;
-                        }}
                       />
                     </div>
                     <div className="flex flex-col items-start gap-1.5">

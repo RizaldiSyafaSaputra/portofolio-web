@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 import type { StudyInsert, StudyUpdate } from "@/lib/types/database";
 
 /**
@@ -35,6 +36,7 @@ export async function createStudy(study: StudyInsert) {
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -54,6 +56,7 @@ export async function updateStudy(
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -68,4 +71,5 @@ export async function deleteStudy(id_study: string) {
     .eq("id_study", id_study);
 
   if (error) throw error;
+  revalidatePath("/");
 }

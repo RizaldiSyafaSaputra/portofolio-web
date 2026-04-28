@@ -33,7 +33,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
         {...props}
       >
-        {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+        {isLoading && (
+          <div className="relative w-4 h-4 mr-3 shrink-0">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 rounded-full border-2 border-cyan-500/20 border-t-cyan-500"
+            />
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="absolute inset-1 rounded-full bg-cyan-400"
+            />
+          </div>
+        )}
         {children}
       </button>
     );

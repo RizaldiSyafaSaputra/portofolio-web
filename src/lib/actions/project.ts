@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 import type { ProjectInsert, ProjectUpdate } from "@/lib/types/database";
 
 /**
@@ -50,6 +51,7 @@ export async function createProject(project: ProjectInsert) {
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -69,6 +71,7 @@ export async function updateProject(
     .single();
 
   if (error) throw error;
+  revalidatePath("/");
   return data;
 }
 
@@ -83,4 +86,5 @@ export async function deleteProject(id_project: string) {
     .eq("id_project", id_project);
 
   if (error) throw error;
+  revalidatePath("/");
 }

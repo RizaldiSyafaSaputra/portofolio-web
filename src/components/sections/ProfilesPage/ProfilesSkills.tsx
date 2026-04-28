@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { Code2, Brain, Languages, Star, Zap, Terminal, Sparkles } from 'lucide-react'
 import type { Skill } from '@/lib/types/database'
 import { JenisKeahlian, LevelKeahlian } from '@/lib/types/database'
-import { usePremiumSound } from '@/hooks/usePremiumSound'
 import CyberRadarChart from '@/components/ui/CyberRadarChart'
 import AnimatedDescription from '@/components/ui/AnimatedDescription'
 import { useAnimation } from '@/context/AnimationContext'
@@ -35,7 +34,6 @@ const levelToColor = (level: LevelKeahlian) => {
 
 export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
   const { isPowerMode } = useAnimation();
-  const playHover = usePremiumSound('/sounds/blip.mp3', 0.05);
 
   const hardSkills = skills.filter((s) => s.jenis_keahlian === JenisKeahlian.HARD_SKILLS)
   const softSkills = skills.filter((s) => s.jenis_keahlian === JenisKeahlian.SOFT_SKILLS)
@@ -74,7 +72,6 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
         whileInView={{ opacity: 1, y: 0 }}
         transition={isPowerMode ? { delay: index * 0.1, duration: 0.8 } : { duration: 0 }}
         viewport={{ once: true }}
-        onMouseEnter={isPowerMode ? playHover : undefined}
       >
         {/* Neon Aura Background */}
         {isPowerMode && (

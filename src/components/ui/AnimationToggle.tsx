@@ -1,19 +1,12 @@
-"use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, ZapOff, Sparkles } from "lucide-react";
 import { useAnimation } from "@/context/AnimationContext";
-import useSound from "use-sound";
 import { useEffect, useState } from "react";
 
 export default function AnimationToggle() {
   const { isPowerMode, togglePowerMode } = useAnimation();
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
-  // Sound effects (optional placeholder)
-  const [playOn] = useSound("/sounds/power-on.mp3", { volume: 0.2 });
-  const [playOff] = useSound("/sounds/power-off.mp3", { volume: 0.1 });
 
   useEffect(() => {
     setMounted(true);
@@ -23,9 +16,6 @@ export default function AnimationToggle() {
 
   const handleToggle = () => {
     togglePowerMode();
-    // try {
-    //   isPowerMode ? playOff() : playOn();
-    // } catch (e) {}
   };
 
   return (
@@ -58,22 +48,13 @@ export default function AnimationToggle() {
             />
           )}
         </AnimatePresence>
-
+        
         <div className="relative z-10 flex items-center gap-3">
           <div className="relative">
             {isPowerMode ? (
               <Zap className="w-4 h-4 fill-cyan-400 animate-pulse" />
             ) : (
               <ZapOff className="w-4 h-4" />
-            )}
-            
-            {isPowerMode && isHovered && (
-              <motion.div
-                layoutId="sparkles"
-                className="absolute -top-2 -right-2"
-              >
-                <Sparkles className="w-3 h-3 text-white" />
-              </motion.div>
             )}
           </div>
 

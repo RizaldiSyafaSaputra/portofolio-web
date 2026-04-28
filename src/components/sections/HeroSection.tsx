@@ -9,7 +9,6 @@ import { Counter } from "../ui/Counter";
 import { useAnimation } from "@/context/AnimationContext";
 import { useEffect, useState } from "react";
 import AnimatedDescription from "../ui/AnimatedDescription";
-import { usePremiumSound } from "@/hooks/usePremiumSound";
 import GradientText from "../ui/GradientText";
 import ProfileCard from "../ui/ProfileCard";
 
@@ -23,9 +22,6 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ profile, stats }: HeroSectionProps) {
-  const playHover = usePremiumSound('/sounds/hover.mp3', 0.05);
-  const playClick = usePremiumSound('/sounds/click.mp3', 0.1);
-
   const { isPowerMode } = useAnimation();
   const WORDS = ["Execution", "Imagination", "Boundaries"];
   const [currentWord, setCurrentWord] = useState(0);
@@ -81,7 +77,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
 
             <motion.h1 
               variants={itemVariants} 
-              className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-8"
+              className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.85] mb-8"
             >
               <div className="mb-4">Beyond</div>
               <div className="h-[1.2em] relative overflow-hidden flex items-center justify-center lg:justify-start w-full min-w-[300px]">
@@ -99,14 +95,14 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                         colors={["#0004ff","#FF9FFC","#B497CF"]}
                         animationSpeed={3}
                         showBorder={false}
-                        className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter"
+                        className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter"
                       >
                         {WORDS[currentWord]}
                       </GradientText>
                     </motion.span>
                   </AnimatePresence>
                 ) : (
-                  <span className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-cyan-400 italic">
+                  <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-cyan-400 italic">
                     Evolution
                   </span>
                 )}
@@ -121,8 +117,6 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-5 justify-center lg:justify-start mb-16">
               <Link
                 href="/projects"
-                onMouseEnter={isPowerMode ? playHover : undefined}
-                onClick={playClick}
                 className={`group relative px-10 py-4 ${isPowerMode ? 'bg-white text-black hover:bg-cyan-400 hover:scale-[1.02]' : 'bg-cyan-500 text-white'} rounded-2xl font-black text-xs uppercase tracking-[0.2em] overflow-hidden transition-all duration-500 active:scale-95`}
               >
                 <span className="relative z-10 flex items-center gap-2">
@@ -135,8 +129,6 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   href={profile.resume_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onMouseEnter={isPowerMode ? playHover : undefined}
-                  onClick={playClick}
                   className={`group relative px-8 py-4 ${isPowerMode ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-neutral-900 text-slate-400'} border border-white/10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3 active:scale-95`}
                 >
                   <FileText className="w-4 h-4 text-cyan-400" />
