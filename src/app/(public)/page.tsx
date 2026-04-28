@@ -20,7 +20,7 @@ export default async function HomePage() {
   let experiences: Experience[] = [];
   let certifications: Certified[] = [];
   let stats = { projects: 0, experience: 0, certificates: 0 };
-  let highestStudy = null;
+  let studies: any[] = [];
 
   try {
     const [
@@ -38,7 +38,7 @@ export default async function HomePage() {
       getExperiences().catch(() => []),
       getCertifications().catch(() => []),
       getGlobalStats().catch(() => ({ projects: 0, experience: 0, certificates: 0 })),
-      getProfileForHome().catch(() => ({ profile: null, highestStudy: null }))
+      getProfileForHome().catch(() => ({ profile: null, studies: [] }))
     ]);
 
     profile = profileRes;
@@ -47,7 +47,7 @@ export default async function HomePage() {
     experiences = experiencesRes;
     certifications = certificationsRes;
     stats = statsRes;
-    highestStudy = homeProfileRes.highestStudy;
+    studies = homeProfileRes?.studies || [];
   } catch (error) {
     console.error("Home Page Data Fetch Error:", error);
   }
@@ -55,7 +55,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-transparent overflow-x-hidden">
       <HeroSection profile={profile} stats={stats} />
-      <AboutPreview profile={profile} skills={skills} highestStudy={highestStudy} />
+      <AboutPreview profile={profile} skills={skills} studies={studies} />
       <ProjectsPreview projects={projects} />
       <ExperiencePreview experiences={experiences} />
       <CertificatesPreview certifications={certifications} />

@@ -213,6 +213,7 @@ export interface Skill {
   jenis_keahlian: JenisKeahlian;
   nama_keahlian: string | null;
   level_keahlian: LevelKeahlian;
+  is_featured: boolean | null;
   created_at: string | null;
   updated_at: string | null;
 }
@@ -223,12 +224,14 @@ export interface SkillInsert {
   jenis_keahlian: JenisKeahlian;
   nama_keahlian?: string | null;
   level_keahlian: LevelKeahlian;
+  is_featured?: boolean | null;
 }
 
 export interface SkillUpdate {
   jenis_keahlian?: JenisKeahlian;
   nama_keahlian?: string | null;
   level_keahlian?: LevelKeahlian;
+  is_featured?: boolean | null;
   updated_at?: string | null;
 }
 

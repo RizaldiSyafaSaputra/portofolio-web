@@ -2,7 +2,7 @@
 
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Code2, Cpu, Zap, Palette, Wifi, Share2 } from "lucide-react";
+import { ArrowRight, Code2, Cpu, Zap, Palette, Wifi, Share2, Download, FileText } from "lucide-react";
 import type { Profile } from "@/lib/types/database";
 import GridBackground from "../ui/GridBackground";
 import { Counter } from "../ui/Counter";
@@ -129,6 +129,21 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   Launch Projects <ArrowRight className={`w-4 h-4 ${isPowerMode ? 'group-hover:translate-x-1.5' : ''} transition-transform duration-500`} />
                 </span>
               </Link>
+
+              {profile?.resume_url && (
+                <a
+                  href={profile.resume_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={isPowerMode ? playHover : undefined}
+                  onClick={playClick}
+                  className={`group relative px-8 py-4 ${isPowerMode ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-neutral-900 text-slate-400'} border border-white/10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3 active:scale-95`}
+                >
+                  <FileText className="w-4 h-4 text-cyan-400" />
+                  <span>Fetch CV</span>
+                  <Download className={`w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-y-0.5 transition-all duration-300`} />
+                </a>
+              )}
             </motion.div>
 
             <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-12">

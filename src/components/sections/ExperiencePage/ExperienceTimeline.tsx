@@ -103,30 +103,32 @@ const HorizontalTimeline = ({
           trigger: triggerRef.current,
           start: "top top",
           end: () => `+=${containerRef.current?.scrollWidth}`,
-          scrub: 1,
+          scrub: true, // Use boolean for better performance
           onUpdate: (self) => {
             if (progressLineRef.current) {
-              gsap.set(progressLineRef.current, { scaleX: self.progress });
+              gsap.set(progressLineRef.current, { scaleX: self.progress, force3D: true });
             }
             if (beamHeadRef.current) {
               gsap.set(beamHeadRef.current, { 
                 left: `${self.progress * 100}%`,
-                opacity: self.progress > 0.01 ? 1 : 0
+                opacity: self.progress > 0.01 ? 1 : 0,
+                force3D: true
               });
             }
             
+            // Simplified aura movement - only update every few frames or reduce complexity
             if (bgAura1Ref.current) {
               gsap.set(bgAura1Ref.current, { 
-                x: self.progress * 200,
-                y: Math.sin(self.progress * Math.PI) * 100,
-                rotate: self.progress * 360
+                x: self.progress * 100,
+                y: Math.sin(self.progress * Math.PI) * 50,
+                force3D: true
               });
             }
             if (bgAura2Ref.current) {
               gsap.set(bgAura2Ref.current, { 
-                x: -self.progress * 300,
-                y: Math.cos(self.progress * Math.PI) * 150,
-                rotate: -self.progress * 180
+                x: -self.progress * 150,
+                y: Math.cos(self.progress * Math.PI) * 70,
+                force3D: true
               });
             }
           }
@@ -155,7 +157,7 @@ const HorizontalTimeline = ({
       <div className="h-screen flex items-center relative">
         <div 
           ref={containerRef} 
-          className="flex items-center gap-24 px-[20vw] whitespace-nowrap"
+          className="flex items-center gap-24 px-[20vw] whitespace-nowrap will-change-transform"
         >
           <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/5 -translate-y-1/2 z-0" />
           
@@ -229,12 +231,13 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
         {
           x: () => -(containerRef.current?.scrollWidth || 0) + window.innerWidth / 1.5,
           ease: "none",
+          force3D: true, // Crucial for performance
           scrollTrigger: {
             trigger: triggerRef.current,
             pin: true,
             pinType: "transform",
             anticipatePin: 1,
-            scrub: 0.5,
+            scrub: true, // Fast scrub
             start: "top top",
             end: () => `+=${containerRef.current?.scrollWidth}`,
             invalidateOnRefresh: true,

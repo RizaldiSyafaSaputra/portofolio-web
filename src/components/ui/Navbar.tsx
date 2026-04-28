@@ -129,28 +129,64 @@ export default function Navbar() {
           {/* Right Section: Power Toggle & Mobile Toggle */}
           <div className="flex items-center gap-3">
             {/* Power Mode Toggle */}
-            <button
-              onClick={() => {
-                togglePowerMode();
-                playClick();
-              }}
-              onMouseEnter={playHover}
-              className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 ${
-                isPowerMode 
-                  ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" 
-                  : "bg-neutral-900 border-white/10 text-slate-500"
-              }`}
-              title={isPowerMode ? "Switch to Low Power Mode" : "Switch to High Power Mode"}
-            >
-              {isPowerMode ? (
-                <Zap className="w-3.5 h-3.5 fill-cyan-400 animate-pulse" />
-              ) : (
-                <ZapOff className="w-3.5 h-3.5" />
-              )}
-              <span className="hidden lg:inline text-[9px] font-black uppercase tracking-[0.2em]">
-                {isPowerMode ? "High" : "Low"}
-              </span>
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => {
+                  togglePowerMode();
+                  playClick();
+                }}
+                onMouseEnter={playHover}
+                className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 ${
+                  isPowerMode 
+                    ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" 
+                    : "bg-neutral-900 border-white/10 text-slate-500"
+                }`}
+                title={isPowerMode ? "Switch to Low Power Mode" : "Switch to High Power Mode"}
+              >
+                {isPowerMode ? (
+                  <Zap className="w-3.5 h-3.5 fill-cyan-400 animate-pulse" />
+                ) : (
+                  <ZapOff className="w-3.5 h-3.5" />
+                )}
+                <span className="hidden lg:inline text-[9px] font-black uppercase tracking-[0.2em]">
+                  {isPowerMode ? "High" : "Low"}
+                </span>
+              </button>
+
+              {/* Power Mode Hint / Alert */}
+              <AnimatePresence>
+                {!isPowerMode && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="absolute top-full mt-4 right-0 w-64 p-4 rounded-2xl bg-cyan-500 text-slate-950 shadow-[0_10px_40px_rgba(6,182,212,0.4)] z-[110] pointer-events-none"
+                  >
+                    {/* Arrow pointing up */}
+                    <div className="absolute -top-1.5 right-6 w-3 h-3 bg-cyan-500 rotate-45" />
+                    
+                    <div className="flex items-start gap-3">
+                      <Zap className="w-5 h-5 fill-slate-950 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-wider leading-tight">
+                          Upgrade Your Experience?
+                        </p>
+                        <p className="text-[9px] font-bold mt-1 opacity-80 leading-relaxed">
+                          Tekan button ini untuk merasakan sensasi animasi premium & efek imersif!
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Floating Pulse Effect */}
+                    <motion.div 
+                      animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="absolute inset-0 rounded-2xl border-2 border-white/30"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <button
               onMouseEnter={playHover}

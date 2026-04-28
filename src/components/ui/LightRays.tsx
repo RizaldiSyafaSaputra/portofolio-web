@@ -151,8 +151,10 @@ const LightRays: React.FC<LightRaysProps> = ({
       if (!containerRef.current) return;
 
       const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
-        alpha: true
+        dpr: Math.min(window.devicePixelRatio, 1.5),
+        alpha: true,
+        premultipliedAlpha: false,
+        powerPreference: 'high-performance'
       });
       rendererRef.current = renderer;
 

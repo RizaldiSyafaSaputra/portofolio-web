@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Upload, X, Loader2, Image as ImageIcon, FileText, Film, AlertCircle } from "lucide-react";
+import { Upload, X, Loader2, Image as ImageIcon, FileText, Film, AlertCircle, Eye } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 interface MediaUploadProps {
@@ -28,12 +28,26 @@ export function MediaUpload({
 }: MediaUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [asset, setAsset] = useState<string | null>(defaultValue || null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     onUploadingChange?.(isUploading);
   }, [isUploading, onUploadingChange]);
+
+  useEffect(() => {
+    if (asset) {
+      // Try to extract a readable filename from the URL
+      try {
+        const url = new URL(asset);
+        const name = url.pathname.split('/').pop() || "Uploaded File";
+        setFileName(decodeURIComponent(name));
+      } catch {
+        setFileName("Uploaded File");
+      }
+    }
+  }, [asset]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,12 +56,14 @@ export function MediaUpload({
     // Reset state
     setError(null);
     setIsUploading(true);
+    setFileName(file.name);
 
     try {
       const supabase = createClient();
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const cleanName = file.name.split('.')[0].replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      const fileNameToUpload = `${cleanName}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+      const filePath = `${fileNameToUpload}`;
 
       const { error: uploadError } = await supabase.storage
         .from(bucket)
@@ -72,9 +88,11 @@ export function MediaUpload({
   const removeAsset = () => {
     setAsset(null);
     setError(null);
+    setFileName(null);
   };
 
   const isVideo = asset?.match(/\.(mp4|webm|ogg|mov)$/i);
+  const isPDF = asset?.match(/\.pdf$/i) || asset?.includes('application/pdf');
 
   return (
     <div className="space-y-2">
@@ -108,20 +126,42 @@ export function MediaUpload({
             </span>
           </div>
         ) : (
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-video bg-neutral-950 group/asset">
-            {isVideo ? (
-              <video src={asset} className="w-full h-full object-cover" controls />
+          <div className={`relative rounded-2xl overflow-hidden border border-white/10 ${isPDF ? 'h-24' : 'aspect-video'} bg-neutral-950 group/asset flex items-center justify-center`}>
+            {isPDF ? (
+              <div className="flex items-center gap-4 px-6 w-full">
+                <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20">
+                  <FileText className="w-6 h-6 text-red-400" />
+                </div>
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">PDF Document</span>
+                  <span className="text-sm font-bold text-white truncate">{fileName}</span>
+                </div>
+              </div>
+            ) : isVideo ? (
+              <video src={asset} className="w-full h-full object-cover" />
             ) : (
               <img src={asset} alt="Uploaded" className="w-full h-full object-contain" />
             )}
             
-            <button
-              type="button"
-              onClick={removeAsset}
-              className="absolute top-2 right-2 p-1.5 bg-black/60 backdrop-blur-md text-white rounded-lg opacity-0 group-hover/asset:opacity-100 transition-all hover:bg-red-500"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/asset:opacity-100 transition-all flex items-center justify-center gap-2">
+              <a 
+                href={asset} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2.5 bg-white/10 backdrop-blur-md text-white rounded-lg hover:bg-cyan-500 transition-all"
+                title="Preview File"
+              >
+                <Eye className="w-4 h-4" />
+              </a>
+              <button
+                type="button"
+                onClick={removeAsset}
+                className="p-2.5 bg-white/10 backdrop-blur-md text-white rounded-lg hover:bg-red-500 transition-all"
+                title="Delete File"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
 

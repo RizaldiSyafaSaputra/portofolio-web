@@ -58,7 +58,7 @@ export function ExperienceCard({
 
   return (
     <motion.div
-      className="relative group w-full whitespace-normal h-full"
+      className="relative group w-full whitespace-normal h-full will-change-transform"
       data-cursor="view"
       onMouseEnter={playHover}
       initial={noAnimation ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}

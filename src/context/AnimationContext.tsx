@@ -10,7 +10,7 @@ interface AnimationContextType {
 const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-  const [isPowerMode, setIsPowerMode] = useState<boolean>(true);
+  const [isPowerMode, setIsPowerMode] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

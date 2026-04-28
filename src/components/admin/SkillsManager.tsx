@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Edit2, Code, Loader2 } from "lucide-react";
+import { Plus, Trash2, Edit2, Code, Loader2, Star } from "lucide-react";
 import { createSkill, deleteSkill, updateSkill } from "@/lib/actions/skills";
 import type { Skill } from "@/lib/types/database";
 import { Button } from "@/components/ui/Button";
@@ -16,6 +16,29 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
   const [confirmState, setConfirmState] = useState<{ isOpen: boolean, action: (() => void) | null, type: 'save' | 'delete' }>({ isOpen: false, action: null, type: 'save' });
+
+  const featuredCount = skills.filter(s => s.is_featured).length;
+
+  const handleToggleFeatured = async (skill: Skill) => {
+    if (!skill.is_featured && featuredCount >= 6) {
+      alert("You can only feature up to 6 skills for the Home Page.");
+      return;
+    }
+
+    const updatedStatus = !skill.is_featured;
+    
+    // Optimistic update
+    setSkills(prev => prev.map(s => s.id_skills === skill.id_skills ? { ...s, is_featured: updatedStatus } : s));
+
+    try {
+      await updateSkill(skill.id_skills, { is_featured: updatedStatus });
+    } catch (error) {
+      console.error("Failed to toggle featured status:", error);
+      // Revert on error
+      setSkills(prev => prev.map(s => s.id_skills === skill.id_skills ? { ...s, is_featured: !updatedStatus } : s));
+      alert("Failed to update featured status.");
+    }
+  };
 
   const openAddModal = () => {
     setEditingSkill(null);
@@ -85,10 +108,13 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
     <div className="relative bg-neutral-950/50 backdrop-blur-xl border border-white/5 rounded-3xl p-8 mt-8 transition-all duration-500 hover:border-cyan-500/20 hover:shadow-2xl hover:shadow-cyan-500/5 group/manager">
       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 transition-all duration-700 group-hover/manager:bg-cyan-500/10 pointer-events-none" />
       
-      <div className="relative z-10 flex items-center justify-between mb-8">
-        <h3 className="text-xl font-bold text-white flex items-center gap-2">
-          <Code className="w-5 h-5 text-cyan-400" /> Skills Management
-        </h3>
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Code className="w-5 h-5 text-cyan-400" /> Skills Management
+          </h3>
+          <p className="text-xs text-slate-500 mt-1">Starred skills ({featuredCount}/6) will appear on the Home Page.</p>
+        </div>
         <Button onClick={openAddModal} variant="primary" size="sm">
           <Plus className="w-4 h-4 mr-2" /> Add Skill
         </Button>
@@ -102,14 +128,23 @@ export function SkillsManager({ initialSkills }: { initialSkills: Skill[] }) {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="flex items-center justify-between bg-black/50 border border-white/5 p-4 rounded-xl group"
+              className={`flex items-center justify-between bg-black/50 border ${skill.is_featured ? 'border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'border-white/5'} p-4 rounded-xl group transition-all`}
             >
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                  {skill.jenis_keahlian}
-                </span>
-                <span className="text-white font-bold">{skill.nama_keahlian}</span>
-                <span className="text-xs text-cyan-500 font-semibold">{skill.level_keahlian}</span>
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => handleToggleFeatured(skill)}
+                  className={`p-2 rounded-lg transition-all ${skill.is_featured ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600 hover:text-slate-400 bg-white/5'}`}
+                  title={skill.is_featured ? "Remove from Featured" : "Add to Featured"}
+                >
+                  <Star className={`w-4 h-4 ${skill.is_featured ? 'fill-cyan-400' : ''}`} />
+                </button>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                    {skill.jenis_keahlian}
+                  </span>
+                  <span className="text-white font-bold">{skill.nama_keahlian}</span>
+                  <span className="text-xs text-cyan-500 font-semibold">{skill.level_keahlian}</span>
+                </div>
               </div>
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button onClick={() => openEditModal(skill)} disabled={isPending} className="p-2 text-slate-400 hover:text-cyan-400 bg-neutral-900/50 hover:bg-cyan-500/10 rounded-lg transition-all">
