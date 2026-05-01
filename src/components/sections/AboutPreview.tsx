@@ -52,8 +52,8 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
       )}
       <div className="container relative z-10 mx-auto max-w-6xl px-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 mb-20 text-center md:text-left">
+          <div className="max-w-2xl flex flex-col items-center md:items-start">
             <motion.div 
               initial={isPowerMode ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -103,7 +103,7 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
             {isPowerMode && (
               <div className="absolute -inset-px bg-gradient-to-br from-cyan-500/20 to-transparent rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             )}
-            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-12 overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:border-cyan-500/30 group-hover:shadow-[0_0_50px_rgba(6,182,212,0.15)]' : ''}`}>
+            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-8 md:p-12 overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:border-cyan-500/30 group-hover:shadow-[0_0_50px_rgba(6,182,212,0.15)]' : ''}`}>
               <div className={`absolute top-0 right-0 p-10 opacity-[0.03] ${isPowerMode ? 'group-hover:opacity-[0.1] group-hover:scale-110 group-hover:rotate-6' : ''} transition-all duration-700`}>
                 <Terminal className="w-48 h-48 text-white" />
               </div>
@@ -119,7 +119,7 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
                     "A visionary developer specializing in high-performance web systems and immersive digital interfaces. My goal is to bridge the gap between imagination and reality through code."}
                 </motion.p>
                 
-                <div className="mt-12 flex items-center gap-6">
+                <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6">
                   <div className="flex -space-x-2">
                     {techLogos.map((logo, i) => (
                       <motion.div 
@@ -179,7 +179,7 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
             {isPowerMode && (
               <div className="absolute -inset-px bg-gradient-to-br from-cyan-400/30 to-blue-600/30 rounded-[3rem] opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             )}
-            <div className={`relative h-full ${isPowerMode ? 'bg-gradient-to-br from-cyan-600/20 to-blue-800/20 backdrop-blur-2xl' : 'bg-cyan-900'} border border-white/10 rounded-[3rem] p-10 flex flex-col items-center justify-center text-center overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:scale-[0.98]' : ''}`}>
+            <div className={`relative h-full ${isPowerMode ? 'bg-gradient-to-br from-cyan-600/20 to-blue-800/20 backdrop-blur-2xl' : 'bg-cyan-900'} border border-white/10 rounded-[3rem] p-8 md:p-10 flex flex-col items-center justify-center text-center overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:scale-[0.98]' : ''}`}>
               {isPowerMode && <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.2),transparent_70%)]" />}
               
               <AnimatePresence mode="wait">
@@ -269,7 +269,7 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
             {isPowerMode && (
               <div className="absolute -inset-px bg-gradient-to-br from-purple-500/20 to-transparent rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             )}
-            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-10 transition-all duration-500 ${isPowerMode ? 'group-hover:border-purple-500/30' : ''}`}>
+            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-8 md:p-10 transition-all duration-500 ${isPowerMode ? 'group-hover:border-purple-500/30' : ''}`}>
               <div className="flex items-center gap-4 mb-8">
                 <div className={`w-12 h-12 rounded-2xl ${isPowerMode ? 'bg-purple-500/10 border-purple-500/20 group-hover:bg-purple-500/20' : 'bg-neutral-800 border-white/10'} flex items-center justify-center border transition-colors`}>
                   <Palette className={`w-6 h-6 ${isPowerMode ? 'text-purple-400' : 'text-slate-500'}`} />
@@ -314,8 +314,8 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
             {isPowerMode && (
               <div className="absolute -inset-px bg-gradient-to-br from-emerald-500/20 to-transparent rounded-[3rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             )}
-            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-10 flex items-center gap-10 overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:border-emerald-500/30' : ''}`}>
-              <div className="relative z-10 flex items-center gap-10">
+            <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/80 backdrop-blur-2xl' : 'bg-neutral-900'} border border-white/10 rounded-[3rem] p-8 md:p-10 flex flex-col sm:flex-row items-center gap-8 md:gap-10 overflow-hidden transition-all duration-500 ${isPowerMode ? 'group-hover:border-emerald-500/30' : ''}`}>
+              <div className="relative z-10 flex flex-col sm:flex-row items-center gap-8 md:gap-10">
                 <div className={`w-28 h-28 rounded-full border border-white/10 flex items-center justify-center shrink-0 shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] bg-white/[0.02] ${isPowerMode ? 'group-hover:border-emerald-500/50' : ''} transition-all duration-700`}>
                   <Globe className={`w-14 h-14 ${isPowerMode ? 'text-emerald-500 animate-spin-slow group-hover:text-white' : 'text-slate-500'} transition-colors`} />
                 </div>

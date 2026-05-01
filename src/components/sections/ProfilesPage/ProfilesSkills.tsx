@@ -78,15 +78,15 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
           <div className="absolute -inset-0.5 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-600/20 rounded-[2.5rem] opacity-30 group-hover:opacity-100 group-hover:blur-xl transition-all duration-700" />
         )}
         
-        <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/60 backdrop-blur-3xl' : 'bg-neutral-900'} rounded-[2.5rem] p-10 border border-white/10 ${isPowerMode ? 'group-hover:border-cyan-500/40' : ''} transition-all duration-500 overflow-hidden shadow-2xl`}>
+        <div className={`relative h-full ${isPowerMode ? 'bg-[#0a0a0a]/60 backdrop-blur-3xl' : 'bg-neutral-900'} rounded-[2.5rem] p-6 md:p-10 border border-white/10 ${isPowerMode ? 'group-hover:border-cyan-500/40' : ''} transition-all duration-500 overflow-hidden shadow-2xl`}>
           {/* Decorative Corner Glow */}
           {isPowerMode && (
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 blur-[50px] group-hover:bg-cyan-500/20 transition-all" />
           )}
           
           <div className="flex items-center gap-5 mb-12">
-            <div className={`w-14 h-14 rounded-2xl border border-white/10 bg-white/[0.02] flex items-center justify-center text-cyan-400 ${isPowerMode ? 'group-hover:scale-110 group-hover:rotate-6 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/30' : ''} transition-all duration-500 shadow-xl`}>
-              <Icon className="w-7 h-7" />
+            <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-white/10 bg-white/[0.02] flex items-center justify-center text-cyan-400 ${isPowerMode ? 'group-hover:scale-110 group-hover:rotate-6 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/30' : ''} transition-all duration-500 shadow-xl`}>
+              <Icon className="w-6 h-6 md:w-7 md:h-7" />
             </div>
             <div>
               <h3 className="text-2xl font-black text-white tracking-tighter uppercase italic">{title}</h3>
@@ -175,7 +175,7 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
               {/* Hard Skills Radar */}
               <motion.div 
                 whileHover={isPowerMode ? { scale: 1.02 } : {}}
-                className={`relative p-10 ${isPowerMode ? 'bg-neutral-950/40 backdrop-blur-3xl border-white/10' : 'bg-neutral-900 border-white/5'} rounded-[3rem] border group overflow-hidden shadow-2xl`}
+                className={`relative p-6 md:p-10 ${isPowerMode ? 'bg-neutral-950/40 backdrop-blur-3xl border-white/10' : 'bg-neutral-900 border-white/5'} rounded-[3rem] border group overflow-hidden shadow-2xl`}
               >
                 {isPowerMode && (
                   <div className="absolute -inset-1 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -194,7 +194,7 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
               {/* Soft Skills Radar */}
               <motion.div 
                 whileHover={isPowerMode ? { scale: 1.02 } : {}}
-                className={`relative p-10 ${isPowerMode ? 'bg-neutral-950/40 backdrop-blur-3xl border-white/10' : 'bg-neutral-900 border-white/5'} rounded-[3rem] border group overflow-hidden shadow-2xl`}
+                className={`relative p-6 md:p-10 ${isPowerMode ? 'bg-neutral-950/40 backdrop-blur-3xl border-white/10' : 'bg-neutral-900 border-white/5'} rounded-[3rem] border group overflow-hidden shadow-2xl`}
               >
                 {isPowerMode && (
                   <div className="absolute -inset-1 bg-gradient-to-br from-purple-500/20 to-transparent rounded-[3rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />

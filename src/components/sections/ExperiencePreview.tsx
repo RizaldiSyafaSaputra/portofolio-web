@@ -30,8 +30,8 @@ export default function ExperiencePreview({ experiences }: ExperiencePreviewProp
       )}
       <div className="container relative z-10 mx-auto max-w-6xl px-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 mb-20 text-center md:text-left">
+          <div className="max-w-2xl flex flex-col items-center md:items-start">
             <motion.div 
               initial={isPowerMode ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -76,8 +76,8 @@ export default function ExperiencePreview({ experiences }: ExperiencePreviewProp
                 <div className={`absolute left-0 md:left-1/2 top-0 w-4 h-4 border-2 ${isPowerMode ? 'border-indigo-500' : 'border-slate-500'} bg-black rounded-full -translate-x-1/2 z-20`} />
 
                 {/* Content Card */}
-                <div className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:pl-12" : "md:pr-12"}`}>
-                  <div className={`p-8 rounded-[2.5rem] ${isPowerMode ? 'bg-white/[0.02] backdrop-blur-sm' : 'bg-neutral-900'} border border-white/5 ${isPowerMode ? 'hover:border-indigo-500/50 hover:bg-white/[0.04]' : ''} transition-all duration-500 relative overflow-hidden group`}>
+                <div className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:pl-12" : "md:pr-12"} px-4 md:px-0`}>
+                  <div className={`p-5 md:p-8 rounded-[2.5rem] ${isPowerMode ? 'bg-white/[0.02] backdrop-blur-sm' : 'bg-neutral-900'} border border-white/5 ${isPowerMode ? 'hover:border-indigo-500/50 hover:bg-white/[0.04]' : ''} transition-all duration-500 relative overflow-hidden group w-[95%] mx-auto md:w-full`}>
                     <div className={`absolute top-0 right-0 p-6 opacity-[0.03] ${isPowerMode ? 'group-hover:opacity-[0.1]' : ''} transition-opacity`}>
                       <Terminal className="w-20 h-20 text-white" />
                     </div>
@@ -117,7 +117,7 @@ export default function ExperiencePreview({ experiences }: ExperiencePreviewProp
           </div>
 
           {/* Centralized CTA Button */}
-          <div className="absolute bottom-0 left-0 md:left-1/2 -translate-x-1/2 flex flex-col items-center">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center w-full px-6">
             <motion.div
               whileHover={isPowerMode ? { scale: 1.05 } : {}}
               whileTap={{ scale: 0.95 }}

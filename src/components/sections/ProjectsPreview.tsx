@@ -45,8 +45,8 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
   return (
     <section className="relative py-32 bg-transparent overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 mb-20 text-center md:text-left">
+          <div className="max-w-2xl flex flex-col items-center md:items-start">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none"
+              className="text-4xl md:text-7xl font-black text-white tracking-tighter leading-none"
             >
               Selected <br />
               Digital <span className="text-blue-500 underline decoration-blue-500/20 decoration-8 underline-offset-4">Artifacts.</span>
@@ -95,7 +95,7 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative bg-white/[0.02] border border-white/5 hover:border-blue-500/50 hover:bg-white/[0.04] transition-all duration-500 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col h-[500px]"
+                className="group relative bg-white/[0.02] border border-white/5 hover:border-blue-500/50 hover:bg-white/[0.04] transition-all duration-500 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col min-h-[420px] md:min-h-[500px] h-auto w-[92%] mx-auto md:w-full"
               >
                 <div className="relative h-64 overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -151,7 +151,7 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
                   )}
                 </div>
 
-                <div className="p-8 flex flex-col flex-grow">
+                <div className="p-5 md:p-8 flex flex-col flex-grow">
                   <h3 className="text-2xl font-black text-white mb-3 tracking-tight">
                     {project.nama_project}
                   </h3>

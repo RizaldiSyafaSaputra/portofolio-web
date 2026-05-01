@@ -9,7 +9,7 @@ export const NAV_LINKS = [
 
 // Site metadata
 export const SITE_CONFIG = {
-  name: "Rizaldi.dev",
+  name: "Rizaldi.PortofV1",
   title: "Full-Stack Developer & Tech Enthusiast",
   description: "Portfolio website Rizaldi Syafa Saputra - Fresh graduate passionate about building modern web applications with Next.js and Supabase.",
   url: "https://rizaldisyafa.com",
@@ -17,8 +17,8 @@ export const SITE_CONFIG = {
   keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Full-Stack Developer", "Indonesia", "Portfolio"],
   twitterHandle: "@rizaldisyafa",
   contact: {
-    email: "hello@rizaldisyafa.com",
-    phone: "+62 812-3456-7890",
+    email: "rizaldi.saputra52@gmail.com",
+    phone: "+62 813-4575-8635",
     address: "Makassar, Indonesia",
   },
   socials: [

@@ -73,7 +73,7 @@ export function ProfilesStudy({ studies }: ProfilesStudyProps) {
 
                 {/* Card content */}
                 <motion.div
-                  className={`relative h-full bg-neutral-950/80 backdrop-blur-xl rounded-2xl p-6 border transition-all duration-300 ${
+                  className={`relative h-full bg-neutral-950/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 border transition-all duration-300 ${
                     isActive
                       ? 'border-cyan-500/50 bg-neutral-950/95 shadow-2xl shadow-cyan-500/20'
                       : 'border-slate-700/50 hover:border-slate-600/70'

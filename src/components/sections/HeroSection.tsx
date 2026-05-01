@@ -60,9 +60,9 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
       </div>
       
       <div className="container relative z-10 mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="flex flex-col items-center lg:flex-row lg:items-center gap-16 lg:gap-24">
           <motion.div 
-            className="flex-1 text-center lg:text-left"
+            className="flex-1 text-center lg:text-left w-full max-w-[90%] md:max-w-none"
             initial="hidden"
             animate="visible"
             variants={isPowerMode ? containerVariants : {}}
@@ -72,15 +72,15 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
               className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isPowerMode ? 'bg-cyan-500/10 border-cyan-500/20 backdrop-blur-md' : 'bg-neutral-900 border-white/10'} border mb-8 mx-auto lg:mx-0`}
             >
               <Zap className={`w-3.5 h-3.5 ${isPowerMode ? 'text-cyan-400 fill-cyan-400' : 'text-slate-500'}`} />
-              <span className={`text-[11px] font-black uppercase tracking-[0.25em] ${isPowerMode ? 'text-cyan-400' : 'text-slate-500'}`}>System Online v2.0</span>
+              <span className={`text-[11px] font-black uppercase tracking-[0.25em] ${isPowerMode ? 'text-cyan-400' : 'text-slate-500'}`}>System Online v1.0</span>
             </motion.div>
 
             <motion.h1 
               variants={itemVariants} 
-              className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.85] mb-8"
+              className="text-4xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.85] mb-8"
             >
               <div className="mb-4">Beyond</div>
-              <div className="h-[1.2em] relative overflow-hidden flex items-center justify-center lg:justify-start w-full min-w-[300px]">
+              <div className="h-[1.2em] relative overflow-hidden flex items-center justify-center lg:justify-start w-full min-w-[280px] md:min-w-[300px]">
                 {isPowerMode ? (
                   <AnimatePresence mode="popLayout">
                     <motion.span
@@ -95,14 +95,14 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                         colors={["#0004ff","#FF9FFC","#B497CF"]}
                         animationSpeed={3}
                         showBorder={false}
-                        className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter"
+                        className="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter"
                       >
                         {WORDS[currentWord]}
                       </GradientText>
                     </motion.span>
                   </AnimatePresence>
                 ) : (
-                  <span className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-cyan-400 italic">
+                  <span className="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter text-cyan-400 italic">
                     Evolution
                   </span>
                 )}
@@ -111,7 +111,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
 
             <AnimatedDescription 
               text={`Hi, I'm ${profile?.nama || "Rizaldi Syafa Saputra"}. Engineering scalable solutions and crafting the next generation of web interfaces.`}
-              className="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed mb-10 mx-auto lg:mx-0 font-medium"
+              className="text-base md:text-xl text-slate-400 max-w-xl leading-relaxed mb-10 mx-auto lg:mx-0 font-medium"
             />
 
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-5 justify-center lg:justify-start mb-16">
@@ -138,21 +138,21 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
               )}
             </motion.div>
 
-            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-12">
-              <Counter value={stats.projects} suffix="+" label="Projects Built" delay={0.5} />
-              <Counter value={stats.certificates} suffix="+" label="Certifications" delay={0.7} />
-              <Counter value={stats.experience} suffix="+" label="Experiences" delay={0.9} />
+            <motion.div variants={itemVariants} className="flex flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 md:gap-12 overflow-x-auto no-scrollbar pb-4 md:pb-0">
+              <Counter value={stats.projects} suffix="+" label="Projects" delay={0.5} />
+              <Counter value={stats.certificates} suffix="+" label="Certs" delay={0.7} />
+              <Counter value={stats.experience} suffix="+" label="Exp" delay={0.9} />
             </motion.div>
           </motion.div>
 
           <motion.div
-            className="flex-shrink-0 relative lg:col-span-5 flex justify-center"
+            className="flex-shrink-0 relative lg:col-span-5 flex justify-center mt-12 lg:mt-0"
             initial={isPowerMode ? { opacity: 0, scale: 0.8, rotateY: 30 } : { opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
             style={{ perspective: "1000px" }}
           >
-            <div className="relative w-72 h-80 md:w-[500px] md:h-[600px] flex items-center justify-center">
+            <div className="relative w-64 h-72 md:w-[500px] md:h-[600px] flex items-center justify-center scale-90 md:scale-100">
               {isPowerMode && (
                 <motion.div 
                   animate={{ 
@@ -198,7 +198,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   <motion.div
                     animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    className="absolute top-8 md:top-10 -left-6 md:-left-28 z-20 opacity-70 p-3 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-3 md:gap-4 shadow-2xl group/badge transition-all duration-300"
+                    className="absolute -top-12 md:top-10 -left-10 md:-left-28 z-20 opacity-90 md:opacity-70 p-2.5 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-2 md:gap-4 shadow-2xl group/badge transition-all duration-300"
                   >
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
                       <Palette className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -210,9 +210,9 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   </motion.div>
 
                   <motion.div
-                    animate={{ y: [0, 20, 0], x: [0, 15, 0] }}
-                    transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute top-1/2 -translate-y-1/2 -left-10 md:-left-36 z-20 opacity-70 p-3 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-3 md:gap-4 shadow-2xl group/badge transition-all duration-300"
+                    animate={{ y: [0, -20, 0], x: [0, 8, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/2 -translate-y-1/2 -left-16 md:-left-36 z-20 opacity-90 md:opacity-70 p-2.5 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-2 md:gap-4 shadow-2xl group/badge transition-all duration-300"
                   >
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
                       <Wifi className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -226,7 +226,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   <motion.div
                     animate={{ y: [0, -20, 0], x: [0, 8, 0] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute bottom-12 md:bottom-20 -left-6 md:-left-24 z-20 opacity-70 p-3 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-3 md:gap-4 shadow-2xl group/badge transition-all duration-300"
+                    className="absolute -bottom-12 md:bottom-20 -left-10 md:-left-24 z-20 opacity-90 md:opacity-70 p-2.5 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-2 md:gap-4 shadow-2xl group/badge transition-all duration-300"
                   >
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
                       <Code2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -240,7 +240,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   <motion.div
                     animate={{ y: [0, 25, 0], x: [0, -12, 0] }}
                     transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute top-1/4 -right-8 md:-right-32 z-20 opacity-70 p-3 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-3 md:gap-4 shadow-2xl group/badge transition-all duration-300"
+                    className="absolute top-0 md:top-1/4 -right-10 md:-right-32 z-20 opacity-90 md:opacity-70 p-2.5 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-2 md:gap-4 shadow-2xl group/badge transition-all duration-300"
                   >
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_15px_rgba(79,70,229,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
                       <Cpu className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -254,7 +254,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                   <motion.div
                     animate={{ y: [0, -25, 0], x: [0, 12, 0] }}
                     transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                    className="absolute bottom-10 md:bottom-28 -right-8 md:-right-40 z-20 opacity-70 p-3 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-3 md:gap-4 shadow-2xl group/badge transition-all duration-300"
+                    className="absolute bottom-0 md:bottom-28 -right-12 md:-right-40 z-20 opacity-90 md:opacity-70 p-2.5 md:p-4 rounded-3xl bg-black/40 hover:bg-black/80 hover:opacity-100 backdrop-blur-md border border-white/10 flex items-center gap-2 md:gap-4 shadow-2xl group/badge transition-all duration-300"
                   >
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 shadow-[0_0_15px_rgba(249,115,22,0.4)] flex items-center justify-center group-hover/badge:scale-110 transition-transform">
                       <Share2 className="w-4 h-4 md:w-5 md:h-5 text-white" />

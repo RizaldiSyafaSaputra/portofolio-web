@@ -223,7 +223,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="relative w-72 h-80 md:w-[500px] md:h-[600px] flex items-center justify-center">
+              <div className="relative w-64 h-72 md:w-[500px] md:h-[600px] flex items-center justify-center scale-90 md:scale-100">
                 {/* Background Decorative Elements (Behind Photo) */}
                 <motion.div 
                   animate={{ 
@@ -292,17 +292,17 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-4xl bg-neutral-950 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl"
+              className="relative w-[calc(100%-3rem)] max-w-4xl max-h-[85vh] bg-neutral-950 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col"
             >
               {/* Header */}
-              <div className="p-8 border-b border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
-                    <ShieldCheck className="w-7 h-7" />
+              <div className="p-5 md:p-8 border-b border-white/5 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-4 md:gap-5">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
+                    <ShieldCheck className="w-6 h-6 md:w-7 md:h-7" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">Personnel Dossier</h3>
-                    <p className="text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mt-0.5">Access Level: High-Clearance Admin</p>
+                    <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tighter">Personnel Dossier</h3>
+                    <p className="text-[9px] md:text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mt-0.5">Access Level: High-Clearance Admin</p>
                   </div>
                 </div>
                 
@@ -316,7 +316,7 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
               </div>
 
               {/* Content */}
-              <div className="p-8 md:p-12 max-h-[70vh] overflow-y-auto custom-scrollbar text-slate-300">
+              <div className="p-5 md:p-12 overflow-y-auto custom-scrollbar text-slate-300 flex-1 overscroll-contain">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                   <div className="lg:col-span-2 space-y-8">
                     <section>

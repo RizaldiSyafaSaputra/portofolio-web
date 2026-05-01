@@ -16,8 +16,8 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
     <section className="py-24 relative overflow-hidden bg-transparent">
       <div className="container mx-auto max-w-6xl px-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-20">
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 mb-20 text-center md:text-left">
+          <div className="max-w-2xl flex flex-col items-center md:items-start">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none"
+              className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none"
             >
               Honors & <br />
               <span className="text-cyan-500">Credentials.</span>
@@ -62,7 +62,7 @@ export default function CertificatesPreview({ certifications }: CertificatesPrev
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all duration-500 backdrop-blur-sm overflow-hidden flex flex-col"
+              className="group relative p-5 md:p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-cyan-500/50 hover:bg-white/[0.04] transition-all duration-500 backdrop-blur-sm overflow-hidden flex flex-col w-[90%] mx-auto sm:w-full"
             >
               {/* Verified Badge */}
               <div className="absolute top-6 right-6">
