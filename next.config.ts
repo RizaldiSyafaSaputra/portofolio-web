@@ -3,7 +3,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 /**
  * Rizaldi.dev - Next.js Configuration
- * Optimized for Production & Monitoring
+ * Version: 16.2.4 (Turbopack)
  */
 const nextConfig: NextConfig = {
   images: {
@@ -20,15 +20,11 @@ const nextConfig: NextConfig = {
   },
 };
 
-// Sentry configuration for Next.js 10+ (Merged Arguments)
+// Sentry configuration for latest SDK (v10.x / Turbopack compatible)
 export default withSentryConfig(nextConfig, {
   org: "rizaldi-dev",
   project: "portofolio-web",
   silent: true,
-  widenClientFileUpload: true,
-  transpileClientSDK: true,
-  tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
+  // Note: Some legacy options like transpileClientSDK are removed in newer versions
+  // and some are not yet supported with Turbopack.
 });
