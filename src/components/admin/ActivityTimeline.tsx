@@ -10,6 +10,8 @@ interface ActivityLog {
   id: string
   event_name: string
   properties: any
+  ip_address?: string
+  user_agent?: string
   created_at: string
 }
 
