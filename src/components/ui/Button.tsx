@@ -2,6 +2,7 @@
 
 import { ButtonHTMLAttributes, forwardRef } from "react";
 import { Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "danger" | "ghost";
