@@ -9,17 +9,21 @@ export const NAV_LINKS = [
 
 // Site metadata
 export const SITE_CONFIG = {
-  name: "Rizaldi Syafa Saputra",
-  title: "Portfolio",
-  description: "Portfolio website Rizaldi Syafa Saputra",
+  name: "Rizaldi.dev",
+  title: "Full-Stack Developer & Tech Enthusiast",
+  description: "Portfolio website Rizaldi Syafa Saputra - Fresh graduate passionate about building modern web applications with Next.js and Supabase.",
+  url: "https://rizaldisyafa.com",
+  author: "Rizaldi Syafa Saputra",
+  keywords: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Full-Stack Developer", "Indonesia", "Portfolio"],
+  twitterHandle: "@rizaldisyafa",
   contact: {
     email: "hello@rizaldisyafa.com",
     phone: "+62 812-3456-7890",
-    address: "Jl. Sudirman No. 123, Jakarta Selatan, Indonesia",
+    address: "Makassar, Indonesia",
   },
   socials: [
-    { name: "GitHub", url: "https://github.com", icon: "github.png" },
-    { name: "LinkedIn", url: "https://linkedin.com", icon: "linkedin.png" },
-    { name: "Instagram", url: "https://instagram.com", icon: "instagram.png" },
+    { name: "GitHub", url: "https://github.com/rizaldisyafa", icon: "github.png" },
+    { name: "LinkedIn", url: "https://linkedin.com/in/rizaldisyafa", icon: "linkedin.png" },
+    { name: "Instagram", url: "https://instagram.com/rizaldisyafa", icon: "instagram.png" },
   ]
 } as const;

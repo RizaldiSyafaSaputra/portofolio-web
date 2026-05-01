@@ -6,9 +6,10 @@ import SmoothScroll from "@/components/ui/SmoothScroll";
 
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
-import CustomCursor from "@/components/ui/CustomCursor";
+import dynamic from "next/dynamic";
+const CustomCursor = dynamic(() => import("@/components/ui/CustomCursor"), { ssr: false });
+const AnimationToggle = dynamic(() => import("@/components/ui/AnimationToggle"), { ssr: false });
 import PageTransition from "@/components/ui/PageTransition";
-import AnimationToggle from "@/components/ui/AnimationToggle";
 import Preloader from "@/components/ui/Preloader";
 import { usePathname } from "next/navigation";
 

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Zap, ZapOff, Sparkles } from "lucide-react";
 import { useAnimation } from "@/context/AnimationContext";
 import { useEffect, useState } from "react";
+import { trackEvent, ANALYTICS_EVENTS } from "@/lib/utils/analytics";
 
 export default function AnimationToggle() {
   const { isPowerMode, togglePowerMode } = useAnimation();
@@ -15,7 +16,11 @@ export default function AnimationToggle() {
   if (!mounted) return null;
 
   const handleToggle = () => {
+    const nextMode = !isPowerMode;
     togglePowerMode();
+    trackEvent(ANALYTICS_EVENTS.POWER_MODE_TOGGLE, {
+      mode: nextMode ? "power" : "simple",
+    });
   };
 
   return (
