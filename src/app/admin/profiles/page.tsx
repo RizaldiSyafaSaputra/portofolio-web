@@ -9,6 +9,8 @@ import { StudyManager } from "@/components/admin/StudyManager";
 import { SosmedManager } from "@/components/admin/SosmedManager";
 import { GlowingBackground } from "@/components/ui/GlowingBackground";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Manage Profile | Admin Control Panel",
 };

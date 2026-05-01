@@ -2,6 +2,8 @@ import { getCertifications } from "@/lib/actions/certified";
 import { CertifiedManager } from "@/components/admin/CertifiedManager";
 import { GlowingBackground } from "@/components/ui/GlowingBackground";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Manage Certifications | Admin Control Panel",
 };

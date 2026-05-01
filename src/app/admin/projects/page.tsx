@@ -2,6 +2,8 @@ import { getProjects } from "@/lib/actions/project";
 import { ProjectManager } from "@/components/admin/ProjectManager";
 import { GlowingBackground } from "@/components/ui/GlowingBackground";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProjectsPage() {
   const projects = await getProjects();
 

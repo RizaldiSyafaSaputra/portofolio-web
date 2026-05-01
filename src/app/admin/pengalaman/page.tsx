@@ -2,6 +2,8 @@ import { getExperiences } from "@/lib/actions/experience";
 import { ExperienceManager } from "@/components/admin/ExperienceManager";
 import { GlowingBackground } from "@/components/ui/GlowingBackground";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPengalamanPage() {
   const experiences = await getExperiences();
 

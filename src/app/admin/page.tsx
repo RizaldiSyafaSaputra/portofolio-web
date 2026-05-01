@@ -4,6 +4,8 @@ import { Briefcase, Code2, Award, FileText } from "lucide-react";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { RealtimeStats } from "@/components/admin/RealtimeStats";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   const supabase = await createClient();
 
