@@ -3,7 +3,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 /**
  * Rizaldi.dev - Next.js Configuration
- * Version: 16.2.4 (Turbopack)
+ * Minimalist Sentry v10 Integration
  */
 const nextConfig: NextConfig = {
   images: {
@@ -20,11 +20,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-// Sentry configuration for latest SDK (v10.x / Turbopack compatible)
-export default withSentryConfig(nextConfig, {
-  org: "rizaldi-dev",
-  project: "portofolio-web",
-  silent: true,
-  // Note: Some legacy options like transpileClientSDK are removed in newer versions
-  // and some are not yet supported with Turbopack.
-});
+// Sentry configuration: 
+// We use default options to let Sentry auto-detect settings from Environment Variables.
+export default withSentryConfig(nextConfig);
