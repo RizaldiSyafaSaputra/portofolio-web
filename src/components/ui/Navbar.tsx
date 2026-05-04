@@ -51,7 +51,7 @@ export default function Navbar() {
             y: isModalActive ? -120 : 0, 
             opacity: isModalActive ? 0 : 1,
             width: "100%",
-            maxWidth: isScrolled ? "896px" : "1152px",
+            maxWidth: isScrolled ? "1024px" : "1152px",
           }}
           transition={{ 
             type: "spring", 
@@ -60,10 +60,10 @@ export default function Navbar() {
             width: { duration: 0.5 }, // Smooth width transition
             maxWidth: { duration: 0.5 }
           }}
-          className={`relative flex items-center justify-between gap-8 px-6 h-14 md:h-16 rounded-full border transition-colors duration-500 ${
+          className={`relative flex items-center justify-between transition-all duration-500 px-4 md:px-6 h-14 md:h-16 rounded-full border ${
             isScrolled
-              ? "bg-black/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-              : "bg-transparent border-transparent"
+              ? "bg-black/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] gap-4 md:gap-6"
+              : "bg-transparent border-transparent gap-8"
           }`}
         >
           {/* Logo */}
@@ -123,13 +123,23 @@ export default function Navbar() {
 
           {/* Right Section: Power Toggle & Mobile Toggle */}
           <div className="flex items-center gap-3">
+            {/* Let's Talk Button - Desktop */}
+            <a
+              href="https://wa.me/6281345758635"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`hidden md:flex items-center gap-2 ${isScrolled ? 'px-2.5 py-1.5' : 'px-4 py-1.5'} rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-500 text-[10px] font-black uppercase tracking-widest shrink-0`}
+            >
+              Let's Talk
+            </a>
+
             {/* Power Mode Toggle */}
             <div className="relative">
               <button
                 onClick={() => {
                   togglePowerMode();
                 }}
-                className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-500 ${
+                className={`group relative flex items-center gap-2 ${isScrolled ? 'px-2 md:px-3 py-1.5' : 'px-3 py-1.5'} rounded-full border transition-all duration-500 shrink-0 ${
                   isPowerMode 
                     ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400" 
                     : "bg-neutral-900 border-white/10 text-slate-500"
@@ -141,9 +151,11 @@ export default function Navbar() {
                 ) : (
                   <ZapOff className="w-3.5 h-3.5" />
                 )}
-                <span className="hidden lg:inline text-[9px] font-black uppercase tracking-[0.2em]">
-                  {isPowerMode ? "High" : "Low"}
-                </span>
+                {!isScrolled && (
+                  <span className="hidden lg:inline text-[9px] font-black uppercase tracking-[0.2em]">
+                    {isPowerMode ? "High" : "Low"}
+                  </span>
+                )}
               </button>
 
               {/* Power Mode Hint / Alert - Permanently Visible with Dismiss */}
@@ -261,12 +273,14 @@ export default function Navbar() {
                 );
               })}
               
-              <Link
-                href="/contact"
+              <a
+                href="https://wa.me/6281345758635"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-4 w-full py-5 rounded-2xl bg-white text-black text-center text-sm font-bold uppercase tracking-widest hover:bg-cyan-400 transition-colors"
               >
                 Let's Talk
-              </Link>
+              </a>
             </div>
           </motion.div>
         )}

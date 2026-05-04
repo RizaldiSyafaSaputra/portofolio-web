@@ -117,7 +117,7 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-5 justify-center lg:justify-start mb-16">
               <Link
                 href="/projects"
-                className={`group relative px-10 py-4 ${isPowerMode ? 'bg-white text-black hover:bg-cyan-400 hover:scale-[1.02]' : 'bg-cyan-500 text-white'} rounded-2xl font-black text-xs uppercase tracking-[0.2em] overflow-hidden transition-all duration-500 active:scale-95`}
+                className={`group relative px-10 py-4 ${isPowerMode ? 'bg-white text-black hover:bg-cyan-400 hover:scale-[1.02]' : 'bg-neutral-900 text-white border border-white/10 hover:border-cyan-500/50'} rounded-2xl font-black text-xs uppercase tracking-[0.2em] overflow-hidden transition-all duration-500 active:scale-95`}
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Launch Projects <ArrowRight className={`w-4 h-4 ${isPowerMode ? 'group-hover:translate-x-1.5' : ''} transition-transform duration-500`} />
