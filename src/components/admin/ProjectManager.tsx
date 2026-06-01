@@ -336,12 +336,13 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
 
                         <p className="text-slate-400 text-sm leading-relaxed mb-8 italic">
                           "{(() => {
-                            const isLong = (project.deskripsi || "").length > 150;
+                            const desc = project.deskripsi || "";
+                            const isLong = desc.length > 150;
                             const isExpanded = expandedDescriptions[project.id_project];
                             if (isLong && !isExpanded) {
-                              return `${project.deskripsi.substring(0, 150)}...`;
+                              return `${desc.substring(0, 150)}...`;
                             }
-                            return project.deskripsi;
+                            return desc;
                           })()}"
                           {(project.deskripsi || "").length > 150 && (
                             <button 
