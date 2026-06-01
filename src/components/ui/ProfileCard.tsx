@@ -539,7 +539,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
               <img
                 src={parsedAvatarUrl || "/assets/placeholder.png"}
                 alt={`${name || 'User'} avatar`}
-                className="w-full absolute left-1/2 bottom-[-130px] will-change-transform transition-transform duration-[120ms] ease-out"
+                className="w-full absolute left-1/2 bottom-[-180px] will-change-transform transition-transform duration-[120ms] ease-out"
                 style={{
                   transformOrigin: '50% 100%',
                   transform:
