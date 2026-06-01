@@ -42,26 +42,6 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
   const [isScanned, setIsScanned] = useState(false)
   const scanInterval = useRef<NodeJS.Timeout | null>(null)
 
-  const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (!parsedResumeUrl) return;
-    try {
-      const response = await fetch(parsedResumeUrl);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = `${profile.nama || 'CV'}-Resume.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Failed to download CV:", error);
-      window.open(parsedResumeUrl, '_blank');
-    }
-  };
-
   // Scroll Lock Logic
   useEffect(() => {
     if (isDossierOpen) {
@@ -206,7 +186,8 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                 {parsedResumeUrl && (
                   <motion.a
                     href={parsedResumeUrl}
-                    onClick={handleDownload}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     data-cursor="click"
                     className="relative px-6 py-3 font-semibold text-white rounded-lg overflow-hidden group w-full sm:w-auto text-center"
                     whileHover={{ scale: 1.05 }}

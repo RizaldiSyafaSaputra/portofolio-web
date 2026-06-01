@@ -42,26 +42,6 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
   const { isPowerMode } = useAnimation();
   const parsedResumeUrl = getSingleMediaUrl(profile?.resume_url);
 
-  const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (!parsedResumeUrl) return;
-    try {
-      const response = await fetch(parsedResumeUrl);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = `${profile?.nama || 'CV'}-Resume.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Failed to download CV:", error);
-      window.open(parsedResumeUrl, '_blank');
-    }
-  };
-
   const WORDS = ["Execution", "Imagination", "Boundaries"];
   const [currentWord, setCurrentWord] = useState(0);
 
@@ -166,7 +146,8 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
               {parsedResumeUrl && (
                 <a
                   href={parsedResumeUrl}
-                  onClick={handleDownload}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`group relative px-8 py-4 ${isPowerMode ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-neutral-900 text-slate-400'} border border-white/10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3 active:scale-95`}
                 >
                   <FileText className="w-4 h-4 text-cyan-400" />
