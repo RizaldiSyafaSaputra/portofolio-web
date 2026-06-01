@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, User, Terminal, Globe, Palette, Box, Sparkles } from "lucide-react";
+import { ArrowUpRight, User, Terminal, Globe, Palette, Box, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import type { Profile, Skill } from "@/lib/types/database";
 import LightRays from "../ui/LightRays";
 import { useAnimation } from "@/context/AnimationContext";
@@ -17,6 +17,14 @@ interface AboutPreviewProps {
 export default function AboutPreview({ profile, skills, studies }: AboutPreviewProps) {
   const { isPowerMode } = useAnimation();
   const [educationIndex, setEducationIndex] = useState(-1);
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
+
+  const BIO_MAX_LENGTH = 150;
+  const bioText = profile?.bio || "A visionary developer specializing in high-performance web systems and immersive digital interfaces. My goal is to bridge the gap between imagination and reality through code.";
+  const needsBioTruncation = bioText.length > BIO_MAX_LENGTH;
+  const displayBio = isBioExpanded || !needsBioTruncation
+    ? bioText
+    : bioText.slice(0, BIO_MAX_LENGTH).trimEnd() + "...";
 
   const featuredSkills = skills.filter(s => s.is_featured).slice(0, 6);
   const currentStudy = educationIndex === -1 ? null : studies[educationIndex];
@@ -109,15 +117,24 @@ export default function AboutPreview({ profile, skills, studies }: AboutPreviewP
               </div>
               
               <div className="relative z-10">
-                <motion.p 
+                <motion.div 
                   initial={isPowerMode ? { opacity: 0 } : { opacity: 1 }}
                   whileInView={{ opacity: 1 }}
                   transition={isPowerMode ? { delay: 0.2, duration: 0.5 } : { duration: 0 }}
-                  className="text-2xl md:text-3xl text-slate-200 leading-snug font-medium tracking-tight"
                 >
-                  {profile?.bio ||
-                    "A visionary developer specializing in high-performance web systems and immersive digital interfaces. My goal is to bridge the gap between imagination and reality through code."}
-                </motion.p>
+                  <p className="text-2xl md:text-3xl text-slate-200 leading-snug font-medium tracking-tight">
+                    {displayBio}
+                  </p>
+                  {needsBioTruncation && (
+                    <button
+                      onClick={() => setIsBioExpanded(!isBioExpanded)}
+                      className={`inline-flex items-center gap-1.5 mt-4 text-xs font-black uppercase tracking-[0.2em] transition-colors duration-300 ${isPowerMode ? 'text-cyan-400 hover:text-cyan-300' : 'text-slate-400 hover:text-white'}`}
+                    >
+                      {isBioExpanded ? "Show Less" : "Show More"}
+                      {isBioExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </button>
+                  )}
+                </motion.div>
                 
                 <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6">
                   <div className="flex -space-x-2">

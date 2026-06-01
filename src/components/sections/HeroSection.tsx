@@ -12,6 +12,23 @@ import AnimatedDescription from "../ui/AnimatedDescription";
 import GradientText from "../ui/GradientText";
 import ProfileCard from "../ui/ProfileCard";
 
+const getSingleMediaUrl = (url: string | null | undefined): string => {
+  if (!url) return "";
+  try {
+    const parsed = JSON.parse(url);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      const starred = parsed.find((item: any) => item.isStarred) || parsed[0];
+      if (typeof starred === 'string') return starred;
+      return starred?.url || "";
+    } else if (parsed && typeof parsed === 'object') {
+      return parsed.url || "";
+    }
+    return url;
+  } catch {
+    return url;
+  }
+};
+
 interface HeroSectionProps {
   profile: Profile | null;
   stats: {
@@ -23,6 +40,28 @@ interface HeroSectionProps {
 
 export default function HeroSection({ profile, stats }: HeroSectionProps) {
   const { isPowerMode } = useAnimation();
+  const parsedResumeUrl = getSingleMediaUrl(profile?.resume_url);
+
+  const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (!parsedResumeUrl) return;
+    try {
+      const response = await fetch(parsedResumeUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `${profile?.nama || 'CV'}-Resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Failed to download CV:", error);
+      window.open(parsedResumeUrl, '_blank');
+    }
+  };
+
   const WORDS = ["Execution", "Imagination", "Boundaries"];
   const [currentWord, setCurrentWord] = useState(0);
 
@@ -124,11 +163,10 @@ export default function HeroSection({ profile, stats }: HeroSectionProps) {
                 </span>
               </Link>
 
-              {profile?.resume_url && (
+              {parsedResumeUrl && (
                 <a
-                  href={profile.resume_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={parsedResumeUrl}
+                  onClick={handleDownload}
                   className={`group relative px-8 py-4 ${isPowerMode ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-neutral-900 text-slate-400'} border border-white/10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3 active:scale-95`}
                 >
                   <FileText className="w-4 h-4 text-cyan-400" />

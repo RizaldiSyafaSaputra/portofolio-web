@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
-import Image from 'next/image';
 import GradientText from './GradientText';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
@@ -63,6 +62,23 @@ interface TiltEngine {
   cancel: () => void;
 }
 
+const getSingleMediaUrl = (url: string | null | undefined): string => {
+  if (!url) return "";
+  try {
+    const parsed = JSON.parse(url);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      const starred = parsed.find((item: any) => item.isStarred) || parsed[0];
+      if (typeof starred === 'string') return starred;
+      return starred?.url || "";
+    } else if (parsed && typeof parsed === 'object') {
+      return parsed.url || "";
+    }
+    return url;
+  } catch {
+    return url;
+  }
+};
+
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   avatarUrl = '',
   iconUrl = '',
@@ -84,6 +100,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   showUserInfo = true,
   onContactClick
 }) => {
+  const parsedAvatarUrl = getSingleMediaUrl(avatarUrl);
+  const parsedMiniAvatarUrl = getSingleMediaUrl(miniAvatarUrl || avatarUrl);
+
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
 
@@ -516,12 +535,11 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 backfaceVisibility: 'hidden'
               }}
             >
-              <Image
-                src={avatarUrl || "/assets/placeholder.png"}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={parsedAvatarUrl || "/assets/placeholder.png"}
                 alt={`${name || 'User'} avatar`}
-                width={500}
-                height={700}
-                className="w-full absolute left-1/2 bottom-[-220px] will-change-transform transition-transform duration-[120ms] ease-out"
+                className="w-full absolute left-1/2 bottom-0 will-change-transform transition-transform duration-[120ms] ease-out"
                 style={{
                   transformOrigin: '50% 100%',
                   transform:
@@ -530,7 +548,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   backfaceVisibility: 'hidden',
                   objectFit: 'contain'
                 }}
-                priority
               />
               {showUserInfo && (
                 <div
@@ -553,11 +570,10 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                       className="rounded-full overflow-hidden border border-white/10 flex-shrink-0"
                       style={{ width: '48px', height: '48px' }}
                     >
-                      <Image
-                        src={miniAvatarUrl || avatarUrl || "/assets/placeholder.png"}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={parsedMiniAvatarUrl || parsedAvatarUrl || "/assets/placeholder.png"}
                         alt={`${name || 'User'} mini avatar`}
-                        width={48}
-                        height={48}
                         className="w-full h-full object-cover rounded-full"
                         style={{ display: 'block', gridArea: 'auto', borderRadius: '50%', pointerEvents: 'auto' }}
                       />

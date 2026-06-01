@@ -16,12 +16,51 @@ interface ProfilesHeroProps {
   sosmeds: Sosmed[]
 }
 
+const getSingleMediaUrl = (url: string | null | undefined): string => {
+  if (!url) return "";
+  try {
+    const parsed = JSON.parse(url);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      const starred = parsed.find((item: any) => item.isStarred) || parsed[0];
+      if (typeof starred === 'string') return starred;
+      return starred?.url || "";
+    } else if (parsed && typeof parsed === 'object') {
+      return parsed.url || "";
+    }
+    return url;
+  } catch {
+    return url;
+  }
+};
+
 export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
   const { isPowerMode } = useAnimation()
   const [isDossierOpen, setIsDossierOpen] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
+  const parsedPhotoUrl = getSingleMediaUrl(profile.photo_url)
+  const parsedResumeUrl = getSingleMediaUrl(profile.resume_url)
   const [isScanned, setIsScanned] = useState(false)
   const scanInterval = useRef<NodeJS.Timeout | null>(null)
+
+  const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (!parsedResumeUrl) return;
+    try {
+      const response = await fetch(parsedResumeUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `${profile.nama || 'CV'}-Resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Failed to download CV:", error);
+      window.open(parsedResumeUrl, '_blank');
+    }
+  };
 
   // Scroll Lock Logic
   useEffect(() => {
@@ -164,11 +203,10 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
-                {profile.resume_url && (
+                {parsedResumeUrl && (
                   <motion.a
-                    href={profile.resume_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={parsedResumeUrl}
+                    onClick={handleDownload}
                     data-cursor="click"
                     className="relative px-6 py-3 font-semibold text-white rounded-lg overflow-hidden group w-full sm:w-auto text-center"
                     whileHover={{ scale: 1.05 }}
@@ -239,9 +277,9 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                 
                 {/* The Photo (Borderless with Bottom Fade) */}
                 <div className="relative z-10 w-full h-full group [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
-                  {profile?.photo_url ? (
+                  {parsedPhotoUrl ? (
                     <motion.img
-                      src={profile.photo_url}
+                      src={parsedPhotoUrl}
                       alt={profile?.nama || "Profile"}
                       className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-105"
                       initial={{ y: 20, opacity: 0 }}
@@ -410,10 +448,10 @@ export function ProfilesHero({ profile, sosmeds }: ProfilesHeroProps) {
                                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                                className="relative w-full h-full flex items-center justify-center"
                              >
-                               {profile.photo_url ? (
+                               {parsedPhotoUrl ? (
                                  <div className="relative w-full h-full p-2">
                                    <img 
-                                     src={profile.photo_url} 
+                                     src={parsedPhotoUrl} 
                                      alt="Authenticated" 
                                      className="w-full h-full object-contain object-top rounded-2xl"
                                    />

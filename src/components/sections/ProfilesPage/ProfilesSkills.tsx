@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Code2, Brain, Languages, Star, Zap, Terminal, Sparkles } from 'lucide-react'
 import type { Skill } from '@/lib/types/database'
 import { JenisKeahlian, LevelKeahlian } from '@/lib/types/database'
@@ -62,8 +62,16 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
     value: levelToPercent(s.level_keahlian)
   }))
 
+  const SKILLS_PER_PAGE = 5;
+
   const SkillGroup = ({ title, icon: Icon, items, index }: { title: string, icon: any, items: Skill[], index: number }) => {
+    const [currentPage, setCurrentPage] = useState(0);
+
     if (items.length === 0) return null;
+
+    const totalPages = Math.ceil(items.length / SKILLS_PER_PAGE);
+    const startIdx = currentPage * SKILLS_PER_PAGE;
+    const visibleItems = items.slice(startIdx, startIdx + SKILLS_PER_PAGE);
 
     return (
       <motion.div
@@ -98,42 +106,84 @@ export function ProfilesSkills({ skills }: ProfilesSkillsProps) {
           </div>
 
           <div className="space-y-10">
-            {items.map((skill, idx) => (
-              <motion.div 
-                key={skill.id_skills || idx}
-                whileHover={isPowerMode ? { x: 10 } : {}}
-                className="relative group/skill"
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentPage}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-10"
               >
-                <div className="flex justify-between items-end mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-1.5 h-1.5 bg-neutral-800 ${isPowerMode ? 'group-hover/skill:bg-cyan-400 group-hover/skill:shadow-[0_0_8px_#22d3ee]' : ''} transition-all rounded-full`} />
-                    <span className="text-base font-black text-white/90 uppercase tracking-tight">{skill.nama_keahlian || 'Unnamed Skill'}</span>
-                  </div>
-                  <span className="text-[10px] text-cyan-400 font-black tracking-widest uppercase bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
-                    {skill.level_keahlian}
-                  </span>
-                </div>
-                
-                <div className="h-[8px] w-full bg-neutral-900 rounded-full overflow-hidden relative border border-white/5 shadow-inner">
+                {visibleItems.map((skill, idx) => (
                   <motion.div 
-                    className={`absolute inset-y-0 left-0 bg-gradient-to-r ${levelToColor(skill.level_keahlian)} rounded-full z-10 ${isPowerMode ? 'shadow-[0_0_15px_rgba(6,182,212,0.3)]' : ''}`}
-                    initial={isPowerMode ? { width: 0 } : { width: `${levelToPercent(skill.level_keahlian)}%` }}
-                    whileInView={{ width: `${levelToPercent(skill.level_keahlian)}%` }}
-                    transition={isPowerMode ? { duration: 1.5, delay: 0.3 + (idx * 0.1), ease: "circOut" } : { duration: 0 }}
-                    viewport={{ once: true }}
+                    key={skill.id_skills || idx}
+                    whileHover={isPowerMode ? { x: 10 } : {}}
+                    className="relative group/skill"
                   >
-                    {isPowerMode && (
-                      <motion.div
-                        animate={{ x: ['-100%', '200%'] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent w-1/2 z-20"
-                      />
-                    )}
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-1.5 h-1.5 bg-neutral-800 ${isPowerMode ? 'group-hover/skill:bg-cyan-400 group-hover/skill:shadow-[0_0_8px_#22d3ee]' : ''} transition-all rounded-full`} />
+                        <span className="text-base font-black text-white/90 uppercase tracking-tight">{skill.nama_keahlian || 'Unnamed Skill'}</span>
+                      </div>
+                      <span className="text-[10px] text-cyan-400 font-black tracking-widest uppercase bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+                        {skill.level_keahlian}
+                      </span>
+                    </div>
+                    
+                    <div className="h-[8px] w-full bg-neutral-900 rounded-full overflow-hidden relative border border-white/5 shadow-inner">
+                      <motion.div 
+                        className={`absolute inset-y-0 left-0 bg-gradient-to-r ${levelToColor(skill.level_keahlian)} rounded-full z-10 ${isPowerMode ? 'shadow-[0_0_15px_rgba(6,182,212,0.3)]' : ''}`}
+                        initial={isPowerMode ? { width: 0 } : { width: `${levelToPercent(skill.level_keahlian)}%` }}
+                        whileInView={{ width: `${levelToPercent(skill.level_keahlian)}%` }}
+                        transition={isPowerMode ? { duration: 1.5, delay: 0.3 + (idx * 0.1), ease: "circOut" } : { duration: 0 }}
+                        viewport={{ once: true }}
+                      >
+                        {isPowerMode && (
+                          <motion.div
+                            animate={{ x: ['-100%', '200%'] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent w-1/2 z-20"
+                          />
+                        )}
+                      </motion.div>
+                    </div>
                   </motion.div>
-                </div>
+                ))}
               </motion.div>
-            ))}
+            </AnimatePresence>
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-4 mt-10 pt-6 border-t border-white/5">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                disabled={currentPage === 0}
+                className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300 text-sm font-black ${currentPage === 0 ? 'border-white/5 text-slate-700 cursor-not-allowed' : `border-white/10 ${isPowerMode ? 'text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/30' : 'text-slate-400 hover:bg-white/5 hover:border-white/20'}`}`}
+              >
+                ‹
+              </button>
+
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentPage ? `w-6 ${isPowerMode ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee]' : 'bg-white'}` : 'bg-white/20 hover:bg-white/40'}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+                disabled={currentPage === totalPages - 1}
+                className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300 text-sm font-black ${currentPage === totalPages - 1 ? 'border-white/5 text-slate-700 cursor-not-allowed' : `border-white/10 ${isPowerMode ? 'text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/30' : 'text-slate-400 hover:bg-white/5 hover:border-white/20'}`}`}
+              >
+                ›
+              </button>
+            </div>
+          )}
         </div>
       </motion.div>
     )
