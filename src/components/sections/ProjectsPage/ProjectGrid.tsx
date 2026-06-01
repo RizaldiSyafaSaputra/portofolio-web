@@ -380,15 +380,26 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                         <AnimatePresence mode="wait">
                           <motion.div
                             key={`media-${selectedId}-${currentIndex}`}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="w-full h-full flex items-center justify-center p-6 md:p-10"
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            className="w-full h-full flex items-center justify-center p-6 md:p-10 cursor-grab active:cursor-grabbing touch-pan-y"
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.5}
+                            onDragEnd={(e, info) => {
+                              const swipeThreshold = 50;
+                              if (info.offset.x < -swipeThreshold) {
+                                nextMedia(selectedProject.id_project, media.length);
+                              } else if (info.offset.x > swipeThreshold) {
+                                prevMedia(selectedProject.id_project, media.length);
+                              }
+                            }}
                           >
-                            <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-neutral-950/20 border border-white/5 flex items-center justify-center relative">
+                            <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-neutral-950/20 border border-white/5 flex items-center justify-center relative select-none">
                               {currentMedia?.url ? (
                                 isVideo(currentMedia) ? (
-                                  <div className="w-full aspect-video rounded-2xl overflow-hidden">
+                                  <div className="w-full aspect-video rounded-2xl overflow-hidden pointer-events-none">
                                     {currentMedia.url.includes('youtube.com') || currentMedia.url.includes('youtu.be') ? (
                                       <iframe 
                                         src={`https://www.youtube.com/embed/${currentMedia.url.split('v=')[1]?.split('&')[0] || currentMedia.url.split('/').pop()}`}
@@ -415,11 +426,11 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                                   <img 
                                     src={currentMedia.url} 
                                     alt="" 
-                                    className="max-w-full max-h-full object-contain select-none shadow-2xl rounded-2xl border border-white/10"
+                                    className="max-w-full max-h-full object-contain select-none shadow-2xl rounded-2xl border border-white/10 pointer-events-none"
                                   />
                                 )
                               ) : (
-                                <div className="flex flex-col items-center gap-4 opacity-20">
+                                <div className="flex flex-col items-center gap-4 opacity-20 pointer-events-none">
                                   <ImageIcon size={64} className="text-slate-500" />
                                 </div>
                               )}
@@ -431,13 +442,13 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                           <>
                             <button 
                               onClick={(e) => { e.stopPropagation(); prevMedia(selectedProject.id_project, media.length); }}
-                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
+                              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
                               onClick={(e) => { e.stopPropagation(); nextMedia(selectedProject.id_project, media.length); }}
-                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-0 group-hover/slider:opacity-100 z-[65] shadow-2xl"
+                              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-neutral-950/80 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-cyan-500 transition-all opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 z-[65] shadow-2xl"
                             >
                               <ChevronRight className="w-6 h-6" />
                             </button>

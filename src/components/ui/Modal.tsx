@@ -28,9 +28,23 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
   }, []);
 
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
-    return () => { document.body.style.overflow = "auto"; };
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100%";
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.height = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+    };
   }, [isOpen]);
 
   if (!mounted) return null;
@@ -38,19 +52,19 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-hidden">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[99]"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className={`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-3rem)] ${sizeClasses[size]} max-h-[85vh] flex flex-col bg-neutral-950/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl z-[100] overflow-hidden`}
+            className={`relative w-full ${sizeClasses[size]} max-h-[85vh] flex flex-col bg-neutral-950/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl z-[100] overflow-hidden`}
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
             
@@ -69,7 +83,7 @@ export function Modal({ isOpen, onClose, title, children, size = "md" }: ModalPr
               {children}
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>,
     document.body

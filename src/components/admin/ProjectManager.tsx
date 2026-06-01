@@ -33,6 +33,15 @@ import { MediaUpload } from "./MediaUpload";
 export function ProjectManager({ initialProjects }: { initialProjects: Project[] }) {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [isPending, startTransition] = useTransition();
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: string]: boolean }>({});
+
+  const toggleDescription = (id: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [confirmState, setConfirmState] = useState<{ 
@@ -218,14 +227,26 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
                           <AnimatePresence mode="wait">
                             <motion.div
                               key={media[currentIndex].url}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -20 }}
-                              className="w-full h-full cursor-pointer"
+                              initial={{ opacity: 0, scale: 1.02 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.98 }}
+                              transition={{ duration: 0.3 }}
+                              className="w-full h-full cursor-pointer select-none"
                               onClick={() => openLightbox(media[currentIndex])}
+                              drag="x"
+                              dragConstraints={{ left: 0, right: 0 }}
+                              dragElastic={0.5}
+                              onDragEnd={(e, info) => {
+                                const swipeThreshold = 50;
+                                if (info.offset.x < -swipeThreshold) {
+                                  nextMedia(project.id_project, media.length);
+                                } else if (info.offset.x > swipeThreshold) {
+                                  prevMedia(project.id_project, media.length);
+                                }
+                              }}
                             >
                               {isVideo(media[currentIndex]) ? (
-                                <div className="w-full h-full relative">
+                                <div className="w-full h-full relative pointer-events-none">
                                   {media[currentIndex].url.includes('youtube.com') || media[currentIndex].url.includes('youtu.be') ? (
                                     <iframe 
                                       src={`https://www.youtube.com/embed/${media[currentIndex].url.split('v=')[1]?.split('&')[0] || media[currentIndex].url.split('/').pop()}`}
@@ -247,7 +268,7 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
                                 <img 
                                   src={media[currentIndex].url} 
                                   alt={project.nama_project || ""} 
-                                  className="w-full h-full object-cover transition-transform duration-700 group-hover/slider:scale-110"
+                                  className="w-full h-full object-cover transition-transform duration-700 group-hover/slider:scale-110 pointer-events-none"
                                 />
                               )}
                             </motion.div>
@@ -256,14 +277,14 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
                           {media.length > 1 && (
                             <>
                               <button 
-                                onClick={() => prevMedia(project.id_project, media.length)}
-                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-opacity z-10"
+                                onClick={(e) => { e.stopPropagation(); prevMedia(project.id_project, media.length); }}
+                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full text-white opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity z-10"
                               >
                                 <ChevronLeft className="w-4 h-4" />
                               </button>
                               <button 
-                                onClick={() => nextMedia(project.id_project, media.length)}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full text-white opacity-0 group-hover/slider:opacity-100 transition-opacity z-10"
+                                onClick={(e) => { e.stopPropagation(); nextMedia(project.id_project, media.length); }}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/50 backdrop-blur-md rounded-full text-white opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity z-10"
                               >
                                 <ChevronRight className="w-4 h-4" />
                               </button>
@@ -313,8 +334,24 @@ export function ProjectManager({ initialProjects }: { initialProjects: Project[]
                           </div>
                         </div>
 
-                        <p className="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-8 italic">
-                          "{project.deskripsi}"
+                        <p className="text-slate-400 text-sm leading-relaxed mb-8 italic">
+                          "{(() => {
+                            const isLong = (project.deskripsi || "").length > 150;
+                            const isExpanded = expandedDescriptions[project.id_project];
+                            if (isLong && !isExpanded) {
+                              return `${project.deskripsi.substring(0, 150)}...`;
+                            }
+                            return project.deskripsi;
+                          })()}"
+                          {(project.deskripsi || "").length > 150 && (
+                            <button 
+                              type="button"
+                              onClick={() => toggleDescription(project.id_project)}
+                              className="ml-2 text-[10px] font-black uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition-colors inline-flex items-center"
+                            >
+                              {expandedDescriptions[project.id_project] ? "Show Less" : "Show More"}
+                            </button>
+                          )}
                         </p>
 
                         <div className="mt-auto pt-6 border-t border-white/5 flex flex-wrap items-center gap-6">

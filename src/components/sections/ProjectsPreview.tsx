@@ -13,6 +13,14 @@ interface ProjectsPreviewProps {
 export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
   const displayProjects = projects.slice(0, 3);
   const [activeMediaIndex, setActiveMediaIndex] = useState<{ [key: string]: number }>({});
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: string]: boolean }>({});
+
+  const toggleDescription = (id: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   const getMediaUrls = (url: string | null) => {
     if (!url) return []
@@ -97,34 +105,45 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
                 transition={{ delay: i * 0.1 }}
                 className="group relative bg-white/[0.02] border border-white/5 hover:border-blue-500/50 hover:bg-white/[0.04] transition-all duration-500 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col min-h-[420px] md:min-h-[500px] h-auto w-[92%] mx-auto md:w-full"
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-64 overflow-hidden select-none">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={`${project.id_project}-${currentIndex}`}
-                      initial={{ opacity: 0, scale: 1.1 }}
+                      initial={{ opacity: 0, scale: 1.05 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.6 }}
-                      className="absolute inset-0"
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.5}
+                      onDragEnd={(e, info) => {
+                        const swipeThreshold = 50;
+                        if (info.offset.x < -swipeThreshold) {
+                          setActiveMediaIndex(prev => ({ ...prev, [project.id_project]: ((prev[project.id_project] || 0) + 1) % media.length }));
+                        } else if (info.offset.x > swipeThreshold) {
+                          setActiveMediaIndex(prev => ({ ...prev, [project.id_project]: ((prev[project.id_project] || 0) - 1 + media.length) % media.length }));
+                        }
+                      }}
                     >
                       {currentMedia?.url ? (
                         <img
                           src={currentMedia.url}
                           alt={project.nama_project || ""}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover pointer-events-none"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-neutral-900">
+                        <div className="w-full h-full flex items-center justify-center bg-neutral-900 pointer-events-none">
                           <ImageIcon className="w-12 h-12 text-slate-700" />
                         </div>
                       )}
                     </motion.div>
                   </AnimatePresence>
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
                   {media.length > 1 && (
-                    <div className="absolute inset-x-0 bottom-4 px-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-x-0 bottom-4 px-6 flex items-center justify-between opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                       <div className="flex gap-1">
                         {media.map((_, idx) => (
                           <div 
@@ -155,8 +174,28 @@ export default function ProjectsPreview({ projects }: ProjectsPreviewProps) {
                   <h3 className="text-2xl font-black text-white mb-3 tracking-tight">
                     {project.nama_project}
                   </h3>
-                  <p className="text-sm text-slate-400 mb-6 line-clamp-3 leading-relaxed">
-                    {project.deskripsi || "Building innovative solutions with modern technology stacks."}
+                  <p className="text-sm text-slate-400 mb-6 leading-relaxed">
+                    {(() => {
+                      const desc = project.deskripsi || "Building innovative solutions with modern technology stacks.";
+                      const isLong = desc.length > 120;
+                      const isExpanded = expandedDescriptions[project.id_project];
+                      if (isLong && !isExpanded) {
+                        return `${desc.substring(0, 120)}...`;
+                      }
+                      return desc;
+                    })()}
+                    {(project.deskripsi || "").length > 120 && (
+                      <button 
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleDescription(project.id_project);
+                        }}
+                        className="ml-2 text-[10px] font-black uppercase tracking-wider text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center"
+                      >
+                        {expandedDescriptions[project.id_project] ? "Show Less" : "Show More"}
+                      </button>
+                    )}
                   </p>
 
                   <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
